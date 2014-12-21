@@ -18,15 +18,7 @@
 namespace Mcustiel\SimpleRequest;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Mcustiel\SimpleRequest\Util\FormValidatorBuilder;
-use Mcustiel\SimpleRequest\Type\Input;
-use Mcustiel\SimpleRequest\Type\InputType;
-use Mcustiel\SimpleRequest\Type\Form;
-use Mcustiel\SimpleRequest\Type\Multiple;
 use Mcustiel\SimpleRequest\Exception\InvalidAnnotationException;
-use Mcustiel\SimpleRequest\Type\Option;
-use Mcustiel\SimpleRequest\Util\FormFilterBuilder;
-use Mcustiel\SimpleRequest\Annotation\Name;
 
 class RequestParser
 {

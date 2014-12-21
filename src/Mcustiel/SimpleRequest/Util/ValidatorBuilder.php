@@ -20,7 +20,7 @@ namespace Mcustiel\SimpleRequest\Util;
 use Mcustiel\SimpleRequest\Exception\ValidatorDoesNotExist;
 use Mcustiel\SimpleRequest\Validator\ValidatorInterface;
 
-class FormValidatorBuilder
+class ValidatorBuilder
 {
     private $type;
     private $specification;

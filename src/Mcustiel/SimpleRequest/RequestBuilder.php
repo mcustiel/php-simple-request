@@ -18,7 +18,7 @@
 namespace Mcustiel\SimpleRequest;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Mcustiel\SimpleRequest\Util\FormValidatorBuilder;
+use Mcustiel\SimpleRequest\Util\ValidatorBuilder;
 use Mcustiel\SimpleRequest\Exception\InvalidAnnotationException;
 use Mcustiel\SimpleRequest\Annotation\Name;
 use Mcustiel\SimpleRequest\Annotation\RequestAnnotation;
@@ -45,7 +45,7 @@ class RequestBuilder
      */
     private $cache;
 
-    public function __construct(AnnotationReader $annotationReader = null, \stdClass $cacheConfig = null)
+    public function __construct(\stdClass $cacheConfig = null, AnnotationReader $annotationReader = null)
     {
         $this->annotationParser = $annotationReader == null ? new AnnotationReader() : $annotationReader;
         $this->setCache($cacheConfig);
@@ -72,6 +72,7 @@ class RequestBuilder
 
     private function generateRequestParserObject($className)
     {
+        $start = microtime(true);
         $class = new \ReflectionClass($className);
 
         $name = $this->generateCacheName($class, $className);
@@ -79,7 +80,11 @@ class RequestBuilder
         if ($this->cache === null) {
             return $this->createRequestParser($name, $className, $class);
         }
-        return $this->getRequestParserFromCache($name, $className, $class);
+
+        $parser =  $this->getRequestParserFromCache($name, $className, $class);
+        echo "Proceso en generateRequestParserObjectL >>" . ($start - microtime(true)) . PHP_EOL;
+
+        return $parser;
     }
 
     private function getRequestParserFromCache($name, $className, \ReflectionClass $class)
@@ -116,7 +121,7 @@ class RequestBuilder
             $associatedClass = $propertyAnnotation->getAssociatedClass();
             if ($propertyAnnotation instanceof ValidatorAnnotation) {
                 $propertyParser->addValidator(
-                    FormValidatorBuilder::builder()->withClass($associatedClass)
+                    ValidatorBuilder::builder()->withClass($associatedClass)
                         ->withSpecification($propertyAnnotation->value)
                         ->build());
             } elseif ($propertyAnnotation instanceof FilterAnnotation) {

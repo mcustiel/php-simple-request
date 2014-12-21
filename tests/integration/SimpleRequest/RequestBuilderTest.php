@@ -30,11 +30,11 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             'lastName' => 'DOE',
             'age' => 30
         ];
-        $builder = new RequestBuilder(null, $cacheConfig);
+        $builder = new RequestBuilder($cacheConfig);
         $personRequest = $builder->parseRequest($request, PersonRequest::class);
         $personRequest = $this->assertPersonIsOk($personRequest);
 
-        $builderCached = new RequestBuilder(null, $cacheConfig);
+        $builderCached = new RequestBuilder($cacheConfig);
         $personRequest = $builderCached->parseRequest($request, PersonRequest::class);
         $personRequest = $this->assertPersonIsOk($personRequest);
     }
@@ -61,9 +61,9 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             'twitterAccount' => '@pepe_123',
             'url' => 'https://this.isaurl.com/test.php?id=1#test'
         ];
-        $builder = new RequestBuilder(null, $cacheConfig);
+        $builder = new RequestBuilder($cacheConfig);
         $builder->parseRequest($request, AllValidatorsRequest::class);
-        $builder = new RequestBuilder(null, $cacheConfig);
+        $builder = new RequestBuilder($cacheConfig);
         $builder->parseRequest($request, AllValidatorsRequest::class);
     }
 

@@ -19,19 +19,12 @@ namespace Mcustiel\SimpleRequest\Validator;
 
 class NotEmpty implements ValidatorInterface
 {
-    private $trim = false;
-
     public function setSpecification($specification = null)
     {
-        if (is_string($specification)) {
-            $this->trim = strtolower($specification) == "true";
-        } elseif (is_bool($specification)) {
-            $this->trim = $specification;
-        }
     }
 
     public function validate($value)
     {
-        return !empty($this->trim? trim($value) : $value);
+        return !empty($value);
     }
 }
