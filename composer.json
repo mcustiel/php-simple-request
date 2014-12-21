@@ -1,6 +1,10 @@
 {
 	"keywords" : [
-		"form",
+		"request",
+		"validation",
+		"filtering",
+		"minimalist",
+		"extensible",
 		"generator",
 		"annotations"
 	],
@@ -9,10 +13,10 @@
 			"Mcustiel\\SimpleRequest\\" : "src"
 		}
 	},
-	"name" : "mcustiel/php-simple-form",
-	"version" : "0.3",
+	"name" : "mcustiel/php-simple-request",
+	"version" : "1.0",
 	"type" : "library",
-	"description" : "A simple library to generate and validate forms through annotations",
+	"description" : "php-simple-request is a minimalist library designed to simplify requests validation and filtering",
 	"license" : "GPL-2.0+",
 	"require" : {
 		"php" : ">=5.5",
