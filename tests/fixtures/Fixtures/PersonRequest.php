@@ -8,7 +8,7 @@ use Mcustiel\SimpleRequest\Annotation\Filter\Trim;
 use Mcustiel\SimpleRequest\Annotation\Filter\UpperCase;
 
 /**
- * @Name("IsThisAnnotationNeeded")
+ * @Name("NameUsedToCacheThis")
  * @author mcustiel
  */
 class PersonRequest

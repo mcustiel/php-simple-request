@@ -61,7 +61,7 @@ class RequestBuilder
     private function generateCacheName(\ReflectionClass $class, $className)
     {
         $name = $this->annotationParser->getClassAnnotation($class, Name::class);
-        if ($name != null) {
+        if ($name !== null) {
             $name = $name->value;
         } else {
             $name = $className;

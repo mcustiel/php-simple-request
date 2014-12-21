@@ -2,6 +2,7 @@
 namespace Integration\SimpleRequest;
 
 use Fixtures\PersonRequest;
+use Fixtures\AllValidatorsRequest;
 use Mcustiel\SimpleRequest\RequestBuilder;
 
 class RequestBuilderTest extends \PHPUnit_Framework_TestCase
@@ -29,14 +30,41 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             'lastName' => 'DOE',
             'age' => 30
         ];
-        $builder = new RequestBuilder();
+        $builder = new RequestBuilder(null, $cacheConfig);
         $personRequest = $builder->parseRequest($request, PersonRequest::class);
         $personRequest = $this->assertPersonIsOk($personRequest);
 
         $builderCached = new RequestBuilder(null, $cacheConfig);
         $personRequest = $builderCached->parseRequest($request, PersonRequest::class);
         $personRequest = $this->assertPersonIsOk($personRequest);
+    }
 
+    public function testBuildARequestFromCacheWithoutNameSpecified()
+    {
+        $cacheConfig = new \stdClass();
+        $cacheConfig->enabled = true;
+        $cacheConfig->path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'php-simple-request-alt/';
+
+        $request = [
+            'custom' => '5',
+            'date' => '17/10/1981 01:30:00',
+            'email' => 'pipicui@hotmail.com',
+            'float' => '5.1',
+            'integer' => '20',
+            'ipv4' => '192.168.0.1',
+            'ipv6' => '2001:0db8:85a3:08d3:1319:8a2e:0370:7334',
+            'maxLength' => '12345',
+            'minLength' => '123',
+            'notEmpty' => '-',
+            'notNull' => '',
+            'regExp' => 'abc123',
+            'twitterAccount' => '@pepe_123',
+            'url' => 'https://this.isaurl.com/test.php?id=1#test'
+        ];
+        $builder = new RequestBuilder(null, $cacheConfig);
+        $builder->parseRequest($request, AllValidatorsRequest::class);
+        $builder = new RequestBuilder(null, $cacheConfig);
+        $builder->parseRequest($request, AllValidatorsRequest::class);
     }
 
     /**
