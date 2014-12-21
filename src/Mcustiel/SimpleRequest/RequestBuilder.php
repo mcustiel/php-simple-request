@@ -19,29 +19,36 @@ namespace Mcustiel\SimpleRequest;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Mcustiel\SimpleRequest\Util\FormValidatorBuilder;
-use Mcustiel\SimpleRequest\Type\Input;
-use Mcustiel\SimpleRequest\Type\InputType;
-use Mcustiel\SimpleRequest\Type\Form;
-use Mcustiel\SimpleRequest\Type\Multiple;
 use Mcustiel\SimpleRequest\Exception\InvalidAnnotationException;
-use Mcustiel\SimpleRequest\Type\Option;
-use Mcustiel\SimpleRequest\Util\FormFilterBuilder;
 use Mcustiel\SimpleRequest\Annotation\Name;
 use Mcustiel\SimpleRequest\Annotation\RequestAnnotation;
 use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
 use Mcustiel\SimpleRequest\Annotation\FilterAnnotation;
+use Mcustiel\SimpleCache\Interfaces\CacheInterface;
+use Mcustiel\SimpleCache\Drivers\file\Cache;
+use Mcustiel\SimpleCache\Drivers\file\Utils\FileService;
+use Mcustiel\SimpleCache\Types\Key;
 
 class RequestBuilder
 {
+    const DEFAULT_CACHE_PATH = 'php-simple-request/cache/';
+
     /**
      *
      * @var \Doctrine\Common\Annotations\AnnotationReader
      */
     private $annotationParser;
 
-    public function __construct(AnnotationReader $annotationReader = null)
+    /**
+     *
+     * @var \Mcustiel\SimpleCache\Drivers\file\Cache
+     */
+    private $cache;
+
+    public function __construct(AnnotationReader $annotationReader = null, \stdClass $cacheConfig = null)
     {
         $this->annotationParser = $annotationReader == null ? new AnnotationReader() : $annotationReader;
+        $this->setCache($cacheConfig);
     }
 
     public function parseRequest(array $request, $className)
@@ -51,37 +58,80 @@ class RequestBuilder
         return $requestParser->parse($request);
     }
 
+    private function generateCacheName(\ReflectionClass $class, $className)
+    {
+        $name = $this->annotationParser->getClassAnnotation($class, Name::class);
+        if ($name != null) {
+            $name = $name->value;
+        } else {
+            $name = $className;
+        }
+
+        return $name;
+    }
+
     private function generateRequestParserObject($className)
     {
         $class = new \ReflectionClass($className);
 
-        $name = $this->annotationParser->getClassAnnotation($class, Name::class);
-        if ($name != null) {
-            $name = $name->value;
+        $name = $this->generateCacheName($class, $className);
+
+        if ($this->cache === null) {
+            return $this->createRequestParser($name, $className, $class);
         }
+        return $this->getRequestParserFromCache($name, $className, $class);
+    }
+
+    private function getRequestParserFromCache($name, $className, \ReflectionClass $class)
+    {
+        $key = new Key($name);
+        $return = $this->cache->get($key);
+        if ($return === null) {
+            $return = $this->createRequestParser($name, $className, $class);
+            $this->cache->set($key, $return, 0);
+        }
+        return $return;
+    }
+
+    private function createRequestParser($name, $className, \ReflectionClass $class)
+    {
         $return = new RequestParser($name);
         $return->setRequestObject($className);
-
         foreach ($class->getProperties() as $property) {
             $propertyParser = new PropertyParser($property->getName());
-            foreach ($this->annotationParser->getPropertyAnnotations($property)
-                    as $propertyAnnotation) {
-                if ($propertyAnnotation instanceof RequestAnnotation) {
-                    $associatedClass = $propertyAnnotation->getAssociatedClass();
-                    if ($propertyAnnotation instanceof ValidatorAnnotation) {
-                        $propertyParser->addValidator(FormValidatorBuilder::builder()
-                            ->withClass($associatedClass)
-                            ->withSpecification($propertyAnnotation->value)
-                            ->build()
-                        );
-                    } elseif ($propertyAnnotation instanceof FilterAnnotation) {
-                        $propertyParser->addFilter(new $associatedClass);
-                    }
-                }
+            foreach ($this->annotationParser->getPropertyAnnotations($property) as $propertyAnnotation) {
+                $this->parsePropertyAnnotation($propertyAnnotation, $propertyParser);
             }
             $return->addProperty($propertyParser);
         }
-
         return $return;
+    }
+
+
+    private function parsePropertyAnnotation(
+        RequestAnnotation $propertyAnnotation,
+        PropertyParser $propertyParser)
+    {
+        if ($propertyAnnotation instanceof RequestAnnotation) {
+            $associatedClass = $propertyAnnotation->getAssociatedClass();
+            if ($propertyAnnotation instanceof ValidatorAnnotation) {
+                $propertyParser->addValidator(
+                    FormValidatorBuilder::builder()->withClass($associatedClass)
+                        ->withSpecification($propertyAnnotation->value)
+                        ->build());
+            } elseif ($propertyAnnotation instanceof FilterAnnotation) {
+                $propertyParser->addFilter(new $associatedClass());
+            }
+        }
+    }
+
+    private function setCache(\stdClass $cacheConfig = null)
+    {
+        if ($cacheConfig !== null && isset($cacheConfig->enabled) && $cacheConfig->enabled) {
+            $this->cache = new Cache(new FileService(
+                isset($cacheConfig->path) ? $cacheConfig->path
+                    : sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::DEFAULT_CACHE_PATH
+            ));
+        }
     }
 }
