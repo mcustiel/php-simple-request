@@ -41,7 +41,7 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
         $builder = new RequestBuilder($config);
 
         $cyclesList = [
-            1000
+            10000
         ];
 
         foreach ($cyclesList as $cycles) {

@@ -58,44 +58,31 @@ class RequestBuilder
         return $requestParser->parse($request);
     }
 
-    private function generateCacheName(\ReflectionClass $class, $className)
-    {
-        $name = $this->annotationParser->getClassAnnotation($class, Name::class);
-        if ($name !== null) {
-            $name = $name->value;
-        } else {
-            $name = $className;
-        }
-
-        return $name;
-    }
-
     private function generateRequestParserObject($className)
     {
-        $start = microtime(true);
         $class = new \ReflectionClass($className);
-
-        $name = $this->generateCacheName($class, $className);
+        $name = str_replace('\\', '', $className);
 
         if ($this->cache === null) {
             return $this->createRequestParser($name, $className, $class);
         }
 
-        $parser =  $this->getRequestParserFromCache($name, $className, $class);
-        echo "Proceso en generateRequestParserObjectL >>" . ($start - microtime(true)) . PHP_EOL;
-
-        return $parser;
+        return  $this->getRequestParserFromCache($name, $className, $class);
     }
 
     private function getRequestParserFromCache($name, $className, \ReflectionClass $class)
     {
-        $key = new Key($name);
-        $return = $this->cache->get($key);
-        if ($return === null) {
+        $fileName = $this->cache . $name;
+        if (!file_exists($fileName)) {
             $return = $this->createRequestParser($name, $className, $class);
-            $this->cache->set($key, $return, 0);
+            if (!is_dir($this->cache)) {
+                mkdir($this->cache, 0777, true);
+            }
+            file_put_contents($fileName, serialize($return));
+            return $return;
         }
-        return $return;
+
+        return unserialize(file_get_contents($fileName));
     }
 
     private function createRequestParser($name, $className, \ReflectionClass $class)
@@ -133,10 +120,10 @@ class RequestBuilder
     private function setCache(\stdClass $cacheConfig = null)
     {
         if ($cacheConfig !== null && isset($cacheConfig->enabled) && $cacheConfig->enabled) {
-            $this->cache = new Cache(new FileService(
+            $this->cache =
                 isset($cacheConfig->path) ? $cacheConfig->path
                     : sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::DEFAULT_CACHE_PATH
-            ));
+            ;
         }
     }
 }
