@@ -21,7 +21,7 @@ class TwitterAccountValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validator->validate(self::VALID_VALUE_LONG_LIMIT_UP));
     }
 
-    public function testValidationWithInvalidValue()
+    public function testValidationWithInvalidValues()
     {
         $validator = new TwitterAccount();
         $validator->setSpecification();
