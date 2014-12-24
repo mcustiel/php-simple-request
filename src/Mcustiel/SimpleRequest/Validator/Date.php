@@ -21,15 +21,22 @@ class Date implements ValidatorInterface
 {
     private $specification;
 
+    public function __construct()
+    {
+        $this->specification = \DateTime::ISO8601;
+    }
+
     public function setSpecification($specification = null)
     {
-        $this->specification = $specification == null ? 'Y-m-d H:i:sO' : $specification;
+        if ($specification !== null) {
+            $this->specification = $specification;
+        }
     }
 
     public function validate($value)
     {
         $date = \DateTime::createFromFormat($this->specification, $value);
 
-        return $date !== false && \DateTime::getLastErrors()['error_count'] == 0;
+        return $date !== false;
     }
 }

@@ -154,3 +154,98 @@ $cacheConfig->path = '/your/own/cache/path';
 $requestBuilder = new RequestBuilder($cacheConfig);
 ```  
 
+Filters
+-------
+
+#### Capitalize
+
+This filter sets all the string characters to lowercase but its first character, which is converted to uppercase.
+
+#### LowerCase
+
+LowerCase filter converts all characters in the given string to lowercase.
+
+#### Trim
+
+Trims the string from both ends.
+
+#### UpperCase
+
+Converts all characters in the given string to uppercase.
+
+Validators
+----------
+
+#### Date
+
+This validator checks that the given string is a date and its format is compatible with the specified date format. The format to specify as the annotation value must be compatible with the php method \DateTime::createFromFormat.
+
+##### Example:
+```php
+/**
+ * @Date('M d, Y')
+ */
+private $dayOfBirth;
+// Matches Oct 17, 1981
+```
+
+**Default specifier value:** \DateTime::ISO8601
+
+#### Email
+
+This validator checks that the given value is a string containing an email. This annotation expects no value specifier.
+
+##### Example:
+```php
+/**
+ * @Email
+ */
+private $email;
+```
+
+#### Float
+
+This validator checks that the given value is a float. A boolean modifier can be specified in this annotation, indicating if the value must be a strict float or if integers can be validated as floats too.
+
+##### Example:
+```php
+/**
+ * @Float
+ */
+private $meters;
+// accepts 1, 1.1, etc.
+/**
+ * @Float(true)
+ */
+private $meters;
+// accepts 1.0, 1.1, etc.
+
+```
+
+**Default specifier value:** false, indicating that integers are validated as floats
+
+#### Integer
+
+This validator checks that the given value is numeric and it's an integer. It does not expect any modifier.
+
+##### Example:
+```php
+/**
+ * @Integer
+ */
+private $seconds;
+// accepts 1, 2, -3, 0, etc.
+```
+
+#### IPV4
+
+This validator checks that the given value is a valid IPv4. It does not expect any modifier.
+
+##### Example:
+```php
+/**
+ * @IPV4
+ */
+private $ip;
+// accepts 0.0.0.0, 255.255.255.255, etc.
+```

@@ -4,6 +4,7 @@ namespace Fixtures;
 use Mcustiel\SimpleRequest\Annotation\Name;
 use Mcustiel\SimpleRequest\Annotation\Validator\NotNull;
 use Mcustiel\SimpleRequest\Annotation\Validator\NotEmpty;
+use Mcustiel\SimpleRequest\Annotation\Validator\Integer;
 use Mcustiel\SimpleRequest\Annotation\Filter\Trim;
 use Mcustiel\SimpleRequest\Annotation\Filter\UpperCase;
 
@@ -13,7 +14,6 @@ use Mcustiel\SimpleRequest\Annotation\Filter\UpperCase;
 class PersonRequest
 {
     /**
-     * @NotNull
      * @NotEmpty
      * @Trim
      * @var unknown
@@ -22,12 +22,12 @@ class PersonRequest
     /**
      * @Trim
      * @UpperCase
-     * @NotNull
      * @NotEmpty
      * @var unknown
      */
     private $lastName;
     /**
+     * @Integer
      * @var unknown
      */
     private $age;

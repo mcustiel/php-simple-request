@@ -15,14 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with php-simple-form.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Mcustiel\SimpleRequest\Validator;
+namespace Mcustiel\SimpleRequest\Filter;
 
-class IPV4 extends RegExp
+class Capitalize implements FilterInterface
 {
-    const URL_REGEXP = '/^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9][0-9]|[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9][0-9]|[0-9])){3}$/';
-
-    public function setSpecification($specification = null)
+    public function filter($value)
     {
-        parent::setSpecification(self::URL_REGEXP);
+        // return ucwords(strtolower($value));
+        return ucfirst(strtolower($value));
     }
 }
