@@ -119,11 +119,15 @@ class RequestBuilder
 
     private function setCache(\stdClass $cacheConfig = null)
     {
-        if ($cacheConfig !== null && isset($cacheConfig->enabled) && $cacheConfig->enabled) {
+        if ($cacheConfig !== null) {
+            if (isset($cacheConfig->disabled) && $cacheConfig->disabled) {
+                return null;
+            }
             $this->cache =
                 isset($cacheConfig->path) ? $cacheConfig->path
                     : sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::DEFAULT_CACHE_PATH
             ;
         }
+        $this->cache = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::DEFAULT_CACHE_PATH;
     }
 }
