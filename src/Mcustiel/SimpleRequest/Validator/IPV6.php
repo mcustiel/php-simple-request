@@ -17,12 +17,35 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
-class IPV6 extends RegExp
+class IPV6
 {
-    const URL_REGEXP = '/^(?:0\b|(?:[0-9a-f]{4}))?(?::(?:0\b|(?:[0-9a-f]{4}))?){7}$/i';
+    const REGEXP_WITHOUT_SHORTCUT = '/^(?:[0-9a-f]{1,4})(?::(?:[0-9a-f]{1,4})){7}$/i';
+    const REGEXP_SHORTCUT_IN_MIDDLE = '/^(?:[0-9a-f]{1,4})(?::[0-9a-f]{1,4})*::(?:[0-9a-f]{1,4})(?::[0-9a-f]{1,4})*$/i';
+    const REGEXP_SHORTCUT_AT_START = '/^::(?:[0-9a-f]{1,4})(?::[0-9a-f]{1,4})*$/i';
+    const REGEXP_SHORTCUT_AT_END = '/^(?:[0-9a-f]{1,4})(?::(?:[0-9a-f]{1,4}))*::$/i';
 
     public function setSpecification($specification = null)
     {
-        parent::setSpecification(self::URL_REGEXP);
+    }
+
+    public function validate($value)
+    {
+        if (is_string($value)) {
+            if (preg_match(self::REGEXP_WITHOUT_SHORTCUT, $value)) {
+                return true;
+            }
+
+            $count = count(explode(':', $value));
+            if (preg_match(self::REGEXP_SHORTCUT_IN_MIDDLE, $value) && $count <= 8) {
+                return true;
+            }
+            if (preg_match(self::REGEXP_SHORTCUT_AT_START, $value) && $count <= 9) {
+                return true;
+            }
+            if (preg_match(self::REGEXP_SHORTCUT_AT_END, $value) && $count <= 9) {
+                return true;
+            }
+        }
+        return false;
     }
 }

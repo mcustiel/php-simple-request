@@ -37,6 +37,6 @@ class RegExp implements ValidatorInterface
     public function validate($value)
     {
 
-        return (boolean) is_string($value) && preg_match($this->regExp, $value);
+        return is_string($value) && (boolean) preg_match($this->regExp, $value);
     }
 }
