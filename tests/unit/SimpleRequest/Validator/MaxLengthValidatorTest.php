@@ -26,5 +26,9 @@ class MaxLengthValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validator->validate(''));
         $this->assertTrue($validator->validate(self::STRING_WITH_LENGTH_50));
         $this->assertFalse($validator->validate(self::STRING_WITH_LENGTH_50 . 'A'));
+        $this->assertTrue($validator->validate([]));
+        $this->assertTrue($validator->validate(['a']));
+        $this->assertTrue($validator->validate(str_split(self::STRING_WITH_LENGTH_50)));
+        $this->assertFalse($validator->validate(str_split(self::STRING_WITH_LENGTH_50 . 'A')));
     }
 }
