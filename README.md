@@ -71,10 +71,14 @@ use Mcustiel\SimpleRequest\Annotation\Filter\UpperCase;
 
 class PersonRequest 
 {
-    @Trim
+    /**
+     * @Trim
+     */
     private $firstName;
-    @Trim
-    @UpperCase
+    /**
+     * @Trim
+     * @UpperCase
+     */
     private $lastName;
     private $age;
     
@@ -94,15 +98,21 @@ use Mcustiel\SimpleRequest\Annotation\Validator\Integer;
 
 class PersonRequest 
 {
-    @Trim
-    @NotEmpty
+    /**
+     * @Trim
+     * @NotEmpty
+     */
     private $firstName;
-    @Trim
-    @UpperCase
-    @NotEmpty
-    @MaxLength(32)
+    /**
+     * @Trim
+     * @UpperCase
+     * @NotEmpty
+     * @MaxLength(32)
+     */
     private $lastName;
-    @Integer
+    /**
+     * @Integer
+     */
     private $age;
     
     // getters and setters (setters are required by the library)
@@ -158,7 +168,20 @@ Filters
 
 #### Capitalize
 
-This filter sets all the string characters to lowercase but its first character, which is converted to uppercase. This annotation accepts a boolean specifier value to define wether to capitalize just the first letter of the first word or the first letter of all words.  
+This filter sets all the string characters to lowercase but its first character, which is converted to uppercase. This annotation accepts a boolean specifier value to define wether to capitalize just the first letter of the first word or the first letter of all words in the string.  
+
+```php
+/**
+ * @Capitalize
+ */
+private $name;
+// Will convert, for instance, mariano to Mariano.
+/**
+ * @Capitalize(true)
+ */
+private $fullName;
+// Will convert, for instance, mariano custiel to Mariano Custiel.
+```
 
 #### CustomFilter
 
@@ -295,6 +318,7 @@ This validator checks that the given value is a valid IPv6. It does not expect a
  */
 private $ip;
 // accepts ::A000:A000, A000::A000, A000::A000::, 2001:0000:3238:DFE1:63:0000:0000:FEFB, etc.
+```
 
 #### MaxLength
 
