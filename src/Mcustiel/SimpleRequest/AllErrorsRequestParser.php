@@ -21,30 +21,26 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Mcustiel\SimpleRequest\Exception\InvalidAnnotationException;
 use Mcustiel\SimpleRequest\Exception\InvalidValueException;
 
-abstract class RequestParser
+class AllErrorsRequestParser extends RequestParser
 {
-    protected $properties;
-    protected $requestObject;
-
-    public function __construct()
+    public function parse(array $request)
     {
-        $this->properties = [];
-    }
+        $object = new $this->requestObject;
+        $invalidValues = [];
 
-    public function addProperty(PropertyParser $parser)
-    {
-        $this->properties[$parser->getName()] = $parser;
-    }
+        foreach ($this->properties as $propertyParser) {
+            try {
+                $value = $propertyParser->parse(
+                    isset($request[$propertyParser->getName()])
+                    ? $request[$propertyParser->getName()] : null
+                );
+                $method = 'set' . ucfirst($propertyParser->getName());
+                $object->$method($value);
+            } catch (InvalidValueException $e) {
+                $invalidValues[$propertyParser->getName()] = $e->getMessage();
+            }
+        }
 
-    public function getRequestObject()
-    {
-        return new $this->requestObject;
+        return new ParserResponse($object, $invalidValues);
     }
-
-    public function setRequestObject($requestObject)
-    {
-        $this->requestObject = $requestObject;
-    }
-
-    abstract public function parse(array $request);
 }

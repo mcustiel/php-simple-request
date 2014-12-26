@@ -17,6 +17,7 @@
  */
 namespace Mcustiel\SimpleRequest\Exception;
 
-class InvalidAnnotationException extends PhpSimpleRequestException {
+class InvalidAnnotationException extends PhpSimpleRequestException
+{
 
 }

@@ -23,9 +23,10 @@ trait AnnotationToImplementationBuilder
     protected $specification;
 
     private function __construct()
-    {}
+    {
+    }
 
-    public static function builder ()
+    public static function builder()
     {
         return new self;
     }

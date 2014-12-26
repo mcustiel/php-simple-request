@@ -15,26 +15,27 @@
  * You should have received a copy of the GNU General Public License
  * along with php-simple-request.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Mcustiel\SimpleRequest\Util;
+namespace Mcustiel\SimpleRequest;
 
-use Mcustiel\SimpleRequest\Exception\FilterDoesNotExist;
-use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Mcustiel\SimpleRequest\Exception\InvalidAnnotationException;
+use Mcustiel\SimpleRequest\Exception\InvalidValueException;
 
-class FilterBuilder
+class FirstErrorRequestParser extends RequestParser
 {
-    use AnnotationToImplementationBuilder;
-
-    final protected function getClassForType($type)
+    public function parse(array $request)
     {
-        if (!class_exists($type)) {
-            throw new FilterDoesNotExist("Filter class {$type} does not exist");
-        }
-        $filter = new $type;
-        if (! ($filter instanceof FilterInterface)) {
-            throw new FilterDoesNotExist(
-                "Filter class {$type} must implement " . FilterInterface::class
+        $object = new $this->requestObject;
+
+        foreach ($this->properties as $propertyParser) {
+            $value = $propertyParser->parse(
+                isset($request[$propertyParser->getName()]) ? $request[$propertyParser->getName()]
+                : null
             );
+            $method = 'set' . ucfirst($propertyParser->getName());
+            $object->$method($value);
         }
-        return $filter;
+
+        return $object;
     }
 }

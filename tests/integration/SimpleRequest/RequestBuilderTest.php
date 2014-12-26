@@ -15,7 +15,7 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             'age' => 30
         ];
         $builder = new RequestBuilder();
-        $parserResponse = $builder->parseRequest($request, PersonRequest::class);
+        $parserResponse = $builder->parseRequest($request, PersonRequest::class, RequestBuilder::ALL_ERRORS_PARSER);
         $personRequest = $this->assertPersonIsOk($parserResponse->getRequestObject());
     }
 
@@ -30,11 +30,11 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             'age' => 30
         ];
         $builder = new RequestBuilder($cacheConfig);
-        $parserResponse = $builder->parseRequest($request, PersonRequest::class);
+        $parserResponse = $builder->parseRequest($request, PersonRequest::class, RequestBuilder::ALL_ERRORS_PARSER);
         $personRequest = $this->assertPersonIsOk($parserResponse->getRequestObject());
 
         $builderCached = new RequestBuilder($cacheConfig);
-        $parserResponse = $builderCached->parseRequest($request, PersonRequest::class);
+        $parserResponse = $builderCached->parseRequest($request, PersonRequest::class, RequestBuilder::ALL_ERRORS_PARSER);
         $personRequest = $this->assertPersonIsOk($parserResponse->getRequestObject());
     }
 
@@ -74,7 +74,7 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             'age' => 30
         ];
         $builder = new RequestBuilder();
-        $parserResponse = $builder->parseRequest($request, PersonRequest::class);
+        $parserResponse = $builder->parseRequest($request, PersonRequest::class, RequestBuilder::ALL_ERRORS_PARSER);
         $this->assertFalse($parserResponse->isValid());
         $this->assertTrue(isset($parserResponse->getErrors()['firstName']));
     }
@@ -87,7 +87,7 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             'age' => 30
         ];
         $builder = new RequestBuilder();
-        $parserResponse = $builder->parseRequest($request, PersonRequest::class);
+        $parserResponse = $builder->parseRequest($request, PersonRequest::class, RequestBuilder::ALL_ERRORS_PARSER);
         $this->assertFalse($parserResponse->isValid());
         $this->assertTrue(isset($parserResponse->getErrors()['firstName']));
     }
@@ -99,7 +99,7 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             'age' => 30
         ];
         $builder = new RequestBuilder();
-        $parserResponse = $builder->parseRequest($request, PersonRequest::class);
+        $parserResponse = $builder->parseRequest($request, PersonRequest::class, RequestBuilder::ALL_ERRORS_PARSER);
         $this->assertFalse($parserResponse->isValid());
         $this->assertTrue(isset($parserResponse->getErrors()['firstName']));
     }

@@ -17,6 +17,7 @@
  */
 namespace Mcustiel\SimpleRequest\Exception;
 
-class ValidatorDoesNotExist extends PhpSimpleRequestException {
+class ValidatorDoesNotExist extends PhpSimpleRequestException
+{
 
 }

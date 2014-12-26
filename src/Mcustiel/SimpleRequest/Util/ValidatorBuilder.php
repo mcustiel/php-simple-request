@@ -24,7 +24,7 @@ class ValidatorBuilder
 {
     use AnnotationToImplementationBuilder;
 
-    protected final function getClassForType($type)
+    final protected function getClassForType($type)
     {
         if (!class_exists($type)) {
             throw new ValidatorDoesNotExist("Validator class {$type} does not exist");

@@ -17,6 +17,7 @@
  */
 namespace Mcustiel\SimpleRequest\Exception;
 
-class PhpSimpleRequestException extends \Exception {
+class PhpSimpleRequestException extends \Exception
+{
 
 }

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="SSMS-Classes" default="all">
+	<php expression="require('vendor/autoload.php')" />
+
 	<!-- Properties -->
 	<property name="dir.base" value="." />
 	<property name="dir.tests" value="${project.basedir}/tests" />
@@ -54,7 +56,7 @@
 	<!-- ============================================ -->
 	<target name="codecheck">
 		<phingcall target="codestyle" />
-		<!--<phingcall target="mess" />-->
+		<phingcall target="mess" />
 		<phingcall target="copypaste" />
 	</target>
 
@@ -70,8 +72,7 @@
 	<!-- ============================================ -->
 	<target name="codestyle">
 		<echo msg="Running code sniffer to check zend standard..." />
-		<phpcodesniffer standard="PSR2" showSniffs="true"
-			showWarnings="true" verbosity="0" encoding="UTF-8">
+		<phpcodesniffer standard="PSR2" showSniffs="true" showWarnings="true" verbosity="0" encoding="UTF-8">
 			<fileset refid="sources" />
 			<formatter type="full" outfile="${dir.reports}/reportcs.txt" />
 			<formatter type="checkstyle" outfile="${dir.reports}/checkstylecs.xml" />
@@ -79,16 +80,18 @@
 	</target>
 
 	<!-- ============================================ -->
-	<!-- Target: mess (Detects mess in code. Recommended rulesets: unusedcode,codesize,controversial,design,naming) -->
+	<!-- Target: mess (Detects mess in code. Recommended rulesets: --> 
+	<!-- unusedcode,codesize,controversial,design,naming) -->
 	<!-- ============================================ -->
 	<target name="mess">
 		<echo msg="Running mess detector" />
-		<phpmd rulesets="unusedcode,codesize">
-			<fileset refid="sources" />
-			<formatter type="xml" outfile="${dir.reports}/pmd.xml" />
-		</phpmd>
+		<exec 
+			command="./vendor/bin/phpmd ${dir.base}/src xml unusedcode,codesize,controversial,design,naming --reportfile ${dir.reports}/pmd.xml" 
+			outputProperty="output"
+		/>
+		<echo msg="${output}" />
 	</target>
-	
+
 	<!-- ============================================ -->
 	<!-- Target: copypaste (detects copy/paste in code) -->
 	<!-- ============================================ -->
@@ -115,9 +118,7 @@
 	<!-- ============================================ -->
 	<target name="unittests">
 		<echo msg="Running unit tests..." />
-		<exec
-			command="./vendor/bin/phpunit -d zend.enable_gc=0 --log-junit ${dir.reports}/phpunit/phpunit.xml --coverage-clover ${dir.reports.coverage}/clover.xml --coverage-html ${dir.reports.coverage}/ --testdox-html ${dir.reports}/phpunit/testdox.html -c ${dir.tests}"
-			outputProperty="output" returnProperty="returnout" />
+		<exec command="./vendor/bin/phpunit -d zend.enable_gc=0 --log-junit ${dir.reports}/phpunit/phpunit.xml --coverage-clover ${dir.reports.coverage}/clover.xml --coverage-html ${dir.reports.coverage}/ --testdox-html ${dir.reports}/phpunit/testdox.html -c ${dir.tests}" outputProperty="output" returnProperty="returnout" />
 		<echo msg="${output}" />
 		<if>
 			<not>

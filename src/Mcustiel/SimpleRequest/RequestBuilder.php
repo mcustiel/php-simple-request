@@ -31,6 +31,8 @@ use Mcustiel\SimpleRequest\Util\FilterBuilder;
 
 class RequestBuilder
 {
+    const ALL_ERRORS_PARSER = 'AllErrorsRequestParser';
+    const FIRST_ERROR_PARSER = 'FirstErrorRequestParser';
     const DEFAULT_CACHE_PATH = 'php-simple-request/cache/';
 
     /**
@@ -51,35 +53,31 @@ class RequestBuilder
         $this->setCache($cacheConfig);
     }
 
-    public function parseRequest(array $request, $className)
+    public function parseRequest(array $request, $className, $requestParserClass = self::FIRST_ERROR_PARSER)
     {
-        $requestParser = $this->generateRequestParserObject($className);
+        $parserClass = '\\Mcustiel\\SimpleRequest\\' . $requestParserClass;
+        $requestParser = $this->generateRequestParserObject($className, $parserClass);
 
         return $requestParser->parse($request);
     }
 
-    public function getErrors(RequestParser $parser)
-    {
-        return $parser->getInvalidValues();
-    }
-
-    private function generateRequestParserObject($className)
+    private function generateRequestParserObject($className, $parserClass)
     {
         $class = new \ReflectionClass($className);
-        $name = str_replace('\\', '', $className);
+        $name = str_replace('\\', '', $className . $parserClass);
 
         if ($this->cache === null) {
-            return $this->createRequestParser($name, $className, $class);
+            return $this->createRequestParser($name, $className, $class, $parserClass);
         }
 
-        return  $this->getRequestParserFromCache($name, $className, $class);
+        return  $this->getRequestParserFromCache($name, $className, $class, $parserClass);
     }
 
-    private function getRequestParserFromCache($name, $className, \ReflectionClass $class)
+    private function getRequestParserFromCache($name, $className, \ReflectionClass $class, $parserClass)
     {
         $fileName = $this->cache . $name;
         if (!file_exists($fileName)) {
-            $return = $this->createRequestParser($name, $className, $class);
+            $return = $this->createRequestParser($name, $className, $class, $parserClass);
             if (!is_dir($this->cache)) {
                 mkdir($this->cache, 0777, true);
             }
@@ -90,9 +88,9 @@ class RequestBuilder
         return unserialize(file_get_contents($fileName));
     }
 
-    private function createRequestParser($name, $className, \ReflectionClass $class)
+    private function createRequestParser($name, $className, \ReflectionClass $class, $parserClass)
     {
-        $return = new RequestParser($name);
+        $return = new $parserClass($name);
         $return->setRequestObject($className);
         foreach ($class->getProperties() as $property) {
             $propertyParser = new PropertyParser($property->getName());
@@ -107,18 +105,20 @@ class RequestBuilder
 
     private function parsePropertyAnnotation(
         RequestAnnotation $propertyAnnotation,
-        PropertyParser $propertyParser)
-    {
+        PropertyParser $propertyParser
+    ) {
         if ($propertyAnnotation instanceof RequestAnnotation) {
             $associatedClass = $propertyAnnotation->getAssociatedClass();
             if ($propertyAnnotation instanceof ValidatorAnnotation) {
-                $propertyParser->addValidator(ValidatorBuilder::builder()
+                $propertyParser->addValidator(
+                    ValidatorBuilder::builder()
                     ->withClass($associatedClass)
                     ->withSpecification($propertyAnnotation->value)
                     ->build()
                 );
             } elseif ($propertyAnnotation instanceof FilterAnnotation) {
-                $propertyParser->addFilter(FilterBuilder::builder()
+                $propertyParser->addFilter(
+                    FilterBuilder::builder()
                     ->withClass($associatedClass)
                     ->withSpecification($propertyAnnotation->value)
                     ->build()

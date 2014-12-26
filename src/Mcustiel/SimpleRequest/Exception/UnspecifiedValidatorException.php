@@ -17,6 +17,7 @@
  */
 namespace Mcustiel\SimpleRequest\Exception;
 
-class UnspecifiedValidatorException extends PhpSimpleRequestException {
+class UnspecifiedValidatorException extends PhpSimpleRequestException
+{
 
 }

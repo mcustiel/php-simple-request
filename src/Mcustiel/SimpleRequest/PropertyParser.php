@@ -65,5 +65,4 @@ class PropertyParser
 
         return $return;
     }
-
 }
