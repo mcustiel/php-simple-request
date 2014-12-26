@@ -126,9 +126,14 @@ To parse the request and convert it your object, just receive the request using 
 ```php
 use Mcustiel\SimpleRequest\RequestBuilder;
 use Your\Namespace\PersonRequest;
+use Mcustiel\SimpleRequest\Exceptions\InvalidValueException;
 
 $requestBuilder = new RequestBuilder();
-$personRequest = $requestBuilder->parseRequest($_POST, PersonRequest::class);
+try {
+    $personRequest = $requestBuilder->parseRequest($_POST, PersonRequest::class);
+} catch (InvalidValueException $e) {
+    die("The request is invalid: " . $e->getMessage());
+}
 // Now you can use the validated and filtered personRequest to access the requestData.
 ```
 
@@ -143,6 +148,23 @@ Also it can be used for some REST json request:
 ```php
 $request = file_get_contents('php://input');
 $personRequest = $requestBuilder->parseRequest(json_decode($request), PersonRequest::class);
+```
+This behavior throws an exception when it finds an error in the validation.
+There is an alternative behavior in which you can obtain multiple errors, for every invalid field. To activate this alternative behavior, you have to do something like this:
+
+```php
+use Mcustiel\SimpleRequest\RequestBuilder;
+use Your\Namespace\PersonRequest;
+
+$requestBuilder = new RequestBuilder();
+
+$parserResponse = $requestBuilder->parseRequest($_POST, PersonRequest::class, RequestBuilder::ALL_ERRORS_PARSER);
+if (!$parserResponse->isValid()) {
+    die (var_export($parserResponse->getErrors(), true));
+}
+$personRequest = $parserResponse->getRequestObject();
+
+// Now you can use the validated and filtered personRequest to access the requestData.
 ```
 
 #### File caching:
