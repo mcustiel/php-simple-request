@@ -58,6 +58,11 @@ class RequestBuilder
         return $requestParser->parse($request);
     }
 
+    public function getErrors(RequestParser $parser)
+    {
+        return $parser->getInvalidValues();
+    }
+
     private function generateRequestParserObject($className)
     {
         $class = new \ReflectionClass($className);

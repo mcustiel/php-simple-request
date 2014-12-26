@@ -22,7 +22,7 @@ use Mcustiel\SimpleRequest\Annotation\Validator\Url;
 class AllValidatorsRequest
 {
     /**
-     * @Custom(class="Mcustiel\SimpleRequest\Validator\Integer")
+     * @CustomValidator(class="Mcustiel\SimpleRequest\Validator\Integer")
      *
      * @var unknown
      */

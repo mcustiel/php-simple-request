@@ -1,7 +1,7 @@
 <?php
 namespace Mcustiel\SimpleRequest\Annotation\Validator;
 
-use Mcustiel\SimpleRequest\Annotation\FilterAnnotation;
+use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
 
 /**
  * @Annotation
@@ -9,7 +9,7 @@ use Mcustiel\SimpleRequest\Annotation\FilterAnnotation;
  *
  * @author mcustiel
  */
-class Custom extends FilterAnnotation
+class CustomValidator extends ValidatorAnnotation
 {
     /**
      *
