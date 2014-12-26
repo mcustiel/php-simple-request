@@ -17,8 +17,14 @@
  */
 namespace Mcustiel\SimpleRequest\Filter;
 
+use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
+
 class LowerCase implements FilterInterface
 {
+    public function setSpecification($specification = null)
+    {
+    }
+
     public function filter($value)
     {
         return strtolower($value);

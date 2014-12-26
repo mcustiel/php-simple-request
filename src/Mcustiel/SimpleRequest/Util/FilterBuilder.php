@@ -15,29 +15,26 @@
  * You should have received a copy of the GNU General Public License
  * along with php-simple-request.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Mcustiel\SimpleRequest\Validator;
+namespace Mcustiel\SimpleRequest\Util;
 
-use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
+use Mcustiel\SimpleRequest\Exception\FilterDoesNotExist;
+use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
 
-class MaxLength implements ValidatorInterface
+class FilterBuilder
 {
-    private $length = 255;
+    use AnnotationToImplementationBuilder;
 
-    public function setSpecification($specification = null)
+    protected final function getClassForType($type)
     {
-        if ($specification !== null) {
-            $this->length = (integer) $specification;
+        if (!class_exists($type)) {
+            throw new FilterDoesNotExist("Filter class {$type} does not exist");
         }
-    }
-
-    public function validate($value)
-    {
-        if (is_string($value) && strlen($value) <= $this->length) {
-            return true;
+        $filter = new $type;
+        if (! ($filter instanceof FilterInterface)) {
+            throw new FilterDoesNotExist(
+                "Filter class {$type} must implement " . FilterInterface::class
+            );
         }
-        if (is_array($value) && count($value) <= $this->length) {
-            return true;
-        }
-        return false;
+        return $filter;
     }
 }

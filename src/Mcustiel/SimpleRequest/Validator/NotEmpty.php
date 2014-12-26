@@ -17,6 +17,8 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
+use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
+
 class NotEmpty implements ValidatorInterface
 {
     public function setSpecification($specification = null)

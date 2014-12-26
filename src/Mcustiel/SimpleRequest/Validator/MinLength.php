@@ -17,6 +17,8 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
+use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
+
 class MinLength implements ValidatorInterface
 {
     private $length = 0;
@@ -28,6 +30,14 @@ class MinLength implements ValidatorInterface
 
     public function validate($value)
     {
-        return strlen($value) >= $this->length;
+        if (is_string($value) && strlen($value) >= $this->length) {
+            return true;
+        }
+
+        if (is_array($value) && count($value) >= $this->length) {
+            return true;
+        }
+
+        return false;
     }
 }

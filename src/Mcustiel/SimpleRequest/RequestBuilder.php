@@ -20,7 +20,6 @@ namespace Mcustiel\SimpleRequest;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Mcustiel\SimpleRequest\Util\ValidatorBuilder;
 use Mcustiel\SimpleRequest\Exception\InvalidAnnotationException;
-use Mcustiel\SimpleRequest\Annotation\Name;
 use Mcustiel\SimpleRequest\Annotation\RequestAnnotation;
 use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
 use Mcustiel\SimpleRequest\Annotation\FilterAnnotation;
@@ -28,6 +27,7 @@ use Mcustiel\SimpleCache\Interfaces\CacheInterface;
 use Mcustiel\SimpleCache\Drivers\file\Cache;
 use Mcustiel\SimpleCache\Drivers\file\Utils\FileService;
 use Mcustiel\SimpleCache\Types\Key;
+use Mcustiel\SimpleRequest\Util\FilterBuilder;
 
 class RequestBuilder
 {
@@ -107,12 +107,17 @@ class RequestBuilder
         if ($propertyAnnotation instanceof RequestAnnotation) {
             $associatedClass = $propertyAnnotation->getAssociatedClass();
             if ($propertyAnnotation instanceof ValidatorAnnotation) {
-                $propertyParser->addValidator(
-                    ValidatorBuilder::builder()->withClass($associatedClass)
-                        ->withSpecification($propertyAnnotation->value)
-                        ->build());
+                $propertyParser->addValidator(ValidatorBuilder::builder()
+                    ->withClass($associatedClass)
+                    ->withSpecification($propertyAnnotation->value)
+                    ->build()
+                );
             } elseif ($propertyAnnotation instanceof FilterAnnotation) {
-                $propertyParser->addFilter(new $associatedClass());
+                $propertyParser->addFilter(FilterBuilder::builder()
+                    ->withClass($associatedClass)
+                    ->withSpecification($propertyAnnotation->value)
+                    ->build()
+                );
             }
         }
     }

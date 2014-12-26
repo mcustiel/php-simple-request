@@ -15,17 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with php-simple-request.  If not, see <http://www.gnu.org/licenses/>.
  */
-use Mcustiel\SimpleRequest\Type\Input;
-use Mcustiel\SimpleRequest\Type\InputType;
+namespace Mcustiel\SimpleRequest\Exception;
 
-class Textarea extends Input
-{
-    public function __construct(Input $other = null)
-    {
-        parent::__construct($other->getName());
-        if ($other != null) {
-            $this->setProperties($other->getProperties());
-        }
-        unset($this->type);
-    }
+class FilterDoesNotExist extends PhpSimpleRequestException {
+
 }

@@ -18,34 +18,13 @@
 namespace Mcustiel\SimpleRequest\Util;
 
 use Mcustiel\SimpleRequest\Exception\ValidatorDoesNotExist;
-use Mcustiel\SimpleRequest\Validator\ValidatorInterface;
+use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 
 class ValidatorBuilder
 {
-    private $type;
-    private $specification;
+    use AnnotationToImplementationBuilder;
 
-    private function __construct()
-    {}
-
-    public static function builder ()
-    {
-        return new self;
-    }
-
-    public function withClass($type)
-    {
-        $this->type = $type;
-        return $this;
-    }
-
-    public function withSpecification($specification)
-    {
-        $this->specification = $specification;
-        return $this;
-    }
-
-    private function getClassForType($type)
+    protected final function getClassForType($type)
     {
         if (!class_exists($type)) {
             throw new ValidatorDoesNotExist("Validator class {$type} does not exist");
@@ -56,15 +35,6 @@ class ValidatorBuilder
                 "Validator class {$type} must implement " . ValidatorInterface::class
             );
         }
-        return $validator;
-    }
-
-    public function build()
-    {
-        $class = $this->getClassForType($this->type);
-        $validator = new $class;
-        $validator->setSpecification($this->specification);
-
         return $validator;
     }
 }

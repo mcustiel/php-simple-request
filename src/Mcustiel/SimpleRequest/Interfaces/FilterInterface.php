@@ -15,14 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with php-simple-request.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Mcustiel\SimpleRequest\Type;
+namespace Mcustiel\SimpleRequest\Interfaces;
 
-use Mcustiel\SimpleRequest\Util\HtmlElement;
-
-class Option extends HtmlElement
+interface FilterInterface extends Specificable
 {
-    public function __construct($value, $text) {
-        $this->value = $value;
-        $this->text = $text;
-    }
+    public function filter($value);
 }

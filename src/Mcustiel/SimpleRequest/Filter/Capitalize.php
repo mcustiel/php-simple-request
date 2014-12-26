@@ -17,11 +17,19 @@
  */
 namespace Mcustiel\SimpleRequest\Filter;
 
+use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
+
 class Capitalize implements FilterInterface
 {
+    private $allWords = false;
+
+    public function setSpecification($specification = null)
+    {
+        $this->allWords = (boolean) $specification;
+    }
+
     public function filter($value)
     {
-        // return ucwords(strtolower($value));
-        return ucfirst(strtolower($value));
+        return $this->allWords ? ucwords(strtolower($value)) : ucfirst(strtolower($value));
     }
 }

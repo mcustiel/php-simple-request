@@ -15,29 +15,39 @@
  * You should have received a copy of the GNU General Public License
  * along with php-simple-request.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Mcustiel\SimpleRequest\Validator;
+namespace Mcustiel\SimpleRequest\Util;
 
-use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
-
-class MaxLength implements ValidatorInterface
+trait AnnotationToImplementationBuilder
 {
-    private $length = 255;
+    protected $type;
+    protected $specification;
 
-    public function setSpecification($specification = null)
+    private function __construct()
+    {}
+
+    public static function builder ()
     {
-        if ($specification !== null) {
-            $this->length = (integer) $specification;
-        }
+        return new self;
     }
 
-    public function validate($value)
+    public function withClass($type)
     {
-        if (is_string($value) && strlen($value) <= $this->length) {
-            return true;
-        }
-        if (is_array($value) && count($value) <= $this->length) {
-            return true;
-        }
-        return false;
+        $this->type = $type;
+        return $this;
+    }
+
+    public function withSpecification($specification)
+    {
+        $this->specification = $specification;
+        return $this;
+    }
+
+    public function build()
+    {
+        $class = $this->getClassForType($this->type);
+        $validator = new $class;
+        $validator->setSpecification($this->specification);
+
+        return $validator;
     }
 }

@@ -1,8 +1,8 @@
 <?php
 namespace Mcustiel\SimpleRequest;
 
-use Mcustiel\SimpleRequest\Validator\ValidatorInterface;
-use Mcustiel\SimpleRequest\Filter\FilterInterface;
+use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
+use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
 use Mcustiel\SimpleRequest\Exception\InvalidValueException;
 
 class PropertyParser

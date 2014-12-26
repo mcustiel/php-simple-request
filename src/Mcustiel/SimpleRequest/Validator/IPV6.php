@@ -17,7 +17,9 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
-class IPV6
+use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
+
+class IPV6 implements ValidatorInterface
 {
     const REGEXP_WITHOUT_SHORTCUT = '/^(?:[0-9a-f]{1,4})(?::(?:[0-9a-f]{1,4})){7}$/i';
     const REGEXP_SHORTCUT_IN_MIDDLE = '/^(?:[0-9a-f]{1,4})(?::[0-9a-f]{1,4})*::(?:[0-9a-f]{1,4})(?::[0-9a-f]{1,4})*$/i';

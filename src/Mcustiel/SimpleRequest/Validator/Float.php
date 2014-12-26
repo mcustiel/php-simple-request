@@ -17,6 +17,8 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
+use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
+
 class Float implements ValidatorInterface
 {
     private $strict = false;

@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with php-simple-request.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Mcustiel\SimpleRequest\Filter;
+namespace Mcustiel\SimpleRequest\Interfaces;
 
-interface FilterInterface
+interface Specificable
 {
-    public function filter($value);
+    public function setSpecification($specification = null);
 }

@@ -18,6 +18,7 @@
 namespace Mcustiel\SimpleRequest\Validator;
 
 use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
+use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 
 class RegExp implements ValidatorInterface
 {

@@ -17,14 +17,11 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
+use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
+
 class Date implements ValidatorInterface
 {
-    private $specification;
-
-    public function __construct()
-    {
-        $this->specification = \DateTime::ISO8601;
-    }
+    private $specification = \DateTime::ISO8601;
 
     public function setSpecification($specification = null)
     {

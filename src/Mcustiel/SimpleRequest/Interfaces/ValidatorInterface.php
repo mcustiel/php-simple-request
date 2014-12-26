@@ -15,11 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with php-simple-request.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Mcustiel\SimpleRequest\Validator;
+namespace Mcustiel\SimpleRequest\Interfaces;
 
-interface ValidatorInterface
+interface ValidatorInterface extends Specificable
 {
     public function validate($value);
-
-    public function setSpecification($specification = null);
 }

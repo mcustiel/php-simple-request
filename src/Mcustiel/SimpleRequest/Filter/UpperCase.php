@@ -17,8 +17,14 @@
  */
 namespace Mcustiel\SimpleRequest\Filter;
 
+use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
+
 class UpperCase implements FilterInterface
 {
+    public function setSpecification($specification = null)
+    {
+    }
+
     public function filter($value)
     {
         return strtoupper($value);
