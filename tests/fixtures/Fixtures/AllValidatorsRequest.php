@@ -1,7 +1,7 @@
 <?php
 namespace Fixtures;
 
-use Mcustiel\SimpleRequest\Annotation\Validator\Custom;
+use Mcustiel\SimpleRequest\Annotation\Validator\CustomValidator;
 use Mcustiel\SimpleRequest\Annotation\Validator\Date;
 use Mcustiel\SimpleRequest\Annotation\Validator\Email;
 use Mcustiel\SimpleRequest\Annotation\Validator\Float;

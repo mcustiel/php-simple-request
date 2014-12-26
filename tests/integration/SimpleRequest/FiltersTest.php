@@ -3,6 +3,7 @@ namespace Integration\SimpleRequest;
 
 use Fixtures\AllFiltersRequest;
 use Mcustiel\SimpleRequest\RequestBuilder;
+use Mcustiel\SimpleRequest\ParserResponse;
 
 class FiltersTest extends \PHPUnit_Framework_TestCase
 {
@@ -22,9 +23,11 @@ class FiltersTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildARequestAndFilters()
     {
-        $filterRequest = $this->builder->parseRequest($this->request, AllFiltersRequest::class);
-        $this->assertInstanceOf(AllFiltersRequest::class, $filterRequest);
-        $request = $filterRequest->parse($this->request);
+        $parserResponse = $this->builder->parseRequest($this->request, AllFiltersRequest::class);
+
+        $this->assertInstanceOf(ParserResponse::class, $parserResponse);
+        $request = $parserResponse->getRequestObject();
+        $this->assertInstanceOf(AllFiltersRequest::class, $request);
         $this->assertEquals('Test One Two', $request->getCustom());
         $this->assertEquals('Test one two', $request->getCapitalize());
         $this->assertEquals('TEST ONE TWO', $request->getUpperCase());

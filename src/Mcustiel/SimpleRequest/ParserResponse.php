@@ -21,4 +21,9 @@ class ParserResponse
     {
         return $this->errors;
     }
+
+    public function isValid()
+    {
+        return empty($this->errors);
+    }
 }

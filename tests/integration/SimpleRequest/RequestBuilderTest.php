@@ -15,9 +15,8 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             'age' => 30
         ];
         $builder = new RequestBuilder();
-        $personRequest = $builder->parseRequest($request, PersonRequest::class);
-        $personRequest = $this->assertPersonIsOk($personRequest);
-
+        $parserResponse = $builder->parseRequest($request, PersonRequest::class);
+        $personRequest = $this->assertPersonIsOk($parserResponse->getRequestObject());
     }
 
     public function testBuildARequestAndFilterWithCacheEnabled()
@@ -31,12 +30,12 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             'age' => 30
         ];
         $builder = new RequestBuilder($cacheConfig);
-        $personRequest = $builder->parseRequest($request, PersonRequest::class);
-        $personRequest = $this->assertPersonIsOk($personRequest);
+        $parserResponse = $builder->parseRequest($request, PersonRequest::class);
+        $personRequest = $this->assertPersonIsOk($parserResponse->getRequestObject());
 
         $builderCached = new RequestBuilder($cacheConfig);
-        $personRequest = $builderCached->parseRequest($request, PersonRequest::class);
-        $personRequest = $this->assertPersonIsOk($personRequest);
+        $parserResponse = $builderCached->parseRequest($request, PersonRequest::class);
+        $personRequest = $this->assertPersonIsOk($parserResponse->getRequestObject());
     }
 
     public function testBuildARequestFromCacheWithoutNameSpecified()
@@ -67,10 +66,6 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
         $builder->parseRequest($request, AllValidatorsRequest::class);
     }
 
-    /**
-     * @expectedException Mcustiel\SimpleRequest\Exception\InvalidValueException
-     * @expectedExceptionMessage Field firstName, was set with invalid value: ''
-     */
     public function testBuildARequestAndValidatorNotEmpty()
     {
         $request = [
@@ -79,13 +74,11 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             'age' => 30
         ];
         $builder = new RequestBuilder();
-        $personRequest = $builder->parseRequest($request, PersonRequest::class);
+        $parserResponse = $builder->parseRequest($request, PersonRequest::class);
+        $this->assertFalse($parserResponse->isValid());
+        $this->assertTrue(isset($parserResponse->getErrors()['firstName']));
     }
 
-    /**
-     * @expectedException Mcustiel\SimpleRequest\Exception\InvalidValueException
-     * @expectedExceptionMessage Field firstName, was set with invalid value: NULL
-     */
     public function testBuildARequestAndValidatorNotNullBecauseFieldIsNull()
     {
         $request = [
@@ -94,13 +87,11 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             'age' => 30
         ];
         $builder = new RequestBuilder();
-        $personRequest = $builder->parseRequest($request, PersonRequest::class);
+        $parserResponse = $builder->parseRequest($request, PersonRequest::class);
+        $this->assertFalse($parserResponse->isValid());
+        $this->assertTrue(isset($parserResponse->getErrors()['firstName']));
     }
 
-    /**
-     * @expectedException Mcustiel\SimpleRequest\Exception\InvalidValueException
-     * @expectedExceptionMessage Field firstName, was set with invalid value: NULL
-     */
     public function testBuildARequestAndValidatorNotNullBecauseFieldDoesNotExist()
     {
         $request = [
@@ -108,7 +99,9 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             'age' => 30
         ];
         $builder = new RequestBuilder();
-        $personRequest = $builder->parseRequest($request, PersonRequest::class);
+        $parserResponse = $builder->parseRequest($request, PersonRequest::class);
+        $this->assertFalse($parserResponse->isValid());
+        $this->assertTrue(isset($parserResponse->getErrors()['firstName']));
     }
 
     private function assertPersonIsOk($personRequest)

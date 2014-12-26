@@ -1,5 +1,5 @@
 <?php
-namespace Mcustiel\SimpleRequest\Annotation\Validator;
+namespace Mcustiel\SimpleRequest\Annotation\Filter;
 
 use Mcustiel\SimpleRequest\Annotation\FilterAnnotation;
 
