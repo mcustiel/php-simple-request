@@ -88,7 +88,6 @@ And also the validations you want to run for each property value:
 namespace Your\Namespace;
 use Mcustiel\SimpleRequest\Annotation\Filter\Trim;
 use Mcustiel\SimpleRequest\Annotation\Filter\UpperCase;
-use Mcustiel\SimpleRequest\Annotation\Validator\NotNull;
 use Mcustiel\SimpleRequest\Annotation\Validator\NotEmpty;
 use Mcustiel\SimpleRequest\Annotation\Validator\MaxLength;
 use Mcustiel\SimpleRequest\Annotation\Validator\Integer;
