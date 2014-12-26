@@ -159,7 +159,21 @@ Filters
 
 #### Capitalize
 
-This filter sets all the string characters to lowercase but its first character, which is converted to uppercase.
+This filter sets all the string characters to lowercase but its first character, which is converted to uppercase. This annotation accepts a boolean specifier value to define wether to capitalize just the first letter of the first word or the first letter of all words.  
+
+#### CustomFilter
+
+This is a special filter annotation that allows you to specify your own filter class and use it to filter the value in the field. It accepts two parameters: 
+* value: which is the specifier.
+* class: which is your custom filter class (it must implement Mcustiel\SimpleRequest\Interfaces\FilterInterface
+
+```php
+/**
+ * @CustomFilter(class="Vendor\\App\\MyFilters\\MyFilter", value="yourSpecifier")
+ */
+private $somethingHardToFilter;
+// Will call Vendor\\App\\MyFilters\\MyFilter::filter($value) using "yourSpecifier".
+```
 
 #### LowerCase
 
@@ -176,6 +190,24 @@ Converts all characters in the given string to uppercase.
 Validators
 ----------
 
+#### CustomValidator
+
+This is a special validator annotation that allows you to specify your own validator class and use it to validate the value in the field. It accepts two parameters: 
+* value: which is the specifier.
+* class: which is your custom filter class (it must implement Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
+
+
+##### Example:
+```php
+/**
+ * @CustomValidator(class="Vendor\\App\\MyValidators\\MyValidator", value="yourSpecifier")
+ */
+private $somethingHardToCheck;
+// Will call Vendor\\App\\MyValidators\\MyValidator::validate($value) using "yourSpecifier".
+```
+
+**Default specifier value:** \DateTime::ISO8601
+
 #### Date
 
 This validator checks that the given string is a date and its format is compatible with the specified date format. The format to specify as the annotation value must be compatible with the php method \DateTime::createFromFormat.
@@ -183,7 +215,7 @@ This validator checks that the given string is a date and its format is compatib
 ##### Example:
 ```php
 /**
- * @Date('M d, Y')
+ * @Date("M d, Y")
  */
 private $dayOfBirth;
 // Matches Oct 17, 1981
@@ -213,13 +245,16 @@ This validator checks that the given value is a float. A boolean modifier can be
  * @Float
  */
 private $meters;
+```
+
+###### Example:
+```php
 // accepts 1, 1.1, etc.
 /**
  * @Float(true)
  */
 private $meters;
 // accepts 1.0, 1.1, etc.
-
 ```
 
 **Default specifier value:** false, indicating that integers are validated as floats
@@ -248,4 +283,113 @@ This validator checks that the given value is a valid IPv4. It does not expect a
  */
 private $ip;
 // accepts 0.0.0.0, 255.255.255.255, etc.
+```
+
+#### IPV6
+
+This validator checks that the given value is a valid IPv6. It does not expect any modifier.
+
+##### Example:
+```php
+/**
+ * @IPV6
+ */
+private $ip;
+// accepts ::A000:A000, A000::A000, A000::A000::, 2001:0000:3238:DFE1:63:0000:0000:FEFB, etc.
+
+#### MaxLength
+
+This validator checks that the field's length is equal to or less than the specification. The specification value must be an integer. The field can be a string or an array.
+
+##### Example:
+```php
+/**
+ * @MaxLength(4)
+ */
+private $pin;
+// accepts empty string, 1, 12, 123 and 1234.
+```
+
+**Default specifier value:** 255
+
+#### MinLength
+
+This validator checks that the field's length is equal to or greater than the specification. The specification value must be an integer. The field can be a string or an array.
+
+##### Example:
+```php
+/**
+ * @MinLength(8)
+ */
+private $password;
+// accepts 'password', 'password1', 'password1234' and all those very secure passwords.
+```
+
+**Default specifier value:** 0
+
+#### NotEmpty
+
+This validator checks that the field's is not empty. Internally, this validator uses php's empty so the functionality is exactly the same. It does not expect any modifier.
+
+##### Example:
+```php
+/**
+ * @NotEmpty
+ */
+private $password;
+// accepts 1, 'A', ['a'], etc.
+```
+
+**Default specifier value:** 0
+
+#### NotNull
+
+This validator checks that the field's is not null, it can be used to check if the field is present in the request also. Use this function only if you want to check the value is present and you accept empty values in the field; if you will not accept empty values, just use NotEmpty validator which also checks values is not null. It does not expect any modifier.
+
+##### Example:
+```php
+/**
+ * @NotNull
+ */
+private $mandatoryField;
+// accepts '', 0, [], 1, 'A', ['a'], etc.
+```
+
+#### RegExp
+
+This validator checks the field against a given regular expression.
+
+##### Example:
+```php
+/**
+ * @RegExp("/[a-z]*/i")
+ */
+private $onlyAlpha;
+// accepts '', 'a', 'A', 'ab', etc.
+```
+
+#### TwitterAccount
+
+This validator checks that the field contains a twitter account.
+
+##### Example:
+```php
+/**
+ * @TwitterAccount
+ */
+private $twitterAccount;
+// accepts '@user', '@user_name_1', etc.
+```
+
+#### Url
+
+This validator checks that the field contains a valid URL.
+
+##### Example:
+```php
+/**
+ * @Url
+ */
+private $webpage;
+// accepts 'localhost', 'www.server.com', 'http://www.webserver.com/page.php?t=1#anchor', etc
 ```
