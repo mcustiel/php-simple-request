@@ -20,7 +20,7 @@ This project is published in packagist, so you just need to add it as a dependen
 ```javascript
     "require": {
         // ...
-        "mcustiel/php-simple-request": "1.0.*"
+        "mcustiel/php-simple-request": ">=1.0.0"
     }
 ```
 
