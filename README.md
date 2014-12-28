@@ -441,3 +441,8 @@ This validator checks that the field contains a valid URL.
 private $webpage;
 // accepts 'localhost', 'www.server.com', 'http://www.webserver.com/page.php?t=1#anchor', etc
 ```
+
+TODO
+----
+
+* Add INTL support for float validator.
