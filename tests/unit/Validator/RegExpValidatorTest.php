@@ -1,5 +1,5 @@
 <?php
-namespace Unit\SimpleRequest\Validator;
+namespace Unit\Validator;
 
 use Mcustiel\SimpleRequest\Validator\RegExp;
 

@@ -6,13 +6,13 @@
 		"minimalist",
 		"annotations"
 	],
-    "authors" : [{
-            "name" : "Mariano Custiel",
-            "email" : "jmcustiel@gmail.com",
-            "homepage" : "https://github.com/mcustiel",
-            "role" : "Developer"
-        }
-    ],
+	"authors" : [{
+			"name" : "Mariano Custiel",
+			"email" : "jmcustiel@gmail.com",
+			"homepage" : "https://github.com/mcustiel",
+			"role" : "Developer"
+		}
+	],
 	"autoload" : {
 		"psr-4" : {
 			"Mcustiel\\SimpleRequest\\" : "src"

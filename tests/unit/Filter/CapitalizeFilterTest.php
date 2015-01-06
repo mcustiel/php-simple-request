@@ -1,5 +1,5 @@
 <?php
-namespace Unit\SimpleRequest\Filter;
+namespace Unit\Filter;
 
 use Mcustiel\SimpleRequest\Filter\Capitalize;
 class CapitalizeFilterTest extends \PHPUnit_Framework_TestCase

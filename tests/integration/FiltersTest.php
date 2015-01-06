@@ -1,5 +1,5 @@
 <?php
-namespace Integration\SimpleRequest;
+namespace Integration;
 
 use Fixtures\AllFiltersRequest;
 use Mcustiel\SimpleRequest\RequestBuilder;

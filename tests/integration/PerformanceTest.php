@@ -1,5 +1,5 @@
 <?php
-namespace Integration\SimpleRequest;
+namespace Integration;
 
 use Mcustiel\SimpleRequest\RequestBuilder;
 use Fixtures\PersonRequest;
@@ -18,7 +18,7 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
         $builder = new RequestBuilder($config);
 
         $cyclesList = [
-            1000
+            5000
         ];
 
         foreach ($cyclesList as $cycles) {
@@ -43,7 +43,7 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
         $builder = new RequestBuilder();
 
         $cyclesList = [
-            10000
+            25000
         ];
 
         foreach ($cyclesList as $cycles) {
@@ -55,7 +55,6 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
                 . " seconds with cache and FIRST_ERROR_PARSER \n";
         }
     }
-
 
     public function testRequestBuilderWithoutCacheUsingAllErrorsParser()
     {
@@ -69,7 +68,7 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
         $builder = new RequestBuilder($config);
 
         $cyclesList = [
-            1000
+            5000
         ];
 
         foreach ($cyclesList as $cycles) {
@@ -94,7 +93,7 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
         $builder = new RequestBuilder();
 
         $cyclesList = [
-            10000
+            25000
         ];
 
         foreach ($cyclesList as $cycles) {

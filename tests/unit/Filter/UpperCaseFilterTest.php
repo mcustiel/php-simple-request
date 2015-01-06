@@ -1,5 +1,5 @@
 <?php
-namespace Unit\SimpleRequest\Filter;
+namespace Unit\Filter;
 
 use Mcustiel\SimpleRequest\Filter\UpperCase;
 
