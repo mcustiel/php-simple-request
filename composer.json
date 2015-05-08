@@ -28,11 +28,11 @@
 		"doctrine/annotations" : ">=1.2"
 	},
 	"require-dev" : {
-		"phpunit/phpunit" : "4.3.*",
-		"phing/phing" : "2.*",
+		"phpunit/phpunit" : ">=4.3.0",
+		"phing/phing" : ">=2.0",
 		"squizlabs/php_codesniffer" : ">=2.1.0",
 		"phpmd/phpmd" : "@stable",
-		"sebastian/phpcpd" : "1.4.3"
+		"sebastian/phpcpd" : ">=1.4.3"
 	},
 	"minimum-stability" : "stable"
 }
