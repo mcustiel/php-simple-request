@@ -26,7 +26,7 @@ class MinItems implements ValidatorInterface
 
     public function setSpecification($specification = null)
     {
-        if (!is_int($specification) || $specification < 0 ) {
+        if (!is_int($specification) || $specification < 0) {
             throw new UnspecifiedValidatorException(
                 "The validator MinItems is being initialized without a valid number"
             );
@@ -36,10 +36,6 @@ class MinItems implements ValidatorInterface
 
     public function validate($value)
     {
-        if (is_array($value) && count($value) >= $this->items) {
-            return true;
-        }
-
-        return false;
+        return is_array($value) && count($value) >= $this->items;
     }
 }

@@ -20,22 +20,22 @@ namespace Mcustiel\SimpleRequest\Validator;
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 
-class MaxItems implements ValidatorInterface
+class Enum implements ValidatorInterface
 {
     protected $items;
 
     public function setSpecification($specification = null)
     {
-        if (!is_int($specification) || $specification < 0) {
+        if (!is_array($specification) || count($specification) == 0) {
             throw new UnspecifiedValidatorException(
-                "The validator MaxItems is being initialized without a valid number"
+                "The validator Enum is being initialized without an array"
             );
         }
-        $this->items = $specification;
+        $this->unique = $specification;
     }
 
     public function validate($value)
     {
-        return is_array($value) && count($value) <= $this->items;
+        return in_array($value, $this->items);
     }
 }
