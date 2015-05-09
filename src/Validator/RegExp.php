@@ -26,18 +26,16 @@ class RegExp implements ValidatorInterface
 
     public function setSpecification($specification = null)
     {
-        if (!empty($specification)) {
-            $this->regExp = $specification;
-        } else {
+        if (empty($specification)) {
             throw new UnspecifiedValidatorException(
                 "The validator RegExp is being initialized without a specified regular expression"
             );
         }
+        $this->regExp = $specification;
     }
 
     public function validate($value)
     {
-
         return is_string($value) && (boolean) preg_match($this->regExp, $value);
     }
 }

@@ -18,15 +18,28 @@
 namespace Mcustiel\SimpleRequest\Validator;
 
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
+use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 
-class MaxLength extends MaxItems
+class Minimum implements ValidatorInterface
 {
+    private $minimum;
+
+    public function setSpecification($specification = null)
+    {
+        if (!is_numeric($specification)) {
+            throw new UnspecifiedValidatorException(
+                "The validator Minimum is being initialized without a valid number"
+            );
+        }
+        $this->minimum = $specification;
+    }
+
     public function validate($value)
     {
-        if (is_string($value) && strlen($value) <= $this->items) {
-            return true;
+        if (!is_numeric($value)) {
+            return false;
         }
 
-        return parent::validate($value);
+        return $value >= $this->minimum;
     }
 }

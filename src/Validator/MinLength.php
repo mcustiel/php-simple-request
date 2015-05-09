@@ -19,25 +19,14 @@ namespace Mcustiel\SimpleRequest\Validator;
 
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 
-class MinLength implements ValidatorInterface
+class MinLength extends MinItems
 {
-    private $length = 0;
-
-    public function setSpecification($specification = null)
-    {
-        $this->length = (integer) $specification;
-    }
-
     public function validate($value)
     {
-        if (is_string($value) && strlen($value) >= $this->length) {
+        if (is_string($value) && strlen($value) >= $this->items) {
             return true;
         }
 
-        if (is_array($value) && count($value) >= $this->length) {
-            return true;
-        }
-
-        return false;
+        return parent::validate($value);
     }
 }

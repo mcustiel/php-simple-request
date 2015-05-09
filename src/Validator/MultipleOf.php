@@ -18,15 +18,28 @@
 namespace Mcustiel\SimpleRequest\Validator;
 
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
+use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 
-class MaxLength extends MaxItems
+class MultipleOf implements ValidatorInterface
 {
+    private $number;
+
+    public function setSpecification($specification = null)
+    {
+        if (empty($specification) || !is_numeric($specification) || $specification <= 0) {
+            throw new UnspecifiedValidatorException(
+                "The validator MultipleOf is being initialized without a valid number"
+            );
+        }
+        $this->number = $specification;
+    }
+
     public function validate($value)
     {
-        if (is_string($value) && strlen($value) <= $this->items) {
-            return true;
+        if (!is_numeric($value)) {
+            return false;
         }
 
-        return parent::validate($value);
+        return is_int($value / $this->number + 0);
     }
 }
