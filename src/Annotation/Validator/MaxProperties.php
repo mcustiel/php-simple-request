@@ -2,7 +2,7 @@
 namespace Mcustiel\SimpleRequest\Annotation\Validator;
 
 use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
-use Mcustiel\SimpleRequest\Validator\MaxItems as MaxItemsValidator;
+use Mcustiel\SimpleRequest\Validator\MaxProperties as MaxPropertiesValidator;
 
 /**
  * @Annotation
@@ -10,10 +10,10 @@ use Mcustiel\SimpleRequest\Validator\MaxItems as MaxItemsValidator;
  *
  * @author mcustiel
  */
-class MaxItems extends ValidatorAnnotation
+class MaxProperties extends ValidatorAnnotation
 {
     public function __construct()
     {
-        parent::__construct(MaxItemsValidator::class);
+        parent::__construct(MaxPropertiesValidator::class);
     }
 }

@@ -30,6 +30,7 @@ class Integer implements ValidatorInterface
         if (!is_numeric($value)) {
             return false;
         }
+
         return is_int($value + 0);
     }
 }

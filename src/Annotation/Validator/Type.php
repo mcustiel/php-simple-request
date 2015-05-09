@@ -2,7 +2,7 @@
 namespace Mcustiel\SimpleRequest\Annotation\Validator;
 
 use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
-use Mcustiel\SimpleRequest\Validator\Required as RequiredValidator;
+use Mcustiel\SimpleRequest\Validator\Type as TypeValidator;
 
 /**
  * @Annotation
@@ -10,10 +10,10 @@ use Mcustiel\SimpleRequest\Validator\Required as RequiredValidator;
  *
  * @author mcustiel
  */
-class Required extends ValidatorAnnotation
+class Type extends ValidatorAnnotation
 {
     public function __construct()
     {
-        parent::__construct(RequiredValidator::class);
+        parent::__construct(TypeValidator::class);
     }
 }
