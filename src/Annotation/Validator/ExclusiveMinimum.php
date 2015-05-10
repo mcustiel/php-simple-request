@@ -6,7 +6,7 @@ use Mcustiel\SimpleRequest\Validator\ExclusiveMinimum as ExclusiveMinimumValidat
 
 /**
  * @Annotation
- * @Target("PROPERTY")
+ * @Target({ "PROPERTY", "ANNOTATION" })
  *
  * @author mcustiel
  */

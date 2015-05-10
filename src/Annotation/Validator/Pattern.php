@@ -8,7 +8,7 @@ use Mcustiel\SimpleRequest\Validator\RegExp as RegExpValidator;
  * This is an alias for RegExp.
  *
  * @Annotation
- * @Target("PROPERTY")
+ * @Target({ "PROPERTY", "ANNOTATION" })
  *
  * @author mcustiel
  */

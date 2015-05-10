@@ -6,7 +6,7 @@ use Mcustiel\SimpleRequest\Validator\UniqueItems as UniqueItemsValidator;
 
 /**
  * @Annotation
- * @Target("PROPERTY")
+ * @Target({ "PROPERTY", "ANNOTATION" })
  *
  * @author mcustiel
  */

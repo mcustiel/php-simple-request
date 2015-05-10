@@ -19,5 +19,8 @@ namespace Mcustiel\SimpleRequest\Exception;
 
 class PhpSimpleRequestException extends \Exception
 {
-
+    public function setMessage($message)
+    {
+        $this->message = $message;
+    }
 }

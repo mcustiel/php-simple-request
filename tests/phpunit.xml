@@ -3,11 +3,9 @@
 	convertErrorsToExceptions="true" convertNoticesToExceptions="false"
 	convertWarningsToExceptions="false">
 	<testsuite name="PhpSimpleRequestUnitTests">
-		<!-- CHANGE TO "." WHEN OTHER BILLING TESTS OK -->
 		<directory>./unit</directory>
 	</testsuite>
 	<testsuite name="PhpSimpleRequestIntegrationTests">
-        <!-- CHANGE TO "." WHEN OTHER BILLING TESTS OK -->
         <directory>./integration</directory>
     </testsuite>
 	<php>

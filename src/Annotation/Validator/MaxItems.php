@@ -6,7 +6,7 @@ use Mcustiel\SimpleRequest\Validator\MaxItems as MaxItemsValidator;
 
 /**
  * @Annotation
- * @Target("PROPERTY")
+ * @Target({ "PROPERTY", "ANNOTATION" })
  *
  * @author mcustiel
  */

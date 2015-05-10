@@ -1,20 +1,7 @@
 <?php
 namespace Fixtures;
 
-use Mcustiel\SimpleRequest\Annotation\Validator\CustomValidator;
-use Mcustiel\SimpleRequest\Annotation\Validator\Date;
-use Mcustiel\SimpleRequest\Annotation\Validator\Email;
-use Mcustiel\SimpleRequest\Annotation\Validator\Float;
-use Mcustiel\SimpleRequest\Annotation\Validator\Integer;
-use Mcustiel\SimpleRequest\Annotation\Validator\IPV4;
-use Mcustiel\SimpleRequest\Annotation\Validator\IPV6;
-use Mcustiel\SimpleRequest\Annotation\Validator\MaxLength;
-use Mcustiel\SimpleRequest\Annotation\Validator\MinLength;
-use Mcustiel\SimpleRequest\Annotation\Validator\NotEmpty;
-use Mcustiel\SimpleRequest\Annotation\Validator\NotNull;
-use Mcustiel\SimpleRequest\Annotation\Validator\RegExp;
-use Mcustiel\SimpleRequest\Annotation\Validator\TwitterAccount;
-use Mcustiel\SimpleRequest\Annotation\Validator\Url;
+use Mcustiel\SimpleRequest\Annotation\Validator as Annot;
 
 /**
  * @author mcustiel
@@ -22,85 +9,96 @@ use Mcustiel\SimpleRequest\Annotation\Validator\Url;
 class AllValidatorsRequest
 {
     /**
-     * @CustomValidator(class="Mcustiel\SimpleRequest\Validator\Integer")
+     * @Annot\CustomValidator(class="Mcustiel\SimpleRequest\Validator\Integer")
      *
      * @var unknown
      */
     private $custom;
     /**
-     * @Date("d/m/Y H:i:s")
+     * @Annot\Date("d/m/Y H:i:s")
      *
      * @var unknown
      */
     private $date;
     /**
-     * @Email
+     * @Annot\Email
      *
      * @var unknown
      */
     private $email;
     /**
-     * @Float(true)
+     * @Annot\Float(true)
      *
      * @var unknown
      */
     private $float;
     /**
-     * @Integer
+     * @Annot\Integer
      *
      * @var unknown
      */
     private $integer;
     /**
-     * @IPV4
+     * @Annot\IPV4
      *
      * @var unknown
      */
     private $ipv4;
     /**
-     * @IPV6
+     * @Annot\IPV6
      *
      * @var unknown
      */
     private $ipv6;
     /**
-     * @MaxLength(5)
+     * @Annot\Items(items={ @Annot\Type("integer"), @Annot\MaxLength(5) }, additionalItems=false)
+     * @var unknown
+     */
+    private $items;
+    /**
+     * @Annot\MaxLength(5)
      *
      * @var unknown
      */
     private $maxLength;
     /**
-     * @MinLength(2)
+     * @Annot\MinLength(2)
      *
      * @var unknown
      */
     private $minLength;
     /**
-     * @NotEmpty
+     * @Annot\NotEmpty
      *
      * @var unknown
      */
     private $notEmpty;
     /**
-     * @NotNull
+     * @Annot\NotNull
      *
      * @var unknown
      */
     private $notNull;
     /**
-     * @RegExp("/[a-z]{3}[0-9]{3}/")
+     * @Annot\RegExp("/[a-z]{3}[0-9]{3}/")
      *
      * @var unknown
      */
     private $regExp;
     /**
-     * @TwitterAccount
+     * @Annot\Required( {"key1", "key2"} )
+     *
+     * @var unknown
+     */
+    private $required;
+    /**
+     * @Annot\TwitterAccount
      *
      * @var unknown
      */
     private $twitterAccount;
     /**
-     * @Url
+     * @Annot\Url
      *
      * @var unknown
      */
@@ -183,6 +181,17 @@ class AllValidatorsRequest
         return $this;
     }
 
+    public function getItems()
+    {
+        return $this->items;
+    }
+
+    public function setItems($items)
+    {
+        $this->items = $items;
+        return $this;
+    }
+
     public function getMaxLength()
     {
         return $this->maxLength;
@@ -235,6 +244,17 @@ class AllValidatorsRequest
     public function setRegExp($regExp)
     {
         $this->regExp = $regExp;
+        return $this;
+    }
+
+    public function getRequired()
+    {
+        return $this->required;
+    }
+
+    public function setRequired($required)
+    {
+        $this->required = $required;
         return $this;
     }
 

@@ -6,7 +6,7 @@ use Mcustiel\SimpleRequest\Validator\Enum as EnumValidator;
 
 /**
  * @Annotation
- * @Target("PROPERTY")
+ * @Target({ "PROPERTY", "ANNOTATION" })
  *
  * @author mcustiel
  */

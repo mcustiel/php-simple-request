@@ -6,7 +6,7 @@ use Mcustiel\SimpleRequest\Validator\Type as TypeValidator;
 
 /**
  * @Annotation
- * @Target("PROPERTY")
+ * @Target({ "PROPERTY", "ANNOTATION" })
  *
  * @author mcustiel
  */

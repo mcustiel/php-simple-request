@@ -19,41 +19,22 @@ namespace Mcustiel\SimpleRequest\Validator;
 
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
+use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
 
-class Required implements ValidatorInterface
+class OneOf extends AbstractIterableValidator
 {
-    protected $items;
-
-    public function setSpecification($specification = null)
-    {
-        if (!is_array($specification)) {
-            throw new UnspecifiedValidatorException(
-                "The validator Required is being initialized without an array"
-            );
-        }
-        foreach ($specification as $item) {
-            if (!is_string($item) || is_numeric($item)) {
-                throw new UnspecifiedValidatorException(
-                    "The validator Required is being initialized without a valid array"
-                );
-            }
-        }
-
-        $this->items = $specification;
-    }
-
     public function validate($value)
     {
-        if (!$value instanceof \stdClass) {
-            return false;
-        }
-
+        $valids = 0;
         foreach ($this->items as $item) {
-            if (!property_exists($value, $item)) {
-                return false;
+            if ($item->validate($value)) {
+                $valids++;
+                if ($valids > 1) {
+                    return false;
+                }
             }
         }
 
-        return true;
+        return $valids == 1;
     }
 }

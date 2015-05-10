@@ -113,14 +113,14 @@ class RequestBuilder
                 $propertyParser->addValidator(
                     ValidatorBuilder::builder()
                     ->withClass($associatedClass)
-                    ->withSpecification($propertyAnnotation->value)
+                    ->withSpecification($propertyAnnotation->getValue())
                     ->build()
                 );
             } elseif ($propertyAnnotation instanceof FilterAnnotation) {
                 $propertyParser->addFilter(
                     FilterBuilder::builder()
                     ->withClass($associatedClass)
-                    ->withSpecification($propertyAnnotation->value)
+                    ->withSpecification($propertyAnnotation->getValue())
                     ->build()
                 );
             }

@@ -6,7 +6,7 @@ use Mcustiel\SimpleRequest\Validator\MinProperties as MinPropertiesValidator;
 
 /**
  * @Annotation
- * @Target("PROPERTY")
+ * @Target({ "PROPERTY", "ANNOTATION" })
  *
  * @author mcustiel
  */

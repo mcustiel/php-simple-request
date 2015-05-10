@@ -6,7 +6,7 @@ use Mcustiel\SimpleRequest\Validator\Required as RequiredValidator;
 
 /**
  * @Annotation
- * @Target("PROPERTY")
+ * @Target({ "PROPERTY", "ANNOTATION" })
  *
  * @author mcustiel
  */

@@ -6,7 +6,7 @@ use Mcustiel\SimpleRequest\Validator\MultipleOf as MultipleOfValidator;
 
 /**
  * @Annotation
- * @Target("PROPERTY")
+ * @Target({ "PROPERTY", "ANNOTATION" })
  *
  * @author mcustiel
  */

@@ -4,6 +4,7 @@ namespace Mcustiel\SimpleRequest\Annotation;
 abstract class RequestAnnotation
 {
     public $value;
+
     private $associatedClass;
 
     protected function __construct($associatedClass)
@@ -14,5 +15,10 @@ abstract class RequestAnnotation
     public function getAssociatedClass()
     {
         return $this->associatedClass;
+    }
+
+    public function getValue()
+    {
+        return $this->value;
     }
 }
