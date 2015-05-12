@@ -34,15 +34,19 @@ abstract class AbstractIterableValidator implements ValidatorInterface
         $this->checkSpecificationIsArray($specification);
 
         foreach ($specification as $item) {
-            if (!($item instanceof ValidatorAnnotation)) {
-                throw new UnspecifiedValidatorException(
-                    "The validator is being initialized without a valid array"
-                );
-            }
-            $object = $this->createValidatorInstanceFromAnnotation($item);
-
-            $this->items[] = $object;
+            $this->items[] = $this->checkIfAnnotationAndReturnObject($item);
         }
+    }
+
+    protected function checkIfAnnotationAndReturnObject($variable)
+    {
+        if (!($variable instanceof ValidatorAnnotation)) {
+            throw new UnspecifiedValidatorException(
+                "The validator is being initialized without a valid array"
+            );
+        }
+
+        return $this->createValidatorInstanceFromAnnotation($variable);
     }
 
     /**
