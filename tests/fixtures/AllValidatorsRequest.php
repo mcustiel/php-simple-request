@@ -98,7 +98,7 @@ class AllValidatorsRequest
      */
     private $twitterAccount;
     /**
-     * @Annot\Url
+     * @Annot\Uri
      *
      * @var unknown
      */

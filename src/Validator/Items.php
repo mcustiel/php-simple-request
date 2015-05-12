@@ -137,9 +137,6 @@ class Items extends AbstractIterableValidator
                 $specification
             );
         }
-        throw new UnspecifiedValidatorException(
-            "The validator is being initialized without an array"
-        );
     }
 
     private function validateArray(array $array, ValidatorInterface $validator) {
