@@ -20,22 +20,11 @@ namespace Mcustiel\SimpleRequest\Validator;
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 
-class MinProperties implements ValidatorInterface
+class MinProperties extends AbstractSizeValidator
 {
-    protected $items;
-
-    public function setSpecification($specification = null)
-    {
-        if (!is_int($specification) || $specification < 0) {
-            throw new UnspecifiedValidatorException(
-                "The validator MinProperties is being initialized without a valid number"
-            );
-        }
-        $this->items = $specification;
-    }
-
     public function validate($value)
     {
-        return is_array($value) && count($value) >= $this->items;
+        return (is_array($value) && count($value) >= $this->size)
+            || parent::validate($value);
     }
 }

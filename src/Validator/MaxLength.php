@@ -19,14 +19,14 @@ namespace Mcustiel\SimpleRequest\Validator;
 
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 
-class MaxLength extends MaxItems
+class MaxLength extends AbstractSizeValidator
 {
     public function validate($value)
     {
-        if (is_string($value) && strlen($value) <= $this->items) {
+        if (is_string($value) && strlen($value) <= $this->size) {
             return true;
         }
 
-        return parent::validate($value);
+        return false;
     }
 }

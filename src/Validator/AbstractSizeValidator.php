@@ -20,10 +20,19 @@ namespace Mcustiel\SimpleRequest\Validator;
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 
-class MinItems extends AbstractSizeValidator
+abstract class AbstractSizeValidator implements ValidatorInterface
 {
-    public function validate($value)
+    protected $size;
+
+    public function setSpecification($specification = null)
     {
-        return is_array($value) && count($value) >= $this->size;
+        if (!is_int($specification) || $specification < 0) {
+            throw new UnspecifiedValidatorException(
+                "Size validator is being initialized without a valid number"
+            );
+        }
+        $this->size = $specification;
     }
+
+    abstract public function validate($value);
 }

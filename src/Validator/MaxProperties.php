@@ -20,22 +20,11 @@ namespace Mcustiel\SimpleRequest\Validator;
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 
-class MaxProperties implements ValidatorInterface
+class MaxProperties extends MaxItems
 {
-    protected $items;
-
-    public function setSpecification($specification = null)
-    {
-        if (!is_int($specification) || $specification < 0) {
-            throw new UnspecifiedValidatorException(
-                "The validator MaxProperties is being initialized without a valid number"
-            );
-        }
-        $this->items = $specification;
-    }
-
     public function validate($value)
     {
-        return $value instanceof \stdClass && count((array) $value) <= $this->items;
+        return ($value instanceof \stdClass && count((array) $value) <= $this->size)
+            || parent::validate($value);
     }
 }

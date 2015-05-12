@@ -44,12 +44,31 @@ class Required implements ValidatorInterface
 
     public function validate($value)
     {
-        if (!$value instanceof \stdClass) {
-            return false;
+        if (is_array($value)) {
+            return $this->validateArray($value);
+        }
+        if ($value instanceof \stdClass) {
+            return $this->validateObject($value);
         }
 
+        return false;
+    }
+
+    private function validateObject(\stdClass $object)
+    {
         foreach ($this->items as $item) {
-            if (!property_exists($value, $item)) {
+            if (!property_exists($object, $item)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private function validateArray(array $array)
+    {
+        foreach ($this->items as $item) {
+            if (!array_key_exists($item, $array)) {
                 return false;
             }
         }
