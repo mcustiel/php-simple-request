@@ -10,7 +10,7 @@ use Mcustiel\SimpleRequest\Validator\Url as UrlValidator;
  *
  * @author mcustiel
  */
-class Url extends ValidatorAnnotation
+class Uri extends ValidatorAnnotation
 {
     public function __construct()
     {
