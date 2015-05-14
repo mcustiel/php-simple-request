@@ -80,6 +80,15 @@ class AllValidatorsRequest
      */
     private $notNull;
     /**
+     * @Annot\Properties(properties={
+     *     "key1", @Annot\Type("integer"),
+     *     "key2", @Annot\MaxLength(5)
+     * }, additionalProperties=false)
+     *
+     * @var unknown
+     */
+    private $properties;
+    /**
      * @Annot\RegExp("/[a-z]{3}[0-9]{3}/")
      *
      * @var unknown
@@ -233,6 +242,17 @@ class AllValidatorsRequest
     public function setNotNull($notNull)
     {
         $this->notNull = $notNull;
+        return $this;
+    }
+
+    public function getProperties()
+    {
+        return $this->properties;
+    }
+
+    public function setProperties($properties)
+    {
+        $this->properties = $properties;
         return $this;
     }
 

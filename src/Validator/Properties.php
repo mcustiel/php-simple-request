@@ -28,7 +28,7 @@ use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
  *
  * @author mcustiel
  */
-class Items extends AbstractIterableValidator
+class Properties extends AbstractIterableValidator
 {
     const ITEMS_INDEX = 'properties';
     const ADDITIONAL_ITEMS_INDEX = 'additionalProperties';
@@ -132,9 +132,6 @@ class Items extends AbstractIterableValidator
                 $this->items[$key] = $this->checkIfAnnotationAndReturnObject($item);
             }
         }
-        throw new UnspecifiedValidatorException(
-            "The validator is being initialized without a valid array"
-        );
     }
 
     private function setAdditionalItems($specification)
@@ -146,8 +143,5 @@ class Items extends AbstractIterableValidator
                 $specification
             );
         }
-        throw new UnspecifiedValidatorException(
-            "The validator is being initialized without an array"
-        );
     }
 }

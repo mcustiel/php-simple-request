@@ -22,6 +22,6 @@ class Items extends ValidatorAnnotation
 
     public function getValue()
     {
-        return ['items' => $this->items, 'additionalItems' => $this->additionalItems ];
+        return ['items' => $this->items, 'additionalItems' => $this->additionalItems];
     }
 }
