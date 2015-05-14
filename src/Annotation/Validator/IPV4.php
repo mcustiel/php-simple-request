@@ -6,7 +6,7 @@ use Mcustiel\SimpleRequest\Validator\IPV4 as IPV4Validator;
 
 /**
  * @Annotation
- * @Target("PROPERTY")
+ * @Target({ "PROPERTY", "ANNOTATION" })
  *
  * @author mcustiel
  */

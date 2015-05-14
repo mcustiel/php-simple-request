@@ -6,11 +6,11 @@ use Mcustiel\SimpleRequest\Validator\Date as DateValidator;
 
 /**
  * @Annotation
- * @Target("PROPERTY")
+ * @Target({ "PROPERTY", "ANNOTATION" })
  *
  * @author mcustiel
  */
-class Date extends ValidatorAnnotation
+class DateTimeFormat extends ValidatorAnnotation
 {
     public function __construct()
     {

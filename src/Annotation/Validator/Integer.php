@@ -6,7 +6,7 @@ use Mcustiel\SimpleRequest\Validator\Integer as IntegerValidator;
 
 /**
  * @Annotation
- * @Target("PROPERTY")
+ * @Target({ "PROPERTY", "ANNOTATION" })
  *
  * @author mcustiel
  */

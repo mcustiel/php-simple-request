@@ -5,7 +5,7 @@ use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
 
 /**
  * @Annotation
- * @Target("PROPERTY")
+ * @Target({ "PROPERTY", "ANNOTATION" })
  *
  * @author mcustiel
  */

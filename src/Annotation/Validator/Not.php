@@ -2,7 +2,7 @@
 namespace Mcustiel\SimpleRequest\Annotation\Validator;
 
 use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
-use Mcustiel\SimpleRequest\Validator\NotEmpty as NotEmptyValidator;
+use Mcustiel\SimpleRequest\Validator\Not as NotValidator;
 
 /**
  * @Annotation
@@ -10,10 +10,10 @@ use Mcustiel\SimpleRequest\Validator\NotEmpty as NotEmptyValidator;
  *
  * @author mcustiel
  */
-class NotEmpty extends ValidatorAnnotation
+class Not extends ValidatorAnnotation
 {
     public function __construct()
     {
-        parent::__construct(NotEmptyValidator::class);
+        parent::__construct(NotValidator::class);
     }
 }

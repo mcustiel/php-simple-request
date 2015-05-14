@@ -6,7 +6,7 @@ use Mcustiel\SimpleRequest\Validator\NotNull as NotNullValidator;
 
 /**
  * @Annotation
- * @Target("PROPERTY")
+ * @Target({ "PROPERTY", "ANNOTATION" })
  *
  * @author mcustiel
  */

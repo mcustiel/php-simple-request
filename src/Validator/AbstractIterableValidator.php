@@ -21,7 +21,7 @@ use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
 
-abstract class AbstractIterableValidator implements ValidatorInterface
+abstract class AbstractIterableValidator extends AbstractAnnotationSpecifiedValidator
 {
     /**
      *
@@ -36,17 +36,6 @@ abstract class AbstractIterableValidator implements ValidatorInterface
         foreach ($specification as $item) {
             $this->items[] = $this->checkIfAnnotationAndReturnObject($item);
         }
-    }
-
-    protected function checkIfAnnotationAndReturnObject($variable)
-    {
-        if (!($variable instanceof ValidatorAnnotation)) {
-            throw new UnspecifiedValidatorException(
-                "The validator is being initialized without a valid array"
-            );
-        }
-
-        return $this->createValidatorInstanceFromAnnotation($variable);
     }
 
     /**
@@ -73,6 +62,4 @@ abstract class AbstractIterableValidator implements ValidatorInterface
             );
         }
     }
-
-    abstract public function validate($value);
 }

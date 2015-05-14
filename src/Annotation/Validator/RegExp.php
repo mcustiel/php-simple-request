@@ -6,7 +6,7 @@ use Mcustiel\SimpleRequest\Validator\RegExp as RegExpValidator;
 
 /**
  * @Annotation
- * @Target("PROPERTY")
+ * @Target({ "PROPERTY", "ANNOTATION" })
  *
  * @author mcustiel
  */

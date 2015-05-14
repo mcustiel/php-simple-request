@@ -6,7 +6,7 @@ use Mcustiel\SimpleRequest\Validator\Url as UrlValidator;
 
 /**
  * @Annotation
- * @Target("PROPERTY")
+ * @Target({ "PROPERTY", "ANNOTATION" })
  *
  * @author mcustiel
  */

@@ -6,7 +6,7 @@ use Mcustiel\SimpleRequest\Validator\Email as EmailValidator;
 
 /**
  * @Annotation
- * @Target("PROPERTY")
+ * @Target({ "PROPERTY", "ANNOTATION" })
  *
  * @author mcustiel
  */

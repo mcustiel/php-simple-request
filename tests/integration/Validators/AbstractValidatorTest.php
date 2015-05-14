@@ -19,6 +19,7 @@ abstract class AbstractValidatorTest extends \PHPUnit_Framework_TestCase
         $class->key3 = 'val3';
 
         $this->request = [
+            'anyOf' => 5,
             'custom' => '5',
             'date' => '17/10/1981 01:30:00',
             'email' => 'pipicui@hotmail.com',

@@ -9,13 +9,19 @@ use Mcustiel\SimpleRequest\Annotation\Validator as Annot;
 class AllValidatorsRequest
 {
     /**
+     * @Annot\AnyOf({  @Annot\IPV4, @Annot\Integer })
+     *
+     * @var unknown
+     */
+    private $anyOf;
+    /**
      * @Annot\CustomValidator(class="Mcustiel\SimpleRequest\Validator\Integer")
      *
      * @var unknown
      */
     private $custom;
     /**
-     * @Annot\Date("d/m/Y H:i:s")
+     * @Annot\DateTimeFormat("d/m/Y H:i:s")
      *
      * @var unknown
      */
@@ -112,6 +118,18 @@ class AllValidatorsRequest
      * @var unknown
      */
     private $url;
+
+    public function getAnyOf()
+    {
+        return $this->anyOf;
+    }
+
+    public function setAnyOf($anyOf)
+    {
+        $this->anyOf = $anyOf;
+        return $this;
+    }
+
 
     public function getCustom()
     {

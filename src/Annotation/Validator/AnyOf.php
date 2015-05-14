@@ -6,7 +6,7 @@ use Mcustiel\SimpleRequest\Validator\AnyOf as AnyOfValidator;
 
 /**
  * @Annotation
- * @Target("PROPERTY")
+ * @Target({ "PROPERTY", "ANNOTATION" })
  *
  * @author mcustiel
  */

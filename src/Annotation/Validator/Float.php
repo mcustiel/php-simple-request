@@ -6,7 +6,7 @@ use Mcustiel\SimpleRequest\Validator\Float as FloatValidator;
 
 /**
  * @Annotation
- * @Target("PROPERTY")
+ * @Target({ "PROPERTY", "ANNOTATION" })
  *
  * @author mcustiel
  */

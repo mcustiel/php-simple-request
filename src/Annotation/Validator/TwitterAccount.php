@@ -6,7 +6,7 @@ use Mcustiel\SimpleRequest\Validator\TwitterAccount as TwitterAccountValidator;
 
 /**
  * @Annotation
- * @Target("PROPERTY")
+ * @Target({ "PROPERTY", "ANNOTATION" })
  *
  * @author mcustiel
  */
