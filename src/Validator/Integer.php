@@ -21,8 +21,11 @@ use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 
 class Integer implements ValidatorInterface
 {
+    private $strict = false;
+
     public function setSpecification($specification = null)
     {
+        $this->strict = (boolean) $specification;
     }
 
     public function validate($value)
@@ -31,6 +34,6 @@ class Integer implements ValidatorInterface
             return false;
         }
 
-        return is_int($value + 0);
+        return ($this->strict && is_int($value)) || is_int($value + 0);
     }
 }

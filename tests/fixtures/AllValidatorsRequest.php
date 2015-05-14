@@ -9,7 +9,7 @@ use Mcustiel\SimpleRequest\Annotation\Validator as Annot;
 class AllValidatorsRequest
 {
     /**
-     * @Annot\AnyOf({  @Annot\IPV4, @Annot\Integer })
+     * @Annot\AnyOf({ @Annot\IPV4, @Annot\Integer })
      *
      * @var unknown
      */
@@ -32,6 +32,24 @@ class AllValidatorsRequest
      * @var unknown
      */
     private $email;
+    /**
+     * @Annot\Enum({ "val1", "val2", "val3" })
+     *
+     * @var unknown
+     */
+    private $enum;
+    /**
+     * @Annot\ExclusiveMaximum(5)
+     *
+     * @var unknown
+     */
+    private $exclusiveMaximum;
+    /**
+     * @Annot\ExclusiveMinimum(5)
+     *
+     * @var unknown
+     */
+    private $exclusiveMinimum;
     /**
      * @Annot\Float(true)
      *
@@ -58,15 +76,40 @@ class AllValidatorsRequest
     private $ipv6;
     /**
      * @Annot\Items(items={ @Annot\Type("integer"), @Annot\MaxLength(5) }, additionalItems=false)
+     *
      * @var unknown
      */
     private $items;
+    /**
+     * @Annot\Maximum(5)
+     *
+     * @var unknown
+     */
+    private $maximum;
+    /**
+     * @Annot\MaxItems(3)
+     *
+     * @var unknown
+     */
+    private $maxItems;
     /**
      * @Annot\MaxLength(5)
      *
      * @var unknown
      */
     private $maxLength;
+    /**
+     * @Annot\MaxProperties(3)
+     *
+     * @var unknown
+     */
+    private $maxProperties;
+    /**
+     * @Annot\Minimum(5)
+     *
+     * @var unknown
+     */
+    private $minimum;
     /**
      * @Annot\MinLength(2)
      *
@@ -164,6 +207,39 @@ class AllValidatorsRequest
         return $this;
     }
 
+    public function getEnum()
+    {
+        return $this->enum;
+    }
+
+    public function setEnum($enum)
+    {
+        $this->enum = $enum;
+        return $this;
+    }
+
+    public function getExclusiveMaximum()
+    {
+        return $this->exclusiveMaximum;
+    }
+
+    public function setExclusiveMaximum($exclusiveMaximum)
+    {
+        $this->exclusiveMaximum = $exclusiveMaximum;
+        return $this;
+    }
+
+    public function getExclusiveMinimum()
+    {
+        return $this->exclusiveMinimum;
+    }
+
+    public function setExclusiveMinimum($exclusiveMinimum)
+    {
+        $this->exclusiveMinimum = $exclusiveMinimum;
+        return $this;
+    }
+
     public function getFloat()
     {
         return $this->float;
@@ -219,6 +295,28 @@ class AllValidatorsRequest
         return $this;
     }
 
+    public function getMaximum()
+    {
+        return $this->maximum;
+    }
+
+    public function setMaximum($maximum)
+    {
+        $this->maximum = $maximum;
+        return $this;
+    }
+
+    public function getMaxItems()
+    {
+        return $this->maxItems;
+    }
+
+    public function setMaxItems($maxItems)
+    {
+        $this->maxItems = $maxItems;
+        return $this;
+    }
+
     public function getMaxLength()
     {
         return $this->maxLength;
@@ -227,6 +325,28 @@ class AllValidatorsRequest
     public function setMaxLength($maxLength)
     {
         $this->maxLength = $maxLength;
+        return $this;
+    }
+
+    public function getMaxProperties()
+    {
+        return $this->maxProperties;
+    }
+
+    public function setMaxProperties($maxProperties)
+    {
+        $this->maxProperties = $maxProperties;
+        return $this;
+    }
+
+    public function getMinimum()
+    {
+        return $this->minimum;
+    }
+
+    public function setMinimum($minimum)
+    {
+        $this->minimum = $minimum;
         return $this;
     }
 

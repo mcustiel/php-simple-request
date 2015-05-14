@@ -15,7 +15,7 @@ class AnyOfTest extends AbstractValidatorTest
         $this->assertRequestParsesCorrectly();
     }
 
-    public function testBuildARequestWithInvalid()
+    public function testBuildARequestWithInvalidValue()
     {
         $this->request['anyOf'] = 'potato';
         $this->assertRequestParsesCorrectly();

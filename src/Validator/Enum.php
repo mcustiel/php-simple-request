@@ -31,7 +31,7 @@ class Enum implements ValidatorInterface
                 "The validator Enum is being initialized without an array"
             );
         }
-        $this->unique = $specification;
+        $this->items = $specification;
     }
 
     public function validate($value)

@@ -3,7 +3,7 @@ namespace Integration\Validators;
 
 class RequiredTest extends AbstractValidatorTest
 {
-    public function testBuildARequestWithInvalidRequiredInAStdClass()
+    public function testBuildARequestWithInvalidValueInAStdClass()
     {
         $class = new \stdClass();
         $class->key1 = 'val1';
@@ -19,7 +19,7 @@ class RequiredTest extends AbstractValidatorTest
         $this->assertRequestParsesCorrectly();
     }
 
-    public function testBuildARequestWithInvalidRequestInAnArray()
+    public function testBuildARequestWithInvalidValueInAnArray()
     {
         $this->request['required'] = ['key1' => 'val1', 'key3' => 'val3'];
         $this->buildRequestAndTestErrorFieldPresent('required');
