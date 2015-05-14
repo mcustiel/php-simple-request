@@ -1,7 +1,7 @@
 <?php
 namespace Integration\Validators;
 
-class MaximumTest extends AbstractValidatorTest
+class ExclusiveMaximumTest extends AbstractValidatorTest
 {
     const TEST_FIELD = 'exclusiveMaximum';
 

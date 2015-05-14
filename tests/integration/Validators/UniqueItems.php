@@ -1,7 +1,7 @@
 <?php
 namespace Integration\Validators;
 
-class UrlTest extends AbstractValidatorTest
+class UniqueItemsTest extends AbstractValidatorTest
 {
     const TEST_FIELD = 'uniqueItems';
 
@@ -15,5 +15,11 @@ class UrlTest extends AbstractValidatorTest
     {
         $this->request[self::TEST_FIELD][] = 'potato';
         $this->buildRequestAndTestErrorFieldPresent(self::TEST_FIELD);
+    }
+
+    public function testBuildARequestWithValidValueBecauseEmptyArray()
+    {
+        $this->request[self::TEST_FIELD] = [];
+        $this->assertRequestParsedCorrectly();
     }
 }
