@@ -3,15 +3,17 @@ namespace Integration\Validators;
 
 class IntegerTest extends AbstractValidatorTest
 {
+    const TEST_FIELD = 'integer';
+
     public function testBuildARequestWithInvalidValue()
     {
-        $this->request['integer'] = 'nope';
-        $this->buildRequestAndTestErrorFieldPresent('integer');
+        $this->request[self::TEST_FIELD] = 'nope';
+        $this->buildRequestAndTestErrorFieldPresent(self::TEST_FIELD);
     }
 
     public function testBuildARequestWithValidValueInFloatFormat()
     {
-        $this->request['integer'] = 1.0;
+        $this->request[self::TEST_FIELD] = 1.0;
         $this->assertRequestParsesCorrectly();
     }
 }

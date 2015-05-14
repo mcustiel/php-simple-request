@@ -3,7 +3,7 @@ namespace Integration\Validators;
 
 class ExclusiveMaximumTest extends AbstractValidatorTest
 {
-    const TEST_FIELD = 'exclusiveMaximum';
+    const TEST_FIELD = 'maximum';
 
     public function testBuildARequestWithInvalidValueBecauseIsOverMaximum()
     {
@@ -11,9 +11,9 @@ class ExclusiveMaximumTest extends AbstractValidatorTest
         $this->buildRequestAndTestErrorFieldPresent(self::TEST_FIELD);
     }
 
-    public function testBuildARequestWithInvalidValueBecauseIsEqualToMaximum()
+    public function testBuildARequestWithValidValueBecauseIsEqualToMaximum()
     {
         $this->request[self::TEST_FIELD] = 5;
-        $this->buildRequestAndTestErrorFieldPresent(self::TEST_FIELD);
+        $this->assertRequestParsesCorrectly();
     }
 }

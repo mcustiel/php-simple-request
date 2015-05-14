@@ -180,11 +180,23 @@ class AllValidatorsRequest
      */
     private $required;
     /**
+     * @Annot\Type("array")
+     *
+     * @var unknown
+     */
+    private $type;
+    /**
      * @Annot\TwitterAccount
      *
      * @var unknown
      */
     private $twitterAccount;
+    /**
+     * @Annot\UniqueItems(true)
+     *
+     * @var unknown
+     */
+    private $uniqueItems;
     /**
      * @Annot\Uri
      *
@@ -501,6 +513,17 @@ class AllValidatorsRequest
         return $this;
     }
 
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function setType($type)
+    {
+        $this->type = $type;
+        return $this;
+    }
+
     public function getTwitterAccount()
     {
         return $this->twitterAccount;
@@ -509,6 +532,17 @@ class AllValidatorsRequest
     public function setTwitterAccount($twitterAccount)
     {
         $this->twitterAccount = $twitterAccount;
+        return $this;
+    }
+
+    public function getUniqueItems()
+    {
+        return $this->uniqueItems;
+    }
+
+    public function setUniqueItems($uniqueItems)
+    {
+        $this->uniqueItems = $uniqueItems;
         return $this;
     }
 

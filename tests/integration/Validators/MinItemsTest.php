@@ -13,7 +13,7 @@ class MinItemsTest extends AbstractValidatorTest
 
     public function testBuildARequestWithValidValueBecauseEqualToMinItems()
     {
-        $this->request['maxProperties'] = [ 'a', 'b', 'c' ];
+        $this->request[self::TEST_FIELD] = [ 'a', 'b', 'c' ];
         $this->assertRequestParsesCorrectly();
     }
 
@@ -25,7 +25,7 @@ class MinItemsTest extends AbstractValidatorTest
 
     public function testBuildARequestWithValidValueBecauseEqualToMinItemsInAssociativeArray()
     {
-        $this->request['maxProperties'] = [ 'a' => 'a', 'b' => 'b', 'c' => 'c' ];
+        $this->request[self::TEST_FIELD] = [ 'a' => 'a', 'b' => 'b', 'c' => 'c' ];
         $this->assertRequestParsesCorrectly();
     }
 }

@@ -47,7 +47,9 @@ abstract class AbstractValidatorTest extends \PHPUnit_Framework_TestCase
             'properties' => ['key1' => 1, 'key2' => '12345'],
             'regExp' => 'abc123',
             'required' => $class,
+            'type' => [ 'a' ],
             'twitterAccount' => '@pepe_123',
+            'uniqueItems' => [ '1', 2, 'potato' ],
             'url' => 'https://this.isaurl.com/test.php?id=1#test'
         ];
         $cacheConfig = new \stdClass();

@@ -3,15 +3,17 @@ namespace Integration\Validators;
 
 class PropertiesTest extends AbstractValidatorTest
 {
+    const TEST_FIELD = 'properties';
+
     public function testBuildARequestWithInvalidValueBecauseOneItemDoesNotPass()
     {
-        $this->request['properties'] = ['key1' => 56, 'key2' => '123456'];
-        $this->buildRequestAndTestErrorFieldPresent('properties');
+        $this->request[self::TEST_FIELD] = ['key1' => 56, 'key2' => '123456'];
+        $this->buildRequestAndTestErrorFieldPresent(self::TEST_FIELD);
     }
 
     public function testBuildARequestWithInvalidValueBecauseMoreItemsThanAllowed()
     {
-        $this->request['properties'] = ['key1' => 56, 'key2' => '12345', 'key3' => 'Nope'];
-        $this->buildRequestAndTestErrorFieldPresent('properties');
+        $this->request[self::TEST_FIELD] = ['key1' => 56, 'key2' => '12345', 'key3' => 'Nope'];
+        $this->buildRequestAndTestErrorFieldPresent(self::TEST_FIELD);
     }
 }

@@ -3,27 +3,29 @@ namespace Integration\Validators;
 
 class MaxPropertiesTest extends AbstractValidatorTest
 {
+    const TEST_FIELD = 'maxProperties';
+
     public function testBuildARequestWithInvalidValueBecauseOverMaxPropertiesInArray()
     {
-        $this->request['maxProperties'] = [ 'a', 'b', 'c', 'nope' ];
-        $this->buildRequestAndTestErrorFieldPresent('maxProperties');
+        $this->request[self::TEST_FIELD] = [ 'a', 'b', 'c', 'nope' ];
+        $this->buildRequestAndTestErrorFieldPresent(self::TEST_FIELD);
     }
 
     public function testBuildARequestWithInvalidValueBecauseOverMaxPropertiesInAssociativeArray()
     {
-        $this->request['maxProperties'] = [ 'a' => 'a', 'b' => 'b', 'c' => 'c', 'nope' => 'Nope' ];
-        $this->buildRequestAndTestErrorFieldPresent('maxProperties');
+        $this->request[self::TEST_FIELD] = [ 'a' => 'a', 'b' => 'b', 'c' => 'c', 'nope' => 'Nope' ];
+        $this->buildRequestAndTestErrorFieldPresent(self::TEST_FIELD);
     }
 
     public function testBuildARequestWithValidValueInArray()
     {
-        $this->request['maxProperties'] = [ 'a', 'b', 'c' ];
+        $this->request[self::TEST_FIELD] = [ 'a', 'b', 'c' ];
         $this->assertRequestParsesCorrectly();
     }
 
     public function testBuildARequestWithValidValueInAssociativeArray()
     {
-        $this->request['maxProperties'] = [ 'a' => 'a', 'b' => 'b', 'c' => 'c' ];
+        $this->request[self::TEST_FIELD] = [ 'a' => 'a', 'b' => 'b', 'c' => 'c' ];
         $this->assertRequestParsesCorrectly();
     }
 
@@ -32,15 +34,15 @@ class MaxPropertiesTest extends AbstractValidatorTest
         $class = $this->getStdClassWithTwoProperties();
         $class->nope = 'nope';
 
-        $this->request['maxProperties'] = $class;
-        $this->buildRequestAndTestErrorFieldPresent('maxProperties');
+        $this->request[self::TEST_FIELD] = $class;
+        $this->buildRequestAndTestErrorFieldPresent(self::TEST_FIELD);
     }
 
     public function testBuildARequestWithValidValueInObject()
     {
         $class = $this->getStdClassWithTwoProperties();
 
-        $this->request['maxProperties'] = $class;
+        $this->request[self::TEST_FIELD] = $class;
         $this->assertRequestParsesCorrectly();
     }
 

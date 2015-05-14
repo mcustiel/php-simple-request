@@ -35,7 +35,7 @@ class UniqueItems implements ValidatorInterface
             return false;
         }
 
-        if (!$this->unique) {
+        if (!$this->unique || empty($value)) {
             return true;
         }
 
