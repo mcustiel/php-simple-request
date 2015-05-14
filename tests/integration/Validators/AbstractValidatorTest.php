@@ -43,6 +43,7 @@ abstract class AbstractValidatorTest extends \PHPUnit_Framework_TestCase
             'notEmpty' => '-',
             'notNull' => '',
             'not' => null,
+            'oneOf' => 5,
             'properties' => ['key1' => 1, 'key2' => '12345'],
             'regExp' => 'abc123',
             'required' => $class,

@@ -9,7 +9,7 @@ class AnyOfTest extends AbstractValidatorTest
         $this->assertRequestParsesCorrectly();
     }
 
-    public function testBuildARequestWithValidAnyOfBecausetheOtherOfTheValidatorsValidates()
+    public function testBuildARequestWithValidAnyOfBecauseTheOtherOfTheValidatorsValidates()
     {
         $this->request['anyOf'] = '192.168.0.1';
         $this->assertRequestParsesCorrectly();

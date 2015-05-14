@@ -153,6 +153,12 @@ class AllValidatorsRequest
      */
     private $not;
     /**
+     * @Annot\OneOf({ @Annot\IPV4, @Annot\Integer, @Annot\Enum({ 1, 2, 3 }) })
+     *
+     * @var unknown
+     */
+    private $oneOf;
+    /**
      * @Annot\Properties(properties={
      *     "key1", @Annot\Type("integer"),
      *     "key2", @Annot\MaxLength(5)
@@ -448,6 +454,17 @@ class AllValidatorsRequest
     public function setNot($not)
     {
         $this->not = $not;
+        return $this;
+    }
+
+    public function getOneOf()
+    {
+        return $this->oneOf;
+    }
+
+    public function setOneOf($oneOf)
+    {
+        $this->oneOf = $oneOf;
         return $this;
     }
 
