@@ -20,11 +20,11 @@ namespace Mcustiel\SimpleRequest\Validator;
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 
-class MinProperties extends AbstractSizeValidator
+class MinProperties extends MinItems
 {
     public function validate($value)
     {
-        return (is_array($value) && count($value) >= $this->size)
+        return ($value instanceof \stdClass && count((array) $value) >= $this->size)
             || parent::validate($value);
     }
 }

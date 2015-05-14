@@ -35,6 +35,8 @@ abstract class AbstractValidatorTest extends \PHPUnit_Framework_TestCase
             'maxItems' => [ 'a', 'b' ],
             'maxLength' => '12345',
             'maxProperties' => [ 'a', 'b' ],
+            'minimum' => 8,
+            'minItems' => [ 'a', 'b', 'c', 'd' ],
             'minLength' => '123',
             'notEmpty' => '-',
             'notNull' => '',

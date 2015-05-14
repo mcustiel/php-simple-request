@@ -111,11 +111,23 @@ class AllValidatorsRequest
      */
     private $minimum;
     /**
+     * @Annot\MinItems(3)
+     *
+     * @var unknown
+     */
+    private $minItems;
+    /**
      * @Annot\MinLength(2)
      *
      * @var unknown
      */
     private $minLength;
+    /**
+     * @Annot\MinProperties(3)
+     *
+     * @var unknown
+     */
+    private $minProperties;
     /**
      * @Annot\NotEmpty
      *
@@ -350,6 +362,17 @@ class AllValidatorsRequest
         return $this;
     }
 
+    public function getMinItems()
+    {
+        return $this->minItems;
+    }
+
+    public function setMinItems($minItems)
+    {
+        $this->minItems = $minItems;
+        return $this;
+    }
+
     public function getMinLength()
     {
         return $this->minLength;
@@ -358,6 +381,17 @@ class AllValidatorsRequest
     public function setMinLength($minLength)
     {
         $this->minLength = $minLength;
+        return $this;
+    }
+
+    public function getMinProperties()
+    {
+        return $this->minProperties;
+    }
+
+    public function setMinProperties($minProperties)
+    {
+        $this->minProperties = $minProperties;
         return $this;
     }
 
