@@ -5,8 +5,7 @@ class NotNullTest extends AbstractValidatorTest
 {
     public function testBuildARequestWithInvalidValueBecauseItsNull()
     {
-        $this->request['notNull'] = null;
-        $this->buildRequestAndTestErrorFieldPresent('notNull');
+        $this->failWhenFieldIsNull('notNull');
     }
 
     public function testBuildARequestWithInvalidValueBecauseItsNotSet()

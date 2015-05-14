@@ -39,19 +39,6 @@ abstract class AbstractIterableValidator extends AbstractAnnotationSpecifiedVali
     }
 
     /**
-     * @param \Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation $validatorAnnotation
-     * @return \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
-     */
-    protected function createValidatorInstanceFromAnnotation($validatorAnnotation)
-    {
-        $class = $validatorAnnotation->getAssociatedClass();
-        $object = new $class;
-        $object->setSpecification($validatorAnnotation->value);
-
-        return $object;
-    }
-
-    /**
      * @param mixed $specification
      */
     protected function checkSpecificationIsArray($specification)

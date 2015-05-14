@@ -34,6 +34,20 @@ abstract class AbstractAnnotationSpecifiedValidator implements ValidatorInterfac
         return $this->createValidatorInstanceFromAnnotation($variable);
     }
 
+    /**
+     * @param \Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation $validatorAnnotation
+     *
+     * @return \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
+     */
+    protected function createValidatorInstanceFromAnnotation($validatorAnnotation)
+    {
+        $class = $validatorAnnotation->getAssociatedClass();
+        $object = new $class;
+        $object->setSpecification($validatorAnnotation->value);
+
+        return $object;
+    }
+
     abstract public function setSpecification($specification = null);
 
     abstract public function validate($value);

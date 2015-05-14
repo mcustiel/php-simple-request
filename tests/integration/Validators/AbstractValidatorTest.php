@@ -38,8 +38,11 @@ abstract class AbstractValidatorTest extends \PHPUnit_Framework_TestCase
             'minimum' => 8,
             'minItems' => [ 'a', 'b', 'c', 'd' ],
             'minLength' => '123',
+            'minProperties' => ['a', 'b', 'c', 'd'],
+            'multipleOf' => 5,
             'notEmpty' => '-',
             'notNull' => '',
+            'not' => null,
             'properties' => ['key1' => 1, 'key2' => '12345'],
             'regExp' => 'abc123',
             'required' => $class,
@@ -66,5 +69,11 @@ abstract class AbstractValidatorTest extends \PHPUnit_Framework_TestCase
         $response = $this->builder->parseRequest($this->request, AllValidatorsRequest::class, RequestBuilder::ALL_ERRORS_PARSER);
         $this->assertInstanceOf(ParserResponse::class, $response);
         $this->assertInstanceOf(AllValidatorsRequest::class, $response->getRequestObject());
+    }
+
+    protected function failWhenFieldIsNull($fieldName)
+    {
+        $this->request[$fieldName] = null;
+        $this->buildRequestAndTestErrorFieldPresent($fieldName);
     }
 }

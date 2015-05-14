@@ -129,6 +129,12 @@ class AllValidatorsRequest
      */
     private $minProperties;
     /**
+     * @Annot\MultipleOf(5)
+     *
+     * @var unknown
+     */
+    private $multipleOf;
+    /**
      * @Annot\NotEmpty
      *
      * @var unknown
@@ -140,6 +146,12 @@ class AllValidatorsRequest
      * @var unknown
      */
     private $notNull;
+    /**
+     * @Annot\Not( @Annot\NotNull )
+     *
+     * @var unknown
+     */
+    private $not;
     /**
      * @Annot\Properties(properties={
      *     "key1", @Annot\Type("integer"),
@@ -395,6 +407,17 @@ class AllValidatorsRequest
         return $this;
     }
 
+    public function getMultipleOf()
+    {
+        return $this->multipleOf;
+    }
+
+    public function setMultipleOf($multipleOf)
+    {
+        $this->multipleOf = $multipleOf;
+        return $this;
+    }
+
     public function getNotEmpty()
     {
         return $this->notEmpty;
@@ -414,6 +437,17 @@ class AllValidatorsRequest
     public function setNotNull($notNull)
     {
         $this->notNull = $notNull;
+        return $this;
+    }
+
+    public function getNot()
+    {
+        return $this->not;
+    }
+
+    public function setNot($not)
+    {
+        $this->not = $not;
         return $this;
     }
 
