@@ -23,10 +23,6 @@ use Mcustiel\SimpleRequest\Exception\InvalidAnnotationException;
 use Mcustiel\SimpleRequest\Annotation\RequestAnnotation;
 use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
 use Mcustiel\SimpleRequest\Annotation\FilterAnnotation;
-use Mcustiel\SimpleCache\Interfaces\CacheInterface;
-use Mcustiel\SimpleCache\Drivers\file\Cache;
-use Mcustiel\SimpleCache\Drivers\file\Utils\FileService;
-use Mcustiel\SimpleCache\Types\Key;
 use Mcustiel\SimpleRequest\Util\FilterBuilder;
 
 class RequestBuilder
@@ -101,7 +97,6 @@ class RequestBuilder
         }
         return $return;
     }
-
 
     private function parsePropertyAnnotation(
         RequestAnnotation $propertyAnnotation,
