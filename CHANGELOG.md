@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-# Version 1.2.0: json-schema
+# Version 1.1.0: json-schema
 
 * Issue 1: Validator compliance with JSON schema. Created validators in the style of json-schema but adapted to php-simple-request and the functionality of php (Example: properties/additionalProperties work with stdClass AND associative arrays).
 * Added more unit tests.
