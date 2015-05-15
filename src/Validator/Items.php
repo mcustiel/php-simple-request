@@ -107,9 +107,9 @@ class Items extends AbstractIterableValidator
             // In the specification is not clear what to do when instance size
             // is less than items size. I chose to pass null and if null passes
             // the validation, it returns true.
-            if (
-                !$validator->validate(isset($tuple[$keys[$index]]) ? $tuple[$keys[$index]] : null)
-            ) {
+            if (!$validator->validate(
+                isset($tuple[$keys[$index]]) ? $tuple[$keys[$index]] : null
+            )) {
                 return false;
             }
         }
@@ -139,7 +139,8 @@ class Items extends AbstractIterableValidator
         }
     }
 
-    private function validateArray(array $array, ValidatorInterface $validator) {
+    private function validateArray(array $array, ValidatorInterface $validator)
+    {
         foreach ($array as $item) {
             if (!$validator->validate($item)) {
                 return false;

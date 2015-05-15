@@ -58,6 +58,8 @@
 		<phingcall target="codestyle" />
 		<phingcall target="mess" />
 		<phingcall target="copypaste" />
+		<phingcall target="measure" />
+		<phingcall target="pdepend" />
 	</target>
 
 	<!-- ============================================ -->
@@ -80,7 +82,7 @@
 	</target>
 
 	<!-- ============================================ -->
-	<!-- Target: mess (Detects mess in code. Recommended rulesets: --> 
+	<!-- Target: mess (Detects mess in code. Recommended rulesets: -->
 	<!-- unusedcode,codesize,controversial,design,naming) -->
 	<!-- ============================================ -->
 	<target name="mess">
@@ -90,6 +92,17 @@
 			outputProperty="output"
 		/>
 		<echo msg="${output}" />
+	</target>
+
+	<target name="pdepend">
+		<echo msg="Running phpdepend analysis..." />
+		<phpdepend>
+			<fileset refid="sources" />
+			<analyzer type="coderank-mode" value="method" />
+			<logger type="jdepend-xml" outfile="${dir.reports}/pdepend/pdepend.xml" />
+			<logger type="jdepend-chart" outfile="${dir.reports}/pdepend/dependencies.svg"/>
+			<logger type="overview-pyramid" outfile="${dir.reports}/pdepend/overview-pyramid.svg"/>
+		</phpdepend>
 	</target>
 
 	<!-- ============================================ -->
@@ -102,7 +115,7 @@
 			<formatter type="pmd" outfile="${dir.reports}/pmd-cpd.xml" />
 		</phpcpd>
 	</target>
-
+	
 	<!-- ============================================ -->
 	<!-- Target: measure (measures the code) -->
 	<!-- ============================================ -->

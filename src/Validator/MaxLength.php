@@ -21,6 +21,8 @@ use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 
 class MaxLength extends AbstractSizeValidator
 {
+    protected $size = 255;
+
     public function validate($value)
     {
         if (is_string($value) && strlen($value) <= $this->size) {
