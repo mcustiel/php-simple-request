@@ -20,8 +20,17 @@ namespace Mcustiel\SimpleRequest\Validator;
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
 
+/**
+ * Validates that a given value is valid against any of the specified validators.
+ *
+ */
 class AnyOf extends AbstractIterableValidator
 {
+    /**
+     * {@inherit}
+     *
+     * @see \Mcustiel\SimpleRequest\Validator\AbstractAnnotationSpecifiedValidator::validate()
+     */
     public function validate($value)
     {
         foreach ($this->items as $item) {

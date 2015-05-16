@@ -17,24 +17,38 @@
  */
 namespace Mcustiel\SimpleRequest\Util;
 
-use Mcustiel\SimpleRequest\Exception\ValidatorDoesNotExist;
+use Mcustiel\SimpleRequest\Exception\ValidatorDoesNotExistException;
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 
+/**
+ * Builds Validator objects from the data taken from an annotation.
+ * @author mcustiel
+ */
 class ValidatorBuilder
 {
     use AnnotationToImplementationBuilder;
 
+    /**
+     * This method is used from AnnotationToImplementationBuilder trait. It checks the existence
+     * of the Validator class and then checks it's of type ValidatorInterface.
+     *
+     * @param string $type Name of the class to instantiate.
+     * @throws \Mcustiel\SimpleRequest\Exception\ValidatorDoesNotExistException
+     *      If class does not exist or is not of type ValidatorInterface.
+     * @return \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface The created object.
+     */
     final protected function getClassForType($type)
     {
         if (!class_exists($type)) {
-            throw new ValidatorDoesNotExist("Validator class {$type} does not exist");
+            throw new ValidatorDoesNotExistException("Validator class {$type} does not exist");
         }
         $validator = new $type;
         if (! ($validator instanceof ValidatorInterface)) {
-            throw new ValidatorDoesNotExist(
+            throw new ValidatorDoesNotExistException(
                 "Validator class {$type} must implement " . ValidatorInterface::class
             );
         }
+
         return $validator;
     }
 }

@@ -17,32 +17,61 @@
  */
 namespace Mcustiel\SimpleRequest\Util;
 
+use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
+use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
+/**
+ * Trait with the needed methods to build an object from an annotation. The class
+ * that use this trait shouls implement the method getClassForType. It's used by
+ * the classes that builds validators or filters.
+ *
+ * @author mcustiel
+ */
 trait AnnotationToImplementationBuilder
 {
     protected $type;
     protected $specification;
 
-    private function __construct()
-    {
-    }
-
+    /**
+     * Creator method. Creates an instance of this object.
+     */
     public static function builder()
     {
         return new self;
     }
 
+    /**
+     * Sets the class name.
+     *
+     * @param string $type Name of the class given by the annotation.
+     *
+     * @return \Mcustiel\SimpleRequest\Util\AnnotationToImplementationBuilder $this
+     *      For fluent interface
+     */
     public function withClass($type)
     {
         $this->type = $type;
         return $this;
     }
 
+    /**
+     * Sets the specification of the validation or filter.
+     *
+     * @param mixed $specification Specification set in the annotation.
+     *
+     * @return \Mcustiel\SimpleRequest\Util\AnnotationToImplementationBuilder $this
+     *      For fluent interface
+     */
     public function withSpecification($specification)
     {
         $this->specification = $specification;
         return $this;
     }
 
+    /**
+     * Builds the object from the given specification.
+     *
+     * @return \Mcustiel\SimpleRequest\Interfaces\FilterInterface|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
+     */
     public function build()
     {
         $class = $this->getClassForType($this->type);

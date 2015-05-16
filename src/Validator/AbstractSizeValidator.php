@@ -20,10 +20,25 @@ namespace Mcustiel\SimpleRequest\Validator;
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 
+/**
+ * Base class for validators that checks the size of a value.
+ *
+ * @author mcustiel
+ */
 abstract class AbstractSizeValidator implements ValidatorInterface
 {
+    /**
+     * The size to check.
+     *
+     * @var integer
+     */
     protected $size;
 
+    /**
+     * {@inherit}
+     *
+     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
+     */
     public function setSpecification($specification = null)
     {
         if (!is_int($specification) || $specification < 0) {
@@ -34,5 +49,10 @@ abstract class AbstractSizeValidator implements ValidatorInterface
         $this->size = $specification;
     }
 
+    /**
+     * {@inherit}
+     *
+     * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
+     */
     abstract public function validate($value);
 }

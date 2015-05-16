@@ -21,14 +21,24 @@ use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
 
+/**
+ * Abstract class for validators that recibes an array as specification.
+ * @author mcustiel
+ */
 abstract class AbstractIterableValidator extends AbstractAnnotationSpecifiedValidator
 {
     /**
+     * List of items specified in the annotation.
      *
      * @var \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface[]
      */
     protected $items = [];
 
+    /**
+     * {@inherit}
+     *
+     * @see \Mcustiel\SimpleRequest\Validator\AbstractAnnotationSpecifiedValidator::setSpecification()
+     */
     public function setSpecification($specification = null)
     {
         $this->checkSpecificationIsArray($specification);
@@ -39,7 +49,9 @@ abstract class AbstractIterableValidator extends AbstractAnnotationSpecifiedVali
     }
 
     /**
-     * @param mixed $specification
+     * {@inherit}
+     *
+     * @see \Mcustiel\SimpleRequest\Validator\AbstractAnnotationSpecifiedValidator::validate()
      */
     protected function checkSpecificationIsArray($specification)
     {

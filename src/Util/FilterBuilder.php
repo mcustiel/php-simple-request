@@ -17,24 +17,39 @@
  */
 namespace Mcustiel\SimpleRequest\Util;
 
-use Mcustiel\SimpleRequest\Exception\FilterDoesNotExist;
+use Mcustiel\SimpleRequest\Exception\FilterDoesNotExistException;
 use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
 
+/**
+ * Builds Filter objects from the data taken from an annotation.
+ *
+ * @author mcustiel
+ */
 class FilterBuilder
 {
     use AnnotationToImplementationBuilder;
 
+    /**
+     * This method is used from AnnotationToImplementationBuilder trait. It checks the existence
+     * of the Filter class and then checks it's of type FilterInterface.
+     *
+     * @param string $type The type to instantiate.
+     * @return \Mcustiel\SimpleRequest\Interfaces\FilterInterface The instance created
+     * @throws \Mcustiel\SimpleRequest\Exception\FilterDoesNotExistException
+     *      If class does not exist or does not implement FilterInterface
+     */
     final protected function getClassForType($type)
     {
         if (!class_exists($type)) {
-            throw new FilterDoesNotExist("Filter class {$type} does not exist");
+            throw new FilterDoesNotExistException("Filter class {$type} does not exist");
         }
         $filter = new $type;
         if (! ($filter instanceof FilterInterface)) {
-            throw new FilterDoesNotExist(
+            throw new FilterDoesNotExistException(
                 "Filter class {$type} must implement " . FilterInterface::class
             );
         }
+
         return $filter;
     }
 }

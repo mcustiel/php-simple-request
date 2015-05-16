@@ -20,14 +20,28 @@ namespace Mcustiel\SimpleRequest\Validator;
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
+use Mcustiel\SimpleRequest\Util\ValidatorBuilder;
 
+/**
+ * Base class for Validators that are specified with other validator annotations.
+ *
+ * @author mcustiel
+ */
 abstract class AbstractAnnotationSpecifiedValidator implements ValidatorInterface
 {
+    /**
+     * This method checks if the given variable is a validator annotation.
+     *
+     * @param mixed $variable This is the variable to check.
+     *                        It should be of type ValidatorAnnotation.
+     * @throws \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
+     *      If variable is not a ValidatorAnnotation.
+     */
     protected function checkIfAnnotationAndReturnObject($variable)
     {
         if (!($variable instanceof ValidatorAnnotation)) {
             throw new UnspecifiedValidatorException(
-                "The validator is being initialized without a valid array"
+                "The validator is being initialized without a valid validator Annotation"
             );
         }
 
@@ -35,20 +49,29 @@ abstract class AbstractAnnotationSpecifiedValidator implements ValidatorInterfac
     }
 
     /**
+     * Constructs a Validator object from a Validator annotation.
+     *
      * @param \Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation $validatorAnnotation
      *
-     * @return \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
+     * @return \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface Created validator object.
      */
     protected function createValidatorInstanceFromAnnotation($validatorAnnotation)
     {
-        $class = $validatorAnnotation->getAssociatedClass();
-        $object = new $class;
-        $object->setSpecification($validatorAnnotation->value);
-
-        return $object;
+        return ValidatorBuilder::builder()
+            ->withSpecification($validatorAnnotation->getValue())
+            ->withClass($validatorAnnotation->getAssociatedClass())
+            ->build();
     }
 
+    /**
+     * {@inherit}
+     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
+     */
     abstract public function setSpecification($specification = null);
 
+    /**
+     * {@inherit}
+     * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
+     */
     abstract public function validate($value);
 }
