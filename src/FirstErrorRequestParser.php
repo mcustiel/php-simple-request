@@ -21,8 +21,20 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Mcustiel\SimpleRequest\Exception\InvalidAnnotationException;
 use Mcustiel\SimpleRequest\Exception\InvalidValueException;
 
+/**
+ * Parser object that stops on first invalid property and returns only that error.
+ *
+ * @author mcustiel
+ */
 class FirstErrorRequestParser extends RequestParser
 {
+    /**
+     * Parses a request and returns the object obtained.
+     *
+     * @param array $request
+     *
+     * @return object
+     */
     public function parse(array $request)
     {
         $object = new $this->requestObject;

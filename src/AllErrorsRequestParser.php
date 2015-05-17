@@ -21,8 +21,22 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Mcustiel\SimpleRequest\Exception\InvalidAnnotationException;
 use Mcustiel\SimpleRequest\Exception\InvalidValueException;
 
+/**
+ * Request parser object that returns the parsing errors for all the
+ * invalid properties.
+ *
+ * @author mcustiel
+ */
 class AllErrorsRequestParser extends RequestParser
 {
+    /**
+     * Parses a request and returns a response object containing the converted object
+     * and the list of errors.
+     *
+     * @param array $request
+     *
+     * @return ParserResponse
+     */
     public function parse(array $request)
     {
         $object = new $this->requestObject;

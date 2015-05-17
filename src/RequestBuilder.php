@@ -25,10 +25,25 @@ use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
 use Mcustiel\SimpleRequest\Annotation\FilterAnnotation;
 use Mcustiel\SimpleRequest\Util\FilterBuilder;
 
+/**
+ * Builds a request by parsing all the resulting object's annotations and running
+ * obtained filters and validators against the request.
+ *
+ * @author mcustiel
+ */
 class RequestBuilder
 {
+    /**
+     * @deprecated Will be deleted in version 2.0. Use RETURN_PARSER_RESPONSE_OBJECT instead
+     */
     const ALL_ERRORS_PARSER = 'AllErrorsRequestParser';
+    const RETURN_PARSER_RESPONSE_OBJECT = 'AllErrorsRequestParser';
+    /**
+     *
+     * @deprecated Will be deleted in version 2.0. Use THROW_EXCEPTION_ON_FIRST_ERROR instead.
+     */
     const FIRST_ERROR_PARSER = 'FirstErrorRequestParser';
+    const THROW_EXCEPTION_ON_FIRST_ERROR = 'FirstErrorRequestParser';
     const DEFAULT_CACHE_PATH = 'php-simple-request/cache/';
 
     /**
@@ -43,15 +58,37 @@ class RequestBuilder
      */
     private $cache;
 
-    public function __construct(\stdClass $cacheConfig = null, AnnotationReader $annotationReader = null)
-    {
+    /**
+     * Class constructor.
+     *
+     * @param \stdClass        $cacheConfig
+     *      Config parameters for cache. By default cache is activated and saves files
+     *      under system's temp dir. This parameter is used to set alternative options.
+     * @param \Doctrine\Common\Annotations\AnnotationReader $annotationReader
+     *      External annotation reader instance (mostly for DI in tests). Created
+     *      if not is set.
+     */
+    public function __construct(
+        \stdClass $cacheConfig = null,
+        AnnotationReader $annotationReader = null
+    ) {
         $this->annotationParser = $annotationReader == null ? new AnnotationReader() : $annotationReader;
         $this->setCache($cacheConfig);
     }
 
-    public function parseRequest(array $request, $className, $requestParserClass = self::FIRST_ERROR_PARSER)
-    {
-        $parserClass = '\\Mcustiel\\SimpleRequest\\' . $requestParserClass;
+    /**
+     * Main method of this class. Used to convert a request to an object of a given class by
+     * using a requestParser.
+     * @param array  $request   The request to convert to an object.
+     * @param string $className The class of the object to which the request must be converted.
+     * @param string $behaviour The behaviour of the parser.
+     */
+    public function parseRequest(
+        array $request,
+        $className,
+        $behaviour = self::THROW_EXCEPTION_ON_FIRST_ERROR
+    ) {
+        $parserClass = '\\Mcustiel\\SimpleRequest\\' . $behaviour;
         $requestParser = $this->generateRequestParserObject($className, $parserClass);
 
         return $requestParser->parse($request);
