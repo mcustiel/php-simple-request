@@ -64,7 +64,7 @@ abstract class AbstractValidatorTest extends \PHPUnit_Framework_TestCase
             $validatorRequest = $this->builder->parseRequest(
                 $this->request,
                 AllValidatorsRequest::class,
-                RequestBuilder::ALL_ERRORS_PARSER
+                RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
             );
         } catch (InvalidRequestException $e) {
             $this->assertTrue(isset($e->getErrors()[$fieldName]));
@@ -73,7 +73,7 @@ abstract class AbstractValidatorTest extends \PHPUnit_Framework_TestCase
 
     protected function assertRequestParsesCorrectly()
     {
-        $response = $this->builder->parseRequest($this->request, AllValidatorsRequest::class, RequestBuilder::ALL_ERRORS_PARSER);
+        $response = $this->builder->parseRequest($this->request, AllValidatorsRequest::class, RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION);
         $this->assertInstanceOf(AllValidatorsRequest::class, $response);
     }
 

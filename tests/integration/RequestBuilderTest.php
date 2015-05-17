@@ -16,7 +16,7 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             'age' => 30
         ];
         $builder = new RequestBuilder();
-        $parserResponse = $builder->parseRequest($request, PersonRequest::class, RequestBuilder::ALL_ERRORS_PARSER);
+        $parserResponse = $builder->parseRequest($request, PersonRequest::class, RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION);
         $personRequest = $this->assertPersonIsOk($parserResponse);
     }
 
@@ -31,11 +31,11 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             'age' => 30
         ];
         $builder = new RequestBuilder($cacheConfig);
-        $parserResponse = $builder->parseRequest($request, PersonRequest::class, RequestBuilder::ALL_ERRORS_PARSER);
+        $parserResponse = $builder->parseRequest($request, PersonRequest::class, RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION);
         $personRequest = $this->assertPersonIsOk($parserResponse);
 
         $builderCached = new RequestBuilder($cacheConfig);
-        $parserResponse = $builderCached->parseRequest($request, PersonRequest::class, RequestBuilder::ALL_ERRORS_PARSER);
+        $parserResponse = $builderCached->parseRequest($request, PersonRequest::class, RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION);
         $personRequest = $this->assertPersonIsOk($parserResponse);
     }
 
@@ -97,7 +97,7 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
         ];
         $builder = new RequestBuilder();
         try {
-            $parserResponse = $builder->parseRequest($request, PersonRequest::class, RequestBuilder::ALL_ERRORS_PARSER);
+            $parserResponse = $builder->parseRequest($request, PersonRequest::class, RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION);
             $this->fail('Exception expected to be thrown');
         } catch (InvalidRequestException $e) {
             $this->assertTrue(isset($e->getErrors()['firstName']));
@@ -113,7 +113,7 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
         ];
         $builder = new RequestBuilder();
         try {
-            $parserResponse = $builder->parseRequest($request, PersonRequest::class, RequestBuilder::ALL_ERRORS_PARSER);
+            $parserResponse = $builder->parseRequest($request, PersonRequest::class, RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION);
             $this->fail('Exception expected to be thrown');
         } catch (InvalidRequestException $e) {
             $this->assertTrue(isset($e->getErrors()['firstName']));
@@ -128,7 +128,7 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
         ];
         $builder = new RequestBuilder();
         try {
-            $parserResponse = $builder->parseRequest($request, PersonRequest::class, RequestBuilder::ALL_ERRORS_PARSER);
+            $parserResponse = $builder->parseRequest($request, PersonRequest::class, RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION);
             $this->fail('Exception expected to be thrown');
         } catch (InvalidRequestException $e) {
             $this->assertTrue(isset($e->getErrors()['firstName']));

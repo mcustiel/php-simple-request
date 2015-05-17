@@ -77,11 +77,11 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
                 $personRequest = $builder->parseRequest(
                     $request,
                     PersonRequest::class,
-                    RequestBuilder::ALL_ERRORS_PARSER
+                    RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
                 );
             }
             echo "\n{$cycles} cycles executed in " . (microtime(true) - $start)
-            . " seconds without cache and ALL_ERRORS_PARSER \n";
+            . " seconds without cache and RETURN_ALL_ERRORS_IN_EXCEPTION \n";
         }
     }
 
@@ -106,11 +106,11 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
                 $personRequest = $builder->parseRequest(
                     $request,
                     PersonRequest::class,
-                    RequestBuilder::ALL_ERRORS_PARSER
+                    RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
                 );
             }
             echo "\n{$cycles} cycles executed in " . (microtime(true) - $start)
-            . " seconds with cache and ALL_ERRORS_PARSER \n";
+            . " seconds with cache and RETURN_ALL_ERRORS_IN_EXCEPTION \n";
         }
     }
 }
