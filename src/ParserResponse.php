@@ -4,6 +4,8 @@ namespace Mcustiel\SimpleRequest;
 /**
  * Represents a response from a RequestParser object.
  *
+ * @deprecated Will be removed in version 2.0 in favor
+ *             of a behaviour change in AllErrorsRequestParser.
  * @author mcustiel
  */
 class ParserResponse
