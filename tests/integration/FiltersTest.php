@@ -23,10 +23,8 @@ class FiltersTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildARequestAndFilters()
     {
-        $parserResponse = $this->builder->parseRequest($this->request, AllFiltersRequest::class, RequestBuilder::ALL_ERRORS_PARSER);
+        $request = $this->builder->parseRequest($this->request, AllFiltersRequest::class, RequestBuilder::ALL_ERRORS_PARSER);
 
-        $this->assertInstanceOf(ParserResponse::class, $parserResponse);
-        $request = $parserResponse->getRequestObject();
         $this->assertInstanceOf(AllFiltersRequest::class, $request);
         $this->assertEquals('Test One Two', $request->getCustom());
         $this->assertEquals('Test one two', $request->getCapitalize());

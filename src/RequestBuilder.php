@@ -82,6 +82,11 @@ class RequestBuilder
      * @param array  $request   The request to convert to an object.
      * @param string $className The class of the object to which the request must be converted.
      * @param string $behaviour The behaviour of the parser.
+     *
+     * @return mixed Return value depends on the behaviour. If THROW_EXCEPTION_ON_FIRST_ERROR is
+     *               set, then it will return an object of the type specified by $className.
+     *               If RETURN_PARSER_RESPONSE_OBJECT is used, then it will return a ParserResponse
+     *               object containing the resulting object and the list of errors.
      */
     public function parseRequest(
         array $request,

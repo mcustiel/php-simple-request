@@ -5,6 +5,7 @@ namespace Integration\Validators;
 use Fixtures\AllValidatorsRequest;
 use Mcustiel\SimpleRequest\RequestBuilder;
 use Mcustiel\SimpleRequest\ParserResponse;
+use Mcustiel\SimpleRequest\Exception\InvalidRequestException;
 
 abstract class AbstractValidatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -59,19 +60,21 @@ abstract class AbstractValidatorTest extends \PHPUnit_Framework_TestCase
 
     protected function buildRequestAndTestErrorFieldPresent($fieldName)
     {
-        $validatorRequest = $this->builder->parseRequest(
-            $this->request,
-            AllValidatorsRequest::class,
-            RequestBuilder::ALL_ERRORS_PARSER
-        );
-        $this->assertTrue(isset($validatorRequest->getErrors()[$fieldName]));
+        try {
+            $validatorRequest = $this->builder->parseRequest(
+                $this->request,
+                AllValidatorsRequest::class,
+                RequestBuilder::ALL_ERRORS_PARSER
+            );
+        } catch (InvalidRequestException $e) {
+            $this->assertTrue(isset($e->getErrors()[$fieldName]));
+        }
     }
 
     protected function assertRequestParsesCorrectly()
     {
         $response = $this->builder->parseRequest($this->request, AllValidatorsRequest::class, RequestBuilder::ALL_ERRORS_PARSER);
-        $this->assertInstanceOf(ParserResponse::class, $response);
-        $this->assertInstanceOf(AllValidatorsRequest::class, $response->getRequestObject());
+        $this->assertInstanceOf(AllValidatorsRequest::class, $response);
     }
 
     protected function failWhenFieldIsNull($fieldName)

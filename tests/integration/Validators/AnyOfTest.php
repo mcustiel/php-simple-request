@@ -20,6 +20,6 @@ class AnyOfTest extends AbstractValidatorTest
     public function testBuildARequestWithInvalidValue()
     {
         $this->request[self::TEST_FIELD] = 'potato';
-        $this->assertRequestParsesCorrectly();
+        $this->buildRequestAndTestErrorFieldPresent(self::TEST_FIELD);
     }
 }

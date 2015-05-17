@@ -18,8 +18,8 @@
 namespace Mcustiel\SimpleRequest;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Mcustiel\SimpleRequest\Exception\InvalidAnnotationException;
 use Mcustiel\SimpleRequest\Exception\InvalidValueException;
+use Mcustiel\SimpleRequest\Exception\InvalidRequestException;
 
 /**
  * Request parser object that returns the parsing errors for all the
@@ -54,7 +54,25 @@ class AllErrorsRequestParser extends RequestParser
                 $invalidValues[$propertyParser->getName()] = $e->getMessage();
             }
         }
+        $this->checkIfRequestIsValidOrThrowException($invalidValues);
 
-        return new ParserResponse($object, $invalidValues);
+        return $object;
+    }
+
+    /**
+     * Checks if there are invalid values in the request, in that case it throws
+     * an exception.
+     *
+     * @param array $invalidValues
+     *
+     * @throws \Mcustiel\SimpleRequest\Exception\InvalidRequestException
+     */
+    private function checkIfRequestIsValidOrThrowException($invalidValues)
+    {
+        if (!empty($invalidValues)) {
+            $exception = new InvalidRequestException("Errors occurred while parsing the request");
+            $exception->setErrors($invalidValues);
+            throw $exception;
+        }
     }
 }
