@@ -21,8 +21,17 @@ use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
 
+/**
+ * Checks if the value validates against exactly one of the given validators.
+ *
+ * @author mcustiel
+ */
 class OneOf extends AbstractIterableValidator
 {
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Validator\AbstractAnnotationSpecifiedValidator::validate()
+     */
     public function validate($value)
     {
         $valids = 0;

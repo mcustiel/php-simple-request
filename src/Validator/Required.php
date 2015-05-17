@@ -20,8 +20,18 @@ namespace Mcustiel\SimpleRequest\Validator;
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 
+/**
+ * Checks if the specified list of properties names are keys in a given array
+ * or properties in a given object.
+ *
+ * @author mcustiel
+ */
 class Required implements ValidatorInterface
 {
+    /**
+     *
+     * @var unknown
+     */
     protected $items;
 
     public function setSpecification($specification = null)

@@ -20,10 +20,24 @@ namespace Mcustiel\SimpleRequest\Validator;
 use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 
+/**
+ * Checks if a string matches a regular expression.
+ *
+ * @author mcustiel
+ */
 class RegExp implements ValidatorInterface
 {
+    /**
+     * The given regular expression.
+     *
+     * @var string
+     */
     private $regExp = null;
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
+     */
     public function setSpecification($specification = null)
     {
         if (empty($specification)) {
@@ -34,6 +48,10 @@ class RegExp implements ValidatorInterface
         $this->regExp = $specification;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
+     */
     public function validate($value)
     {
         return is_string($value) && (boolean) preg_match($this->regExp, $value);

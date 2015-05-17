@@ -20,9 +20,22 @@ namespace Mcustiel\SimpleRequest\Validator;
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 
+/**
+ * Checks if a value is of the specified type.
+ *
+ * @author mcustiel
+ */
 class Type implements ValidatorInterface
 {
+    /**
+     *
+     * @var string
+     */
     private $type;
+    /**
+     *
+     * @var array
+     */
     private $validTypes = [
         'array' => [ 'array' ],
         'object' => [ 'object' ],
@@ -33,6 +46,10 @@ class Type implements ValidatorInterface
         'null' => 'NULL',
     ];
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
+     */
     public function setSpecification($specification = null)
     {
         if (!in_array($specification, array_keys($this->validTypes))) {
@@ -43,6 +60,10 @@ class Type implements ValidatorInterface
         $this->type = $specification;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
+     */
     public function validate($value)
     {
         return in_array(gettype($value), $this->validTypes[$this->type]);

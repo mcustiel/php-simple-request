@@ -17,10 +17,19 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
+/**
+ * Checks if a given string has twitter account format.
+ *
+ * @author mcustiel
+ */
 class TwitterAccount extends RegExp
 {
     const REGEXP = '/^@\w{1,15}$/';
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Validator\RegExp::setSpecification()
+     */
     public function setSpecification($specification = null)
     {
         parent::setSpecification(self::REGEXP);

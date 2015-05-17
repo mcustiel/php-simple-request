@@ -22,9 +22,10 @@ use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
 
 /**
- * This validator is not absolutely clear in json schema validation. I took
- * the idea to implement it from the following article:
- * http://spacetelescope.github.io/understanding-json-schema/UnderstandingJSONSchema.pdf
+ * Checks that each element of an object or array validates against its corresponding
+ * validator in a collection, using the name of the property or key.
+ * <a href="http://spacetelescope.github.io/understanding-json-schema/UnderstandingJSONSchema.pdf">Here</a>
+ * you can see examples of use for this validator.
  *
  * @author mcustiel
  */
@@ -35,6 +36,10 @@ class Properties extends AbstractIterableValidator
 
     private $additionalItems = true;
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Validator\AbstractIterableValidator::setSpecification()
+     */
     public function setSpecification($specification = null)
     {
         $this->checkSpecificationIsArray($specification);
@@ -47,6 +52,10 @@ class Properties extends AbstractIterableValidator
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Validator\AbstractAnnotationSpecifiedValidator::validate()
+     */
     public function validate($value)
     {
         if (!is_array($value) && ! ($value instanceof \stdClass)) {
@@ -80,17 +89,33 @@ class Properties extends AbstractIterableValidator
         return $this->validateList($value);
     }
 
-    private function validateWithoutAdditionalItemsConcern($array)
+    /**
+     * Checks all properties against a validator.
+     *
+     * @param array $array
+     *
+     * @return boolean
+     */
+    private function validateWithoutAdditionalItemsConcern(array $array)
     {
         foreach ($array as $value) {
             if (!$this->items->validate($value)) {
                 return false;
             }
         }
+
         return true;
     }
 
-    private function validateList($list)
+    /**
+     * Validates each element against its validator and if additionalItems is a
+     * validator, validates the rest of the elements against it.
+     *
+     * @param array $list
+     *
+     * @return boolean
+     */
+    private function validateList(array $list)
     {
         if ($this->validateTuple($list)) {
             if ($this->additionalItems === true) {
@@ -108,9 +133,18 @@ class Properties extends AbstractIterableValidator
 
             return true;
         }
+
+        return false;
     }
 
-    private function validateTuple($tuple)
+    /**
+     * Validate each element of the array against its corresponding validator.
+     *
+     * @param array $tuple
+     *
+     * @return boolean
+     */
+    private function validateTuple(array $tuple)
     {
         foreach ($this->items as $property => $validator) {
             if (!$validator->validate(isset($tuple[$property]) ? $tuple[$property] : null)) {
@@ -121,6 +155,11 @@ class Properties extends AbstractIterableValidator
         return true;
     }
 
+    /**
+     * Checks and sets items specification.
+     *
+     * @param array|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface $specification
+     */
     private function setItems($specification)
     {
         if ($specification instanceof ValidatorAnnotation) {
@@ -134,6 +173,11 @@ class Properties extends AbstractIterableValidator
         }
     }
 
+    /**
+     * Sets the specified additionalItems.
+     *
+     * @param bool|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface $specification
+     */
     private function setAdditionalItems($specification)
     {
         if (is_bool($specification)) {

@@ -28,13 +28,26 @@ use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
  */
 class Integer implements ValidatorInterface
 {
+    /**
+     * Wheather or not strictly check the value.
+     *
+     * @var boolean
+     */
     private $strict = false;
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
+     */
     public function setSpecification($specification = null)
     {
         $this->strict = (boolean) $specification;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
+     */
     public function validate($value)
     {
         if (!is_numeric($value)) {

@@ -20,22 +20,32 @@ namespace Mcustiel\SimpleRequest\Validator;
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 
+/**
+ * Checks if all the elements of a given array are unique values.
+ *
+ * @author mcustiel
+ */
 class UniqueItems implements ValidatorInterface
 {
-    protected $unique;
-
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
+     */
     public function setSpecification($specification = null)
     {
-        $this->unique = (boolean) $specification;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
+     */
     public function validate($value)
     {
         if (!is_array($value)) {
             return false;
         }
 
-        if (!$this->unique || empty($value)) {
+        if (empty($value)) {
             return true;
         }
 
