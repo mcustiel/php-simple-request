@@ -37,7 +37,7 @@ class RequestBuilder
      * @deprecated Will be deleted in version 2.0. Use RETURN_PARSER_RESPONSE_OBJECT instead
      */
     const ALL_ERRORS_PARSER = 'AllErrorsRequestParser';
-    const RETURN_PARSER_RESPONSE_OBJECT = 'AllErrorsRequestParser';
+    const RETURN_ALL_ERRORS_IN_EXCEPTION = 'AllErrorsRequestParser';
     /**
      *
      * @deprecated Will be deleted in version 2.0. Use THROW_EXCEPTION_ON_FIRST_ERROR instead.
