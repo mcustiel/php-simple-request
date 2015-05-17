@@ -20,10 +20,23 @@ namespace Mcustiel\SimpleRequest\Validator;
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 
+/**
+ * Validates that a given value is in the specified list of values.
+ *
+ * @author mcustiel
+ */
 class Enum implements ValidatorInterface
 {
+    /**
+     *
+     * @var mixed[]
+     */
     protected $items;
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
+     */
     public function setSpecification($specification = null)
     {
         if (!is_array($specification) || count($specification) == 0) {
@@ -34,6 +47,10 @@ class Enum implements ValidatorInterface
         $this->items = $specification;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
+     */
     public function validate($value)
     {
         return in_array($value, $this->items);

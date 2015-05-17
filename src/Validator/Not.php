@@ -17,6 +17,11 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
+/**
+ * This validates that the given value does not validate against the specified validation.
+ *
+ * @author mcustiel
+ */
 class Not extends AbstractAnnotationSpecifiedValidator
 {
     /**
@@ -25,11 +30,19 @@ class Not extends AbstractAnnotationSpecifiedValidator
      */
     private $validator;
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Validator\AbstractAnnotationSpecifiedValidator::setSpecification()
+     */
     public function setSpecification($specification = null)
     {
         $this->validator = $this->checkIfAnnotationAndReturnObject($specification);
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Validator\AbstractAnnotationSpecifiedValidator::validate()
+     */
     public function validate($value)
     {
         return ! $this->validator->validate($value);

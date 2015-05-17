@@ -19,20 +19,40 @@ namespace Mcustiel\SimpleRequest\Validator;
 
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 
+/**
+ * Validates that a given value is a floating point number. If the
+ * specification value is true it checks if it's strictly a float,
+ * if false, an integer number is validated as a float.
+ *
+ * @author mcustiel
+ */
 class Float implements ValidatorInterface
 {
+    /**
+     *
+     * @var boolean
+     */
     private $strict = false;
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
+     */
     public function setSpecification($specification = null)
     {
         $this->strict = (boolean) $specification;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
+     */
     public function validate($value)
     {
         if (!is_numeric($value)) {
             return false;
         }
+        // Convert possible strings to number
         $number = $value + 0;
 
         return is_double($number) || !$this->strict && is_int($number);

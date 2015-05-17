@@ -17,10 +17,19 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
+/**
+ * Validates that a given value is a string with email format.
+ *
+ * @author mcustiel
+ */
 class Email extends RegExp
 {
     const URL_REGEXP = '/^(?:[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+\.)*[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+@(?:(?:(?:[A-Z0-9_](?:[A-Z0-9_\-](?!\.)){0,61}[A-Z0-9_-]?\.)+[A-Z0-9_](?:[A-Z0-9_\-](?!$)){0,61}[A-Z0-9_]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/i';
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Validator\RegExp::setSpecification()
+     */
     public function setSpecification($specification = null)
     {
         parent::setSpecification(self::URL_REGEXP);

@@ -19,6 +19,11 @@ namespace Mcustiel\SimpleRequest\Validator;
 
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 
+/**
+ * Validates that a given value is a string with ipv6 format.
+ *
+ * @author mcustiel
+ */
 class IPV6 implements ValidatorInterface
 {
     const REGEXP_WITHOUT_SHORTCUT = '/^(?:[0-9a-f]{1,4})(?::(?:[0-9a-f]{1,4})){7}$/i';
@@ -26,10 +31,18 @@ class IPV6 implements ValidatorInterface
     const REGEXP_SHORTCUT_AT_START = '/^::(?:[0-9a-f]{1,4})(?::[0-9a-f]{1,4})*$/i';
     const REGEXP_SHORTCUT_AT_END = '/^(?:[0-9a-f]{1,4})(?::(?:[0-9a-f]{1,4}))*::$/i';
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
+     */
     public function setSpecification($specification = null)
     {
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
+     */
     public function validate($value)
     {
         if (is_string($value)) {

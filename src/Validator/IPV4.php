@@ -17,10 +17,19 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
+/**
+ * Validates that a given value is a string with ipv4 format.
+ *
+ * @author mcustiel
+ */
 class IPV4 extends RegExp
 {
     const URL_REGEXP = '/^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9][0-9]|[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9][0-9]|[0-9])){3}$/';
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Validator\RegExp::setSpecification()
+     */
     public function setSpecification($specification = null)
     {
         parent::setSpecification(self::URL_REGEXP);

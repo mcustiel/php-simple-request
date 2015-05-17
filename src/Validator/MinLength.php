@@ -19,8 +19,18 @@ namespace Mcustiel\SimpleRequest\Validator;
 
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 
+/**
+ * Validates that the length of a string is greater than or equal to
+ * the specified value.
+ *
+ * @author mcustiel
+ */
 class MinLength extends AbstractSizeValidator
 {
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Validator\AbstractSizeValidator::validate()
+     */
     public function validate($value)
     {
         if (is_string($value) && strlen($value) >= $this->size) {

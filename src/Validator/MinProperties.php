@@ -20,8 +20,18 @@ namespace Mcustiel\SimpleRequest\Validator;
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 
+/**
+ * Validates that the number of elements/properties in an array or
+ * object is greater than or equal to the specified value.
+ *
+ * @author mcustiel
+ */
 class MinProperties extends MinItems
 {
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Validator\MinItems::validate()
+     */
     public function validate($value)
     {
         return ($value instanceof \stdClass && count((array) $value) >= $this->size)

@@ -20,10 +20,23 @@ namespace Mcustiel\SimpleRequest\Validator;
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 
+/**
+ * Validates that the given value is a number multiple of the specified number.
+ *
+ * @author mcustiel
+ */
 class MultipleOf implements ValidatorInterface
 {
+    /**
+     *
+     * @var float|integer
+     */
     private $number;
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
+     */
     public function setSpecification($specification = null)
     {
         if (empty($specification) || !is_numeric($specification) || $specification <= 0) {
@@ -34,12 +47,16 @@ class MultipleOf implements ValidatorInterface
         $this->number = $specification;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
+     */
     public function validate($value)
     {
         if (!is_numeric($value)) {
             return false;
         }
 
-        return is_int($value / $this->number + 0);
+        return $value / $this->number == round($value / $this->number);
     }
 }

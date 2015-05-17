@@ -22,9 +22,10 @@ use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
 
 /**
- * This validator is not absolutely clear in json schema validation. I took
- * the idea to implement it from the following article:
- * http://spacetelescope.github.io/understanding-json-schema/UnderstandingJSONSchema.pdf
+ * Checks that each element of an array validates against its corresponding
+ * validator in a collection.
+ * <a href="http://spacetelescope.github.io/understanding-json-schema/UnderstandingJSONSchema.pdf">Here</a>
+ * you can see examples of use for this validator.
  *
  * @author mcustiel
  */
@@ -33,8 +34,15 @@ class Items extends AbstractIterableValidator
     const ITEMS_INDEX = 'items';
     const ADDITIONAL_ITEMS_INDEX = 'additionalItems';
 
+    /**
+     * @var boolean
+     */
     private $additionalItems = true;
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Validator\AbstractIterableValidator::setSpecification()
+     */
     public function setSpecification($specification = null)
     {
         $this->checkSpecificationIsArray($specification);
@@ -47,6 +55,10 @@ class Items extends AbstractIterableValidator
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Validator\AbstractAnnotationSpecifiedValidator::validate()
+     */
     public function validate($value)
     {
         if (!is_array($value)) {
@@ -60,7 +72,7 @@ class Items extends AbstractIterableValidator
         }
 
         if ($this->items instanceof ValidatorInterface) {
-            return $this->validateWithoutAdditionalItemsConcern($value);
+            return $this->validateArray($value, $this->items);
         }
 
         // From json-schema definition: if the value of "additionalItems" is boolean value false and
@@ -76,17 +88,16 @@ class Items extends AbstractIterableValidator
         return $this->validateList($value);
     }
 
-    private function validateWithoutAdditionalItemsConcern($array)
-    {
-        foreach ($array as $value) {
-            if (!$this->items->validate($value)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private function validateList($list)
+    /**
+     * Validates each element against its corresponding validator. Then,
+     * if additionalItems is a validator, checks the rest again those
+     * validators.
+     *
+     * @param array $list
+     *
+     * @return boolean
+     */
+    private function validateList(array $list)
     {
         $count = count($this->items);
         return $this->validateTuple($list) && (
@@ -97,7 +108,15 @@ class Items extends AbstractIterableValidator
         );
     }
 
-    private function validateTuple($tuple)
+    /**
+     * Validates each one of the elements of the array against
+     * its corresponding specified validator.
+     *
+     * @param array $tuple
+     *
+     * @return boolean
+     */
+    private function validateTuple(array $tuple)
     {
         $keys = array_keys($tuple);
         $index = 0;
@@ -117,6 +136,11 @@ class Items extends AbstractIterableValidator
         return true;
     }
 
+    /**
+     * Checks and sets the specified items values.
+     *
+     * @param array|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface $specification
+     */
     private function setItems($specification)
     {
         if ($specification instanceof ValidatorAnnotation) {
@@ -128,6 +152,11 @@ class Items extends AbstractIterableValidator
         }
     }
 
+    /**
+     * Checks and sets the specified additionalItems.
+     *
+     * @param boolean|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface $specification
+     */
     private function setAdditionalItems($specification)
     {
         if (is_bool($specification)) {
@@ -139,6 +168,12 @@ class Items extends AbstractIterableValidator
         }
     }
 
+    /**
+     * Validates an array against a specific validator.
+     *
+     * @param array                                                 $array
+     * @param \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface $validator
+     */
     private function validateArray(array $array, ValidatorInterface $validator)
     {
         foreach ($array as $item) {

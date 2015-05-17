@@ -20,8 +20,18 @@ namespace Mcustiel\SimpleRequest\Validator;
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 
+/**
+ * Validates that the number of elements in an array is lower than or equal to
+ * the specified value.
+ *
+ * @author mcustiel
+ */
 class MaxItems extends AbstractSizeValidator
 {
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Validator\AbstractSizeValidator::validate()
+     */
     public function validate($value)
     {
         return is_array($value) && count($value) <= $this->size;

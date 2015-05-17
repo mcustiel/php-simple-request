@@ -19,6 +19,13 @@ namespace Mcustiel\SimpleRequest\Validator;
 
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 
+/**
+ * Validates that a given value is an integer number. If the
+ * specification value is true it checks if it's strictly an integer,
+ * if false, an integer in float format is validated as an integer.
+ *
+ * @author mcustiel
+ */
 class Integer implements ValidatorInterface
 {
     private $strict = false;
@@ -34,6 +41,12 @@ class Integer implements ValidatorInterface
             return false;
         }
 
-        return ($this->strict && is_int($value)) || is_int($value + 0);
+        $number = $value + 0;
+
+        if ($this->strict) {
+            return is_int($number);
+        }
+
+        return $number == round($number);
     }
 }

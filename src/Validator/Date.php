@@ -19,10 +19,23 @@ namespace Mcustiel\SimpleRequest\Validator;
 
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 
+/**
+ * Validates that a given value has the specified date format.
+ *
+ * @author mcustiel
+ */
 class Date implements ValidatorInterface
 {
+    /**
+     *
+     * @var string
+     */
     private $specification = \DateTime::ISO8601;
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
+     */
     public function setSpecification($specification = null)
     {
         if ($specification !== null) {
@@ -30,6 +43,10 @@ class Date implements ValidatorInterface
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
+     */
     public function validate($value)
     {
         $date = \DateTime::createFromFormat($this->specification, $value);

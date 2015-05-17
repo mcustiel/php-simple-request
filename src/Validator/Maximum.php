@@ -20,10 +20,23 @@ namespace Mcustiel\SimpleRequest\Validator;
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 
+/**
+ * Validates that a given value is lower than or equal to the specified value.
+ *
+ * @author mcustiel
+ */
 class Maximum implements ValidatorInterface
 {
+    /**
+     *
+     * @var float|integer
+     */
     private $maximum;
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
+     */
     public function setSpecification($specification = null)
     {
         if (!is_numeric($specification)) {
@@ -34,6 +47,10 @@ class Maximum implements ValidatorInterface
         $this->maximum = $specification;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
+     */
     public function validate($value)
     {
         if (!is_numeric($value)) {
