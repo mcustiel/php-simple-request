@@ -161,7 +161,7 @@ use Your\Namespace\PersonRequest;
 
 $requestBuilder = new RequestBuilder();
 
-$parserResponse = $requestBuilder->parseRequest($_POST, PersonRequest::class, RequestBuilder::ALL_ERRORS_PARSER);
+$parserResponse = $requestBuilder->parseRequest($_POST, PersonRequest::class, RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION);
 if (!$parserResponse->isValid()) {
     die (var_export($parserResponse->getErrors(), true));
 }
@@ -169,6 +169,8 @@ $personRequest = $parserResponse->getRequestObject();
 
 // Now you can use the validated and filtered personRequest to access the requestData.
 ```
+
+Please note that currently this behaviour is deprecated. In version 2.0 an exception will be thrown, and the exception will contain a getErrors methods that returns all errors. This way, both parser behave in the same way: they return the parsed object or throw an exception. 
 
 #### File caching:
 
@@ -237,6 +239,21 @@ Converts all characters in the given string to uppercase.
 Validators
 ----------
 
+The validators marked with an * behave similarly to json-schema defined validators. Please see: [JSON Schema definition](http://json-schema.org/latest/json-schema-validation.html#anchor12) and [understanding JSON Schema](spacetelescope.github.io/understanding-json-schema/).
+
+#### AnyOf*
+
+This validator receives a list of validators as parameter and checks if at least one of them validates a given value. 
+
+##### Example:
+```php
+/**
+ * @AnyOf(@Integer, @IPV6)
+ */
+private $integerOrIpv6;
+// Will match an integer or an IPV6.
+```
+
 #### CustomValidator
 
 This is a special validator annotation that allows you to specify your own validator class and use it to validate the value in the field. It accepts two parameters: 
@@ -253,22 +270,39 @@ private $somethingHardToCheck;
 // Will call Vendor\\App\\MyValidators\\MyValidator::validate($value) using "yourSpecifier".
 ```
 
+#### DateTime*
+
+This validator checks that the given string is a date and its format is compatible with \DateTime::RFC3339 (Y-m-d\TH:i:sP)
+
+##### Example:
+```php
+/**
+ * @DateTime
+ */
+private $dateTime;
+// Matches 2005-08-15T15:52:01+00:00
+```
+
 **Default specifier value:** \DateTime::ISO8601
 
-#### Date
+#### DateTimeFormat
 
 This validator checks that the given string is a date and its format is compatible with the specified date format. The format to specify as the annotation value must be compatible with the php method \DateTime::createFromFormat.
 
 ##### Example:
 ```php
 /**
- * @Date("M d, Y")
+ * @DateTimeFormat("M d, Y")
  */
 private $dayOfBirth;
 // Matches Oct 17, 1981
 ```
 
 **Default specifier value:** \DateTime::ISO8601
+
+#### Definition*
+
+This validator is an alias for CustomValidator.
 
 #### Email
 
@@ -280,6 +314,45 @@ This validator checks that the given value is a string containing an email. This
  * @Email
  */
 private $email;
+```
+
+#### Enum*
+
+This validator checks that the given value is in a specified collection of values.
+
+##### Example:
+```php
+/**
+ * @Enum('value1', 'value2', 'value3')
+ */
+private $enum;
+// Will match the strings value1, value2 or value3.
+```
+
+#### ExclusiveMaximum*
+
+This validator checks that the given value is lower than the specified one.
+
+##### Example:
+```php
+/**
+ * @ExclusiveMaximum(0)
+ */
+private $negativeReals;
+// Will match any number < 0.
+```
+
+#### ExclusiveMinimum*
+
+This validator checks that the given value is greater than the specified one.
+
+##### Example:
+```php
+/**
+ * @ExclusiveMinimum(0)
+ */
+private $age;
+// Will match any number > 0.
 ```
 
 #### Float
@@ -308,15 +381,23 @@ private $meters;
 
 #### Integer
 
-This validator checks that the given value is numeric and it's an integer. It does not expect any modifier.
+This validator checks that the given value is numeric and it's an integer. It expects a boolean modifier, strict, that indicates if integers in float format like 1.0, 2.0, etc. should be validated as integers. Default strict value: true, meaning that no float format accepted.
 
-##### Example:
+##### Examples:
 ```php
 /**
  * @Integer
  */
 private $seconds;
 // accepts 1, 2, -3, 0, etc.
+```
+
+```php
+/**
+ * @Integer(false)
+ */
+private $majorVersion;
+// accepts 1, 2.0, 3, etc.
 ```
 
 #### IPV4
@@ -345,9 +426,50 @@ private $ip;
 // accepts ::A000:A000, A000::A000, A000::A000::, 2001:0000:3238:DFE1:63:0000:0000:FEFB, etc.
 ```
 
-#### MaxLength
+#### Items*
 
-This validator checks that the field's length is equal to or less than the specification. The specification value must be an integer. The field can be a string or an array.
+This validator checks that each element of a given array matches a specified set of validators in its corresponding index. It expects two parameters: items and additionalItems. Items contains the validations for the array, it can be a validator (in which case every element must match it) or an array of validators (in which case each element must match the validator in the same position); its default value is an empty array. AdditionalItems can be a boolean or a validator; if it's a boolean true, items without a validator in the same position will not be checked, if it false it will not accept values without validator in the same position and if it's a validator, all items without a validator in the same position must match it. For a detailed and good description please see the aforementioned documents about JSON Schema. 
+**Default specifier values:**
+* items = []
+* additionalItems = true
+
+```php
+/**
+ * @Items(items=@Integer, additionalItems=true)
+ */
+private $arrayOfInt;
+// accepts Arrays of int of any size.
+```
+
+#### Maximum*
+
+This validator checks that the given value is lower than or equal to the specified one.
+
+##### Example:
+```php
+/**
+ * @Maximum(0)
+ */
+private $negativeRealsOrZero;
+// Will match any number <= 0.
+```
+
+#### MaxItems*
+
+This validator checks that the field's is an array and it has an amount of items equal to or less than the specification. The specification value must be an integer greater than 0. The field must be an array.
+
+##### Example:
+```php
+/**
+ * @MaxItems(3)
+ */
+private $stoogesOnScreen;
+// accepts [], ['curly'], ['curly', 'larry'] and ['curly', 'larry', 'moe'].
+```
+
+#### MaxLength*
+
+This validator checks that the field's length is equal to or less than the specification. The specification value must be an integer. The field must be a string.
 
 ##### Example:
 ```php
@@ -360,7 +482,46 @@ private $pin;
 
 **Default specifier value:** 255
 
-#### MinLength
+#### MaxProperties*
+
+This annotation validates that a given array or stdClass contains, at most, the specified number of items or properties. It's analog to MaxItems.
+
+##### Example:
+```php
+/**
+ * @MaxProperties(3)
+ */
+private $stoogesOnScreen;
+// accepts (stdClass) [], (stdClass)['stooge1'->'curly'], (array)['stooge1'=>'curly', 'stooge2'=>'larry'], ['curly', 'larry', 'moe'].
+```
+
+#### Minimum*
+
+This validator checks that the given value is greater than or equal to the specified one.
+
+##### Example:
+```php
+/**
+ * @Minimum(-273)
+ */
+private $temperatureInCelsius;
+// Will match any number >= -273.
+```
+
+#### MinItems*
+
+This validator checks that the field's is an array and it has an amount of items equal to or greater than the specification. The specification value must be an integer greater than 0. The field must be an array.
+
+##### Example:
+```php
+/**
+ * @MinItems(2)
+ */
+private $players;
+// accepts ['alice', 'bob'], ['alice', 'bob', 'carol'].
+```
+
+#### MinLength*
 
 This validator checks that the field's length is equal to or greater than the specification. The specification value must be an integer. The field can be a string or an array.
 

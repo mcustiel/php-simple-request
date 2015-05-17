@@ -33,7 +33,7 @@ class Integer implements ValidatorInterface
      *
      * @var boolean
      */
-    private $strict = false;
+    private $strict = true;
 
     /**
      * (non-PHPdoc)

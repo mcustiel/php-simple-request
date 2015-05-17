@@ -9,21 +9,6 @@ use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
  *
  * @author mcustiel
  */
-class Definition extends ValidatorAnnotation
+class Definition extends CustomValidator
 {
-    /**
-     *
-     * @var string
-     */
-    public $class;
-
-    public function __construct()
-    {
-        parent::__construct(null);
-    }
-
-    public function getAssociatedClass()
-    {
-        return $this->class;
-    }
 }
