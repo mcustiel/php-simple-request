@@ -27,6 +27,7 @@ abstract class AbstractValidatorTest extends \PHPUnit_Framework_TestCase
             'exclusiveMaximum' => 3,
             'exclusiveMinimum' => 8,
             'float' => '5.1',
+            'hostName' => 'es.wikipedia.com',
             'integer' => '20',
             'ipv4' => '192.168.0.1',
             'ipv6' => '2001:0db8:85a3:08d3:1319:8a2e:0370:7334',

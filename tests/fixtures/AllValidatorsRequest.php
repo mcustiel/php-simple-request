@@ -57,6 +57,12 @@ class AllValidatorsRequest
      */
     private $float;
     /**
+     * @Annot\HostName
+     *
+     * @var unknown
+     */
+    private $hostName;
+    /**
      * @Annot\Integer
      *
      * @var unknown
@@ -290,6 +296,17 @@ class AllValidatorsRequest
     public function setFloat($float)
     {
         $this->float = $float;
+        return $this;
+    }
+
+    public function getHostName()
+    {
+        return $this->hostName;
+    }
+
+    public function setHostName($hostName)
+    {
+        $this->hostName = $hostName;
         return $this;
     }
 
