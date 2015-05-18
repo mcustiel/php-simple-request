@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+# Version 1.2.0
+
+* Fixed bugs in UniqueItems validator.
+* Deprecated constants in RequestBuilder in favor of new constants.
+* Deprecated ParserResponse class.
+* Changed default behaviour of Integer validator.
+* Improved code of Definition annotation.
+
 # Version 1.1.1
 
 * Bugfixes in multipleOf, Integer and Float validators.
