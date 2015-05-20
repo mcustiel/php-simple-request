@@ -71,14 +71,12 @@ class RequestBuilder
         $className,
         $behaviour = self::THROW_EXCEPTION_ON_FIRST_ERROR
     ) {
-        if (!is_array($request) && ! ($request instanceof \stdClass)) {
-            throw new InvalidRequestException(
-                'Request builder is intended to be used with arrays or instances of \\stdClass'
-            );
-        }
+        $this->checkRequestType($request);
 
-        $parserClass = '\\Mcustiel\\SimpleRequest\\' . $behaviour;
-        $requestParser = $this->generateRequestParserObject($className, $parserClass);
+        $requestParser = $this->generateRequestParserObject(
+            $className,
+            '\\Mcustiel\\SimpleRequest\\' . $behaviour
+        );
 
         return $requestParser->parse($request);
     }
@@ -123,5 +121,14 @@ class RequestBuilder
             ;
         }
         $this->cache = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::DEFAULT_CACHE_PATH;
+    }
+
+    private function checkRequestType($request)
+    {
+        if (!is_array($request) && ! ($request instanceof \stdClass)) {
+            throw new InvalidRequestException(
+                'Request builder is intended to be used with arrays or instances of \\stdClass'
+            );
+        }
     }
 }
