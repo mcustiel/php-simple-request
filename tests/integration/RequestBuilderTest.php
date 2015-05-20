@@ -5,9 +5,29 @@ use Fixtures\PersonRequest;
 use Fixtures\AllValidatorsRequest;
 use Mcustiel\SimpleRequest\RequestBuilder;
 use Mcustiel\SimpleRequest\Exception\InvalidRequestException;
+use Fixtures\CoupleRequest;
 
 class RequestBuilderTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     *
+     * @var \Mcustiel\SimpleRequest\RequestBuilder
+     */
+    private $builderWithCache;
+    /**
+     *
+     * @var \Mcustiel\SimpleRequest\RequestBuilder
+     */
+    private $builderWithoutCache;
+
+    public function __construct()
+    {
+        $this->builderWithCache = new RequestBuilder();
+        $cacheConfig = new \stdClass();
+        $cacheConfig->disabled = true;
+        $this->builderWithoutCache = new RequestBuilder($cacheConfig);
+    }
+
     public function testBuildARequestAndFilter()
     {
         $request = [
@@ -15,34 +35,40 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             'lastName' => 'DOE',
             'age' => 30
         ];
-        $builder = new RequestBuilder();
-        $parserResponse = $builder->parseRequest($request, PersonRequest::class, RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION);
-        $personRequest = $this->assertPersonIsOk($parserResponse);
+        $parserResponse = $this->builderWithoutCache->parseRequest(
+            $request,
+            PersonRequest::class,
+            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+        );
+        $this->assertPersonIsOk($parserResponse);
     }
 
     public function testBuildARequestAndFilterWithCacheEnabled()
     {
-        $cacheConfig = new \stdClass();
-        $cacheConfig->enabled = true;
-
         $request = [
             'firstName' => '  John  ',
             'lastName' => 'DOE',
             'age' => 30
         ];
-        $builder = new RequestBuilder($cacheConfig);
-        $parserResponse = $builder->parseRequest($request, PersonRequest::class, RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION);
-        $personRequest = $this->assertPersonIsOk($parserResponse);
+        $parserResponse = $this->builderWithCache->parseRequest(
+            $request,
+            PersonRequest::class,
+            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+        );
+        $this->assertPersonIsOk($parserResponse);
 
-        $builderCached = new RequestBuilder($cacheConfig);
-        $parserResponse = $builderCached->parseRequest($request, PersonRequest::class, RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION);
-        $personRequest = $this->assertPersonIsOk($parserResponse);
+        $builderCached = new RequestBuilder();
+        $parserResponse = $builderCached->parseRequest(
+            $request,
+            PersonRequest::class,
+            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+        );
+        $this->assertPersonIsOk($parserResponse);
     }
 
-    public function testBuildARequestFromCacheWithoutNameSpecified()
+    public function testBuildARequestFromCacheWithPathSpecified()
     {
         $cacheConfig = new \stdClass();
-        $cacheConfig->enabled = true;
         $cacheConfig->path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'php-simple-request-alt/';
         $class = new \stdClass();
         $class->key1 = 'val1';
@@ -95,9 +121,12 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             'lastName' => 'DOE',
             'age' => 30
         ];
-        $builder = new RequestBuilder();
         try {
-            $parserResponse = $builder->parseRequest($request, PersonRequest::class, RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION);
+            $this->builderWithoutCache->parseRequest(
+                $request,
+                PersonRequest::class,
+                RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+            );
             $this->fail('Exception expected to be thrown');
         } catch (InvalidRequestException $e) {
             $this->assertTrue(isset($e->getErrors()['firstName']));
@@ -111,9 +140,12 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             'lastName' => 'DOE',
             'age' => 30
         ];
-        $builder = new RequestBuilder();
         try {
-            $parserResponse = $builder->parseRequest($request, PersonRequest::class, RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION);
+            $this->builderWithoutCache->parseRequest(
+                $request,
+                PersonRequest::class,
+                RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+            );
             $this->fail('Exception expected to be thrown');
         } catch (InvalidRequestException $e) {
             $this->assertTrue(isset($e->getErrors()['firstName']));
@@ -126,13 +158,47 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             'lastName' => 'DOE',
             'age' => 30
         ];
-        $builder = new RequestBuilder();
         try {
-            $parserResponse = $builder->parseRequest($request, PersonRequest::class, RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION);
+            $this->builderWithoutCache->parseRequest(
+                $request,
+                PersonRequest::class,
+                RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+            );
             $this->fail('Exception expected to be thrown');
         } catch (InvalidRequestException $e) {
             $this->assertTrue(isset($e->getErrors()['firstName']));
         }
+    }
+
+    public function testBuildARequestWithInstanceOfClassAnnotations()
+    {
+        $request = [
+            'togetherSince' => '2001-09-13',
+            'person1' => [
+                'firstName' => '  John  ',
+                'lastName' => 'DOE',
+                'age' => 30
+            ],
+            'person2' => [
+                'firstName' => '  Jane  ',
+                'lastName' => 'DoE',
+                'age' => 41
+            ]
+        ];
+        /**
+         * @var $parserResponse \Fixtures\CoupleRequest
+         */
+        $parserResponse = $this->builderWithoutCache->parseRequest(
+            $request,
+            CoupleRequest::class,
+            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+        );
+        $this->assertPersonIsOk($parserResponse->getPerson1());
+        $personRequest = $parserResponse->getPerson2();
+        $this->assertInstanceOf(PersonRequest::class, $personRequest);
+        $this->assertEquals('Jane', $personRequest->getFirstName());
+        $this->assertEquals('DOE', $personRequest->getLastName());
+        $this->assertEquals(41, $personRequest->getAge());
     }
 
     private function assertPersonIsOk($personRequest)
@@ -141,6 +207,5 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('John', $personRequest->getFirstName());
         $this->assertEquals('DOE', $personRequest->getLastName());
         $this->assertEquals(30, $personRequest->getAge());
-        return $personRequest;
     }
 }

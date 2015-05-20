@@ -1,9 +1,10 @@
 <?php
+
 namespace Mcustiel\SimpleRequest\Annotation;
 
 /**
  * @Annotation
- * @Target({ "PROPERTY" })
+ * @Target("PROPERTY")
  *
  * @author mcustiel
  */

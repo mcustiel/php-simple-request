@@ -1,7 +1,6 @@
 <?php
 namespace Fixtures;
 
-use Mcustiel\SimpleRequest\Annotation\Name;
 use Mcustiel\SimpleRequest\Annotation\Validator\NotNull;
 use Mcustiel\SimpleRequest\Annotation\Validator\NotEmpty;
 use Mcustiel\SimpleRequest\Annotation\Validator\Integer;

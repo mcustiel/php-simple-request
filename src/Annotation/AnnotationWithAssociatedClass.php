@@ -14,5 +14,4 @@ class AnnotationWithAssociatedClass extends RequestAnnotation
     {
         return $this->associatedClass;
     }
-
 }
