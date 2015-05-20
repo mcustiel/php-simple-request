@@ -19,6 +19,7 @@ namespace Mcustiel\SimpleRequest\Util;
 
 use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
+
 /**
  * Trait with the needed methods to build an object from an annotation. The class
  * that use this trait shouls implement the method getClassForType. It's used by

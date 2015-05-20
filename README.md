@@ -119,11 +119,41 @@ class PersonRequest
 }
 ```
 
-**Note**: php-simple-request executes the filters and then it executes the validations.
+**Note**: php-simple-request executes the filters first and then it executes the validations.
+
+#### Sub-objects
+
+php-simple-request also allows you to specify the class to which parse a property's value using the annotation ParseAs. It's better to see it in an example:
+
+Let's say we want to create a Couple class that contains two objects of type Person, which represent the members of the couple. To specify that the properties must be parsed as Persons we use ParseAs.
+
+```php
+use Mcustiel\SimpleRequest\Annotation as SRA;
+
+class CoupleRequest
+{
+    /**
+     * @SRA\Validator\DateTimeFormat("Y-m-d")
+     */
+    private $togetherSince;
+    /**
+     * @SRA\ParseAs("\Your\Namespace\PersonRequest")
+     */
+    private $person1;
+    /**
+     * @SRA\ParseAs("\Your\Namespace\PersonRequest")
+     */
+    private $person2;
+    
+    //... Getters and setters (setters are required by the library)
+``` 
+
+php-simple-request will automatically convert the value from the request into the type PersonRequest. 
+**Note:** If a property has the ParseAs annotation and also validations and filters, php-simple-request will ignore them and the validation will be done using the annotations from the target class.
 
 #### Parse the request and get an object representation
 
-To parse the request and convert it to your object representation, just receive the request using the RequestBuilder object (the field names in the request must have the same name to the fields in the class you defined). See an example:
+To parse the request and convert it to your object representation, just receive the request using the RequestBuilder object (the field names in the request must have the same name to the fields in the class you defined). You must call the parseRequest method with an array or an object of type \stdClass. See an example:
 
 ```php
 use Mcustiel\SimpleRequest\RequestBuilder;
@@ -149,7 +179,7 @@ Also it can be used for some REST json request:
 
 ```php
 $request = file_get_contents('php://input');
-$personRequest = $requestBuilder->parseRequest(json_decode($request, true), PersonRequest::class);
+$personRequest = $requestBuilder->parseRequest(json_decode($request), PersonRequest::class);
 ```
 
 This behavior throws an exception when it finds an error in the validation. It's the default behavior.
@@ -158,19 +188,21 @@ There is an alternative behavior in which you can obtain a list of validation er
 ```php
 use Mcustiel\SimpleRequest\RequestBuilder;
 use Your\Namespace\PersonRequest;
+use Mcustiel\SimpleRequest\Exceptions\InvalidRequestException;
 
 $requestBuilder = new RequestBuilder();
 
-$parserResponse = $requestBuilder->parseRequest($_POST, PersonRequest::class, RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION);
-if (!$parserResponse->isValid()) {
-    die (var_export($parserResponse->getErrors(), true));
+try {
+    $personRequest = $requestBuilder->parseRequest(
+        $_POST, 
+        PersonRequest::class, 
+        RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+    );
+} catch (InvalidRequestException $e) {
+    $listOfErrors = $e->getErrors();   
 }
-$personRequest = $parserResponse->getRequestObject();
-
 // Now you can use the validated and filtered personRequest to access the requestData.
 ```
-
-Please note that currently this behaviour is deprecated. In version 2.0 an exception will be thrown, and the exception will contain a getErrors methods that returns all errors. This way, both parser behave in the same way: they return the parsed object or throw an exception. 
 
 #### File caching:
 

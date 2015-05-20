@@ -12,13 +12,13 @@ class CoupleRequest
      */
     private $togetherSince;
     /**
-     * @SRA\InstanceOfClass("\Fixtures\PersonRequest")
+     * @SRA\ParseAs("\Fixtures\PersonRequest")
      *
      * @var \Fixtures\PersonRequest
      */
     private $person1;
     /**
-     * @SRA\InstanceOfClass("\Fixtures\PersonRequest")
+     * @SRA\ParseAs("\Fixtures\PersonRequest")
      *
      * @var \Fixtures\PersonRequest
      */

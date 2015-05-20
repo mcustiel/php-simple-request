@@ -8,6 +8,6 @@ namespace Mcustiel\SimpleRequest\Annotation;
  *
  * @author mcustiel
  */
-class InstanceOfClass extends RequestAnnotation
+class ParseAs extends RequestAnnotation
 {
 }
