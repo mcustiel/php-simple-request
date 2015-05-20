@@ -31,20 +31,20 @@ class FirstErrorRequestParser extends RequestParser
     /**
      * Parses a request and returns the object obtained.
      *
-     * @param array $request
+     * @param array|\stdClass $request
      *
      * @return object
      */
-    public function parse(array $request)
+    public function parse($request)
     {
         $object = new $this->requestObject;
 
         foreach ($this->properties as $propertyParser) {
+            $propertyName = $propertyParser->getName();
             $value = $propertyParser->parse(
-                isset($request[$propertyParser->getName()]) ? $request[$propertyParser->getName()]
-                : null
+                $this->getFromRequest($request, $propertyName)
             );
-            $method = 'set' . ucfirst($propertyParser->getName());
+            $method = 'set' . ucfirst($propertyName);
             $object->$method($value);
         }
 

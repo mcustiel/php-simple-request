@@ -20,10 +20,14 @@ namespace Mcustiel\SimpleRequest;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Mcustiel\SimpleRequest\Util\ValidatorBuilder;
 use Mcustiel\SimpleRequest\Exception\InvalidAnnotationException;
+use Mcustiel\SimpleRequest\Exception\InvalidRequestException;
 use Mcustiel\SimpleRequest\Annotation\RequestAnnotation;
 use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
 use Mcustiel\SimpleRequest\Annotation\FilterAnnotation;
 use Mcustiel\SimpleRequest\Util\FilterBuilder;
+use Mcustiel\SimpleRequest\Validator\Type;
+use Mcustiel\SimpleRequest\Annotation\InstanceOfClass;
+use Mcustiel\SimpleRequest\Annotation\AnnotationWithAssociatedClass;
 
 /**
  * Builds a request by parsing all the resulting object's annotations and running
@@ -70,16 +74,22 @@ class RequestBuilder
     /**
      * Main method of this class. Used to convert a request to an object of a given class by
      * using a requestParser.
-     * 
-     * @param array  $request   The request to convert to an object.
+     *
+     * @param array|\stdClass  $request   The request to convert to an object.
      * @param string $className The class of the object to which the request must be converted.
      * @param string $behaviour The behaviour of the parser.
      */
     public function parseRequest(
-        array $request,
+        $request,
         $className,
         $behaviour = self::THROW_EXCEPTION_ON_FIRST_ERROR
     ) {
+        if (!is_array($request) && ! ($request instanceof \stdClass)) {
+            throw new InvalidRequestException(
+                'Request builder is intended to be used with arrays or instances of \\stdClass'
+            );
+        }
+
         $parserClass = '\\Mcustiel\\SimpleRequest\\' . $behaviour;
         $requestParser = $this->generateRequestParserObject($className, $parserClass);
 
@@ -107,6 +117,7 @@ class RequestBuilder
                 mkdir($this->cache, 0777, true);
             }
             file_put_contents($fileName, serialize($return));
+
             return $return;
         }
 
@@ -118,7 +129,7 @@ class RequestBuilder
         $return = new $parserClass($name);
         $return->setRequestObject($className);
         foreach ($class->getProperties() as $property) {
-            $propertyParser = new PropertyParser($property->getName());
+            $propertyParser = new PropertyParser($property->getName(), $this);
             foreach ($this->annotationParser->getPropertyAnnotations($property) as $propertyAnnotation) {
                 $this->parsePropertyAnnotation($propertyAnnotation, $propertyParser);
             }
@@ -131,7 +142,7 @@ class RequestBuilder
         RequestAnnotation $propertyAnnotation,
         PropertyParser $propertyParser
     ) {
-        if ($propertyAnnotation instanceof RequestAnnotation) {
+        if ($propertyAnnotation instanceof AnnotationWithAssociatedClass) {
             $associatedClass = $propertyAnnotation->getAssociatedClass();
             if ($propertyAnnotation instanceof ValidatorAnnotation) {
                 $propertyParser->addValidator(
@@ -148,6 +159,8 @@ class RequestBuilder
                     ->build()
                 );
             }
+        } elseif ($propertyAnnotation instanceof InstanceOfClass) {
+            $propertyParser->setType($propertyAnnotation->getValue());
         }
     }
 

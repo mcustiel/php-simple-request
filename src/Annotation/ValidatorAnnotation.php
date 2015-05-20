@@ -1,6 +1,6 @@
 <?php
 namespace Mcustiel\SimpleRequest\Annotation;
 
-abstract class ValidatorAnnotation extends RequestAnnotation
+abstract class ValidatorAnnotation extends AnnotationWithAssociatedClass
 {
 }

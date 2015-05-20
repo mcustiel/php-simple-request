@@ -33,25 +33,25 @@ class AllErrorsRequestParser extends RequestParser
      * Parses a request and returns a response object containing the converted object
      * and the list of errors.
      *
-     * @param array $request
+     * @param array|\stdClass $request
      *
      * @return ParserResponse
      */
-    public function parse(array $request)
+    public function parse($request)
     {
         $object = new $this->requestObject;
         $invalidValues = [];
 
         foreach ($this->properties as $propertyParser) {
+            $propertyName = $propertyParser->getName();
             try {
                 $value = $propertyParser->parse(
-                    isset($request[$propertyParser->getName()])
-                    ? $request[$propertyParser->getName()] : null
+                    $this->getFromRequest($request, $propertyName)
                 );
-                $method = 'set' . ucfirst($propertyParser->getName());
+                $method = 'set' . ucfirst($propertyName);
                 $object->$method($value);
             } catch (InvalidValueException $e) {
-                $invalidValues[$propertyParser->getName()] = $e->getMessage();
+                $invalidValues[$propertyName] = $e->getMessage();
             }
         }
         $this->checkIfRequestIsValidOrThrowException($invalidValues);

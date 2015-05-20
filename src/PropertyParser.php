@@ -4,6 +4,7 @@ namespace Mcustiel\SimpleRequest;
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
 use Mcustiel\SimpleRequest\Exception\InvalidValueException;
+use Mcustiel\SimpleRequest\Exception\InvalidAnnotationException;
 
 /**
  * Utility class used to parse the value of a property.
@@ -28,17 +29,29 @@ class PropertyParser
      * @var string
      */
     private $name;
+    /**
+     *
+     * @var string
+     */
+    private $type;
+    /**
+     *
+     * @var RequestBuilder
+     */
+    private $requestBuilder;
 
     /**
      * Class constructor. Initialized with the property name.
      *
      * @param string $name
      */
-    public function __construct($name)
+    public function __construct($name, RequestBuilder $requestBuilder)
     {
         $this->validators = [];
         $this->filters = [];
+        $this->type = null;
         $this->name = $name;
+        $this->requestBuilder = $requestBuilder;
     }
 
     /**
@@ -72,6 +85,16 @@ class PropertyParser
     }
 
     /**
+     *
+     * @param unknown $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
      * Filters and validates a value. And return the filtered value.
      * It throws an exception if the value is not valid.
      *
@@ -81,6 +104,9 @@ class PropertyParser
      */
     public function parse($value)
     {
+        if ($this->type !== null) {
+            return $this->createInstanceOfTypeFromValue($value);
+        }
         $return = $this->runFilters($value);
         $this->validate($return);
 
@@ -122,5 +148,23 @@ class PropertyParser
         }
 
         return $return;
+    }
+
+    /**
+     * Parses the value as it is an instance of the class specified in type property.
+     *
+     * @param array|\stdClass $value The value to parse and convert to an object
+     *
+     * @throws \Mcustiel\SimpleRequest\Exception\InvalidAnnotationException
+     * @return object Parsed value as instance of class specified in type property
+     */
+    private function createInstanceOfTypeFromValue($value)
+    {
+        if (class_exists($this->type)) {
+            return $this->requestBuilder->parseRequest($value, $this->type);
+        }
+        throw new InvalidAnnotationException(
+            "Class {$this->type} does not exist. Annotated in property {$this->name}."
+        );
     }
 }

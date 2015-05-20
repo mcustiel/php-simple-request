@@ -5,18 +5,6 @@ abstract class RequestAnnotation
 {
     public $value;
 
-    private $associatedClass;
-
-    protected function __construct($associatedClass)
-    {
-        $this->associatedClass = $associatedClass;
-    }
-
-    public function getAssociatedClass()
-    {
-        return $this->associatedClass;
-    }
-
     public function getValue()
     {
         return $this->value;

@@ -21,30 +21,59 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Mcustiel\SimpleRequest\Exception\InvalidAnnotationException;
 use Mcustiel\SimpleRequest\Exception\InvalidValueException;
 
+/**
+ * Abstract class with the common methods used by the current two RequestParser implementations.
+ * This class contains the abstract method parse, which should be implemented in specific parser classes.
+ * Basically it's a collection of PropertyParser objects that will be run for each property of the request.
+ *
+ * @author mcustiel
+ */
 abstract class RequestParser
 {
     protected $properties;
     protected $requestObject;
 
+    /**
+     * Class constructor.
+     */
     public function __construct()
     {
         $this->properties = [];
     }
 
+    /**
+     * Adds a property parser to the request parser.
+     *
+     * @param PropertyParser $parser
+     */
     public function addProperty(PropertyParser $parser)
     {
         $this->properties[$parser->getName()] = $parser;
     }
 
-    public function getRequestObject()
-    {
-        return new $this->requestObject;
-    }
-
+    /**
+     * Sets the class in which the request must be converted.
+     *
+     * @param object $requestObject
+     */
     public function setRequestObject($requestObject)
     {
         $this->requestObject = $requestObject;
     }
 
-    abstract public function parse(array $request);
+    /**
+     * Returns the value of a property in the request.
+     *
+     * @param array|\stdClass $request
+     * @param string          $propertyName
+     */
+    protected function getFromRequest($request, $propertyName)
+    {
+        if ($request instanceof \stdClass) {
+            return isset($request->{$propertyName}) ? $request->{$propertyName} : null;
+        }
+        return isset($request[$propertyName]) ? $request[$propertyName] : null;
+    }
+
+    abstract public function parse($request);
 }

@@ -1,8 +1,6 @@
 <?php
 namespace Mcustiel\SimpleRequest\Annotation;
 
-use Doctrine\Common\Annotations\Annotation;
-
-abstract class FilterAnnotation extends RequestAnnotation
+abstract class FilterAnnotation extends AnnotationWithAssociatedClass
 {
 }
