@@ -12,8 +12,10 @@ class IntegerValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator = new Integer();
     }
 
-    public function testValidationDefaultSpecification()
+    public function testValidationNotStrictSpecification()
     {
+        $this->validator->setSpecification(false);
+
         $this->assertFalse($this->validator->validate('1.1'));
         $this->assertFalse($this->validator->validate(1.1));
         $this->assertTrue($this->validator->validate(1.0));
@@ -29,10 +31,8 @@ class IntegerValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->validator->validate([1]));
     }
 
-    public function testValidationStrictSpecification()
+    public function testValidationDefaultSpecification()
     {
-        $this->validator->setSpecification(true);
-
         $this->assertFalse($this->validator->validate('1.1'));
         $this->assertFalse($this->validator->validate(1.1));
         $this->assertFalse($this->validator->validate(1.0));

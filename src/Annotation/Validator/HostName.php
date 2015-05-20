@@ -2,6 +2,7 @@
 namespace Mcustiel\SimpleRequest\Annotation\Validator;
 
 use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
+use Mcustiel\SimpleRequest\Validator\HostName as HostNameValidator;
 
 /**
  * @Annotation
@@ -9,6 +10,10 @@ use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
  *
  * @author mcustiel
  */
-class Definition extends CustomValidator
+class HostName extends ValidatorAnnotation
 {
+    public function __construct()
+    {
+        parent::__construct(HostNameValidator::class);
+    }
 }

@@ -17,49 +17,29 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
-use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
-
 /**
- * Validates that a given value is an integer number. If the
- * specification value is true it checks if it's strictly an integer,
- * if false, an integer in float format is validated as an integer.
+ * Checks if a given string has hostname format.
  *
  * @author mcustiel
  */
-class Integer implements ValidatorInterface
+class HostName extends RegExp
 {
-    /**
-     * Wheather or not strictly check the value.
-     *
-     * @var boolean
-     */
-    private $strict = true;
+    const REGEXP = '/^[a-z0-9][a-z0-9\-_]{0,61}[a-z0-9](\.[a-z0-9\-_]{0,63})*\.[a-z]{2,6}$/i';
 
     /**
      * (non-PHPdoc)
-     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
+     * @see \Mcustiel\SimpleRequest\Validator\RegExp::setSpecification()
      */
     public function setSpecification($specification = null)
     {
-        $this->strict = (boolean) $specification;
+        parent::setSpecification(self::REGEXP);
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
-     */
     public function validate($value)
     {
-        if (!is_numeric($value)) {
+        if (!is_string($value) || strlen($value) > 255) {
             return false;
         }
-
-        $number = $value + 0;
-
-        if ($this->strict) {
-            return is_int($number);
-        }
-
-        return $number == round($number);
+        return parent::validate($value);
     }
 }
