@@ -7,34 +7,12 @@ use Mcustiel\SimpleRequest\RequestBuilder;
 use Mcustiel\SimpleRequest\Exception\InvalidRequestException;
 use Fixtures\CoupleRequest;
 
-class RequestBuilderTest extends \PHPUnit_Framework_TestCase
+class RequestBuilderWithStdClassTest extends TestRequestBuilder
 {
-    /**
-     *
-     * @var \Mcustiel\SimpleRequest\RequestBuilder
-     */
-    private $builderWithCache;
-    /**
-     *
-     * @var \Mcustiel\SimpleRequest\RequestBuilder
-     */
-    private $builderWithoutCache;
-
-    public function __construct()
-    {
-        $this->builderWithCache = new RequestBuilder();
-        $cacheConfig = new \stdClass();
-        $cacheConfig->disabled = true;
-        $this->builderWithoutCache = new RequestBuilder($cacheConfig);
-    }
-
     public function testBuildARequestAndFilter()
     {
-        $request = [
-            'firstName' => '  John  ',
-            'lastName' => 'DOE',
-            'age' => 30
-        ];
+        $request = $this->getValidPersonRequest();
+
         $parserResponse = $this->builderWithoutCache->parseRequest(
             $request,
             PersonRequest::class,
@@ -45,11 +23,8 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildARequestAndFilterWithCacheEnabled()
     {
-        $request = [
-            'firstName' => '  John  ',
-            'lastName' => 'DOE',
-            'age' => 30
-        ];
+        $request = $this->getValidPersonRequest();
+
         $parserResponse = $this->builderWithCache->parseRequest(
             $request,
             PersonRequest::class,
@@ -74,40 +49,42 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
         $class->key1 = 'val1';
         $class->key2 = 'val2';
         $class->key3 = 'val3';
-        $request = [
-            'anyOf' => 5,
-            'custom' => '5',
-            'date' => '17/10/1981 01:30:00',
-            'email' => 'pipicui@hotmail.com',
-            'enum' => 'val1',
-            'exclusiveMaximum' => 3,
-            'exclusiveMinimum' => 8,
-            'float' => '5.1',
-            'integer' => '20',
-            'ipv4' => '192.168.0.1',
-            'ipv6' => '2001:0db8:85a3:08d3:1319:8a2e:0370:7334',
-            'items' => [1, '12345'],
-            'maximum' => 3,
-            'maxItems' => [ 'a', 'b' ],
-            'maxLength' => '12345',
-            'maxProperties' => [ 'a', 'b' ],
-            'minimum' => 8,
-            'minItems' => [ 'a', 'b', 'c', 'd' ],
-            'minLength' => '123',
-            'minProperties' => ['a', 'b', 'c', 'd'],
-            'multipleOf' => 5,
-            'notEmpty' => '-',
-            'notNull' => '',
-            'not' => null,
-            'oneOf' => 5,
-            'properties' => ['key1' => 1, 'key2' => '12345'],
-            'regExp' => 'abc123',
-            'required' => $class,
-            'type' => [ 'a' ],
-            'twitterAccount' => '@pepe_123',
-            'uniqueItems' => [ '1', 2, 'potato' ],
-            'url' => 'https://this.isaurl.com/test.php?id=1#test'
-        ];
+        $request = new \stdClass();
+
+        $request->anyOf = 5;
+        $request->custom = '5';
+        $request->date = '17/10/1981 01:30:00';
+        $request->email = 'pipicui@hotmail.com';
+        $request->enum = 'val1';
+        $request->exclusiveMaximum = 3;
+        $request->exclusiveMinimum = 8;
+        $request->float = '5.1';
+        $request->hostName = 'es.wikipedia.org';
+        $request->integer = '20';
+        $request->ipv4 = '192.168.0.1';
+        $request->ipv6 = '2001:0db8:85a3:08d3:1319:8a2e:0370:7334';
+        $request->items = [1, '12345'];
+        $request->maximum = 3;
+        $request->maxItems = [ 'a', 'b' ];
+        $request->maxLength = '12345';
+        $request->maxProperties = [ 'a', 'b' ];
+        $request->minimum = 8;
+        $request->minItems = [ 'a', 'b', 'c', 'd' ];
+        $request->minLength = '123';
+        $request->minProperties = ['a', 'b', 'c', 'd'];
+        $request->multipleOf = 5;
+        $request->notEmpty = '-';
+        $request->notNull = '';
+        $request->not = null;
+        $request->oneOf = 5;
+        $request->properties = ['key1' => 1, 'key2' => '12345'];
+        $request->regExp = 'abc123';
+        $request->required = $class;
+        $request->type = [ 'a' ];
+        $request->twitterAccount = '@pepe_123';
+        $request->uniqueItems = [ '1', 2, 'potato' ];
+        $request->url = 'https://this.isaurl.com/test.php?id=1#test';
+
         $builder = new RequestBuilder($cacheConfig);
         $builder->parseRequest($request, AllValidatorsRequest::class);
         $builder = new RequestBuilder($cacheConfig);
@@ -116,11 +93,7 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildARequestAndValidatorNotEmpty()
     {
-        $request = [
-            'firstName' => '',
-            'lastName' => 'DOE',
-            'age' => 30
-        ];
+        $request = $this->getValidPersonRequest();
         try {
             $this->builderWithoutCache->parseRequest(
                 $request,
@@ -135,11 +108,11 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildARequestAndValidatorNotNullBecauseFieldIsNull()
     {
-        $request = [
-            'firstName' => null,
-            'lastName' => 'DOE',
-            'age' => 30
-        ];
+        $request = new \stdClass();
+        $request->firstName = null;
+        $request->lastName = 'DOE';
+        $request->age = 30;
+
         try {
             $this->builderWithoutCache->parseRequest(
                 $request,
@@ -154,10 +127,10 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildARequestAndValidatorNotNullBecauseFieldDoesNotExist()
     {
-        $request = [
-            'lastName' => 'DOE',
-            'age' => 30
-        ];
+        $request = new \stdClass();
+        $request->lastName = 'DOE';
+        $request->age = 30;
+
         try {
             $this->builderWithoutCache->parseRequest(
                 $request,
@@ -172,19 +145,19 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildARequestWithInstanceOfClassAnnotations()
     {
-        $request = [
-            'togetherSince' => '2001-09-13',
-            'person1' => [
-                'firstName' => '  John  ',
-                'lastName' => 'DOE',
-                'age' => 30
-            ],
-            'person2' => [
-                'firstName' => '  Jane  ',
-                'lastName' => 'DoE',
-                'age' => 41
-            ]
-        ];
+        $request = new \stdClass();
+        $request->togetherSince = '2001-09-13';
+
+        $person1 = $this->getValidPersonRequest();
+
+        $person2 = new \stdClass();
+        $person2->firstName = 'Jane';
+        $person2->lastName = 'DoE';
+        $person2->age = 41;
+
+        $request->person1 = $person1;
+        $request->person2 = $person2;
+
         /**
          * @var $parserResponse \Fixtures\CoupleRequest
          */
@@ -201,11 +174,13 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(41, $personRequest->getAge());
     }
 
-    private function assertPersonIsOk($personRequest)
+    private function getValidPersonRequest()
     {
-        $this->assertInstanceOf(PersonRequest::class, $personRequest);
-        $this->assertEquals('John', $personRequest->getFirstName());
-        $this->assertEquals('DOE', $personRequest->getLastName());
-        $this->assertEquals(30, $personRequest->getAge());
+        $request = new \stdClass();
+        $request->firstName = '  John  ';
+        $request->lastName = 'DOE';
+        $request->age = 30;
+
+        return $request;
     }
 }

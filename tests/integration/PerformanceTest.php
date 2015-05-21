@@ -40,7 +40,7 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
         ];
         $config = new \stdClass;
         $config->path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'php-simple-request/cache/';
-        $builder = new RequestBuilder();
+        $builder = new RequestBuilder($config);
 
         $cyclesList = [
             25000
@@ -94,7 +94,7 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
         ];
         $config = new \stdClass;
         $config->path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'php-simple-request/cache/';
-        $builder = new RequestBuilder();
+        $builder = new RequestBuilder($config);
 
         $cyclesList = [
             25000

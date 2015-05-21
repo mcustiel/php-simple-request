@@ -152,8 +152,8 @@ $request = file_get_contents('php://input');
 $personRequest = $requestBuilder->parseRequest(json_decode($request), PersonRequest::class);
 ```
 
-The previous behavior throws an exception when it finds an error in the validation. It's the default behavior.
-There is an alternative behavior in which you can obtain a list of validation errors, one for each invalid field. To activate this alternative behavior, you have to specify the parser in the call to RequestBuilder::parseRequest like this:
+The previous behaviour throws an exception when it finds an error in the validation. It's the default behaviour.
+There is an alternative behaviour in which you can obtain a list of validation errors, one for each invalid field. To activate this alternative behaviour, you have to specify the parser in the call to RequestBuilder::parseRequest like this:
 
 ```php
 use Mcustiel\SimpleRequest\RequestBuilder;
@@ -272,7 +272,7 @@ Converts all characters in the given string to uppercase.
 Validators
 ----------
 
-The validators marked with an * behave similarly to json-schema defined validators. Please see: [JSON Schema definition](http://json-schema.org/latest/json-schema-validation.html#anchor12) and [understanding JSON Schema](spacetelescope.github.io/understanding-json-schema/).
+The validators marked with an **(*)** behave similarly to json-schema defined validators. Please see: [JSON Schema definition](http://json-schema.org/latest/json-schema-validation.html#anchor12) and [understanding JSON Schema](spacetelescope.github.io/understanding-json-schema/).
 
 #### AnyOf*
 
@@ -398,11 +398,8 @@ This validator checks that the given value is a float. A boolean modifier can be
  * @Float
  */
 private $meters;
-```
-
-###### Example:
-```php
 // accepts 1, 1.1, etc.
+
 /**
  * @Float(true)
  */

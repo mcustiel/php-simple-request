@@ -18,8 +18,8 @@
 namespace Mcustiel\SimpleRequest;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Mcustiel\SimpleRequest\Exception\InvalidAnnotationException;
 use Mcustiel\SimpleRequest\Exception\InvalidValueException;
+use Mcustiel\SimpleRequest\Exception\InvalidRequestException;
 
 /**
  * Parser object that stops on first invalid property and returns only that error.
@@ -41,11 +41,17 @@ class FirstErrorRequestParser extends RequestParser
 
         foreach ($this->properties as $propertyParser) {
             $propertyName = $propertyParser->getName();
-            $value = $propertyParser->parse(
-                $this->getFromRequest($request, $propertyName)
-            );
-            $method = 'set' . ucfirst($propertyName);
-            $object->$method($value);
+            try {
+                $value = $propertyParser->parse(
+                    $this->getFromRequest($request, $propertyName)
+                );
+                $method = 'set' . ucfirst($propertyName);
+                $object->$method($value);
+            } catch (InvalidValueException $e) {
+                $exception = new InvalidRequestException("Errors occurred while parsing the request");
+                $exception->setErrors([$propertyName => $e->getMessage()]);
+                throw $exception;
+            }
         }
 
         return $object;

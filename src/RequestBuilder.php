@@ -119,6 +119,7 @@ class RequestBuilder
                 isset($cacheConfig->path) ? $cacheConfig->path
                     : sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::DEFAULT_CACHE_PATH
             ;
+            return;
         }
         $this->cache = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::DEFAULT_CACHE_PATH;
     }
