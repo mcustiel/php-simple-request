@@ -48,7 +48,7 @@ class FirstErrorRequestParser extends RequestParser
                 $method = 'set' . ucfirst($propertyName);
                 $object->$method($value);
             } catch (InvalidValueException $e) {
-                $exception = new InvalidRequestException("Errors occurred while parsing the request");
+                $exception = new InvalidRequestException($propertyName . ': ' . $e->getMessage());
                 $exception->setErrors([$propertyName => $e->getMessage()]);
                 throw $exception;
             }

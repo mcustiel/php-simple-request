@@ -93,7 +93,10 @@ class RequestBuilderWithStdClassTest extends TestRequestBuilder
 
     public function testBuildARequestAndValidatorNotEmpty()
     {
-        $request = $this->getValidPersonRequest();
+        $request = new \stdClass();
+        $request->firstName = '';
+        $request->lastName = 'DOE';
+        $request->age = 30;
         try {
             $this->builderWithoutCache->parseRequest(
                 $request,

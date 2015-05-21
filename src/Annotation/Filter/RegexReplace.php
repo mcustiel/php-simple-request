@@ -10,7 +10,7 @@ use Mcustiel\SimpleRequest\Filter\RegexReplace as RegexReplaceFilter;
  *
  * @author mcustiel
  */
-class RegexReplace extends FilterAnnotation
+class RegexReplace extends StringReplace
 {
     public function __construct()
     {

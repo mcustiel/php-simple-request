@@ -128,12 +128,12 @@ To parse the request and convert it to your object representation, just receive 
 ```php
 use Mcustiel\SimpleRequest\RequestBuilder;
 use Your\Namespace\PersonRequest;
-use Mcustiel\SimpleRequest\Exceptions\InvalidValueException;
+use Mcustiel\SimpleRequest\Exceptions\InvalidRequestException;
 
 $requestBuilder = new RequestBuilder();
 try {
     $personRequest = $requestBuilder->parseRequest($_POST, PersonRequest::class);
-} catch (InvalidValueException $e) {
+} catch (InvalidRequestException $e) {
     die("The request is invalid: " . $e->getMessage());
 }
 // Now you can use the validated and filtered personRequest to access the requestData.
@@ -257,9 +257,50 @@ private $somethingHardToFilter;
 // Will call Vendor\\App\\MyFilters\\MyFilter::filter($value) using "yourSpecifier".
 ```
 
+#### Float
+
+This filters just forces a cast to float of the received value.
+
+#### Float
+
+Analog to Float, forces a cast to integer to the received value.
+
 #### LowerCase
 
 LowerCase filter converts all characters in the given string to lowercase.
+
+#### RegexReplace
+
+Executes a replace in the string, using a regular expression pattern as a search. 
+It accepts two parameters: 
+* pattern: The regular expression to search for.
+* replacement: The replacement text for the matches.
+
+```php
+/**
+ * @RegexReplace(pattern="/[^a-z0-9_]/i", replacement="_")
+ */
+private $onlyAlnumAndUnderscores;
+// Will replace all non alphanumeric characters with underscores.
+```
+
+#### StringReplace
+
+Executes a replace in the string, using a string pattern as a search. 
+It accepts two parameters: 
+* pattern: The string to search for.
+* replacement: The replacement text for the matches.
+**NOTE:** This method uses str_replace internally, you can take advantage of it by setting pattern to array, etc.
+[See str_replace specification](http://php.net/manual/en/function.str-replace.php).
+
+
+```php
+/**
+ * @StringReplace(pattern="E", replacement="3")
+ */
+private $whyAmIChangingThis;
+// Will replace all non E with 3.
+```
 
 #### Trim
 
@@ -548,7 +589,7 @@ This validator checks that the field's is an array and it has an amount of items
  * @MinItems(2)
  */
 private $players;
-// accepts ['alice', 'bob'], ['alice', 'bob', 'carol'].
+// accepts ['alice', 'bob'], ['a' => 'alice', 'b' => 'bob'], ['alice', 'bob', 'carol'].
 ```
 
 #### MinLength*
@@ -565,6 +606,45 @@ private $password;
 ```
 
 **Default specifier value:** 0
+
+#### MinProperties*
+
+This validator checks that the field's is an array or a stdClass and it has an amount of items equal to or greater than the specification. The specification value must be an integer greater than 0.
+
+##### Example:
+```php
+/**
+ * @MinProperties(2)
+ */
+private $players;
+// accepts ['a' => 'alice', 'b' => 'bob'], ['alice', 'bob', 'carol'], stdclass(a->'alice', 'b'->'bob');
+```
+
+#### MultipleOf*
+
+Validates that the value received is multiple of the specified number.
+ 
+##### Example:
+```php
+/**
+ * @MultipleOf(2)
+ */
+private $evenNumber;
+// accepts 8, 20, 100, etc.
+```
+
+#### Not*
+
+Checks that the value is not valid against a specified validator.
+ 
+##### Example:
+```php
+/**
+ * @Not(@MultipleOf(2))
+ */
+private $oddNumber;
+// accepts 3, 15, 97, etc.
+```
 
 #### NotEmpty
 
@@ -594,6 +674,39 @@ private $mandatoryField;
 // accepts '', 0, [], 1, 'A', ['a'], etc.
 ```
 
+#### OneOf*
+
+This validator receives a list of validators as parameter and checks that exactly one of them validates against a given value.
+
+##### Example:
+```php
+/**
+ * @AnyOf(@Integer, @IPV6)
+ */
+private $integerOrIpv6;
+// Will match an integer 'xor' an IPV6.
+```
+
+#### Pattern*
+
+Alias for RegExp validator.
+
+#### Properties*
+
+Analog to items, but works with objects of type stdClass or associative arrays. Please see the aforementioned documents about json-schema.
+**Default specifier values:**
+* properties = []
+* additionalProperties = true
+
+##### Example:
+```php
+/**
+ * @Items(properties=@Integer, additionalProperties=true)
+ */
+private $objectWithAllIntegerProperties;
+// accepts Arrays or objects of int of any size.
+```
+
 #### RegExp
 
 This validator checks the field against a given regular expression.
@@ -607,6 +720,19 @@ private $onlyAlpha;
 // accepts '', 'a', 'A', 'ab', etc.
 ```
 
+#### Required*
+
+This validator checks that an object of type stdClass or an associative array contains the list of keys specified.
+
+##### Example:
+```php
+/**
+ * @Required({"name", "age", "sex"})
+ */
+private $person;
+// accepts ['name' => 'Alice', 'age' => 28, 'sex' => 'f', 'lastName' => 'Smith' ]
+```
+
 #### TwitterAccount
 
 This validator checks that the field contains a twitter account.
@@ -618,6 +744,30 @@ This validator checks that the field contains a twitter account.
  */
 private $twitterAccount;
 // accepts '@user', '@user_name_1', etc.
+```
+
+#### Type*
+
+Validates that the received value is of the type specified. The specified type must be one of the types defined by json-schema: 'array', 'object', 'integer', 'number', 'string', 'boolean', 'null'.
+
+##### Example:
+```php
+/**
+ * @Type("array")
+ */
+private $iCanOnlyBeAnArray;
+```
+
+#### UniqueItems*
+
+Validates that the received value is an array containing all unique values.
+
+##### Example:
+```php
+/**
+ * @UniqueItems
+ */
+private $noRepeatedValues;
 ```
 
 #### Url
