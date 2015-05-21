@@ -19,7 +19,7 @@
 		}
 	},
 	"name" : "mcustiel/php-simple-request",
-	"version" : "1.2.0",
+	"version" : "2.0.0",
 	"type" : "library",
 	"description" : "php-simple-request is a minimalist library designed to simplify requests validation and filtering",
 	"license" : "GPL-3.0+",

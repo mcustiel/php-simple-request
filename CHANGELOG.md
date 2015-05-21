@@ -1,6 +1,16 @@
 CHANGELOG
 =========
 
+# Version 2.0
+
+* Added new Filters and Validators.
+** Filters: Float, Integer, RegexReplace and StringReplace.
+** Validators: Hexa, Alpha, AlphaNumeric, they internally call ctype functions.
+* Added new ParseAs annotation, to parse subobjects.
+* Now, AllErrorsRequestParser and FirstErrorRequestParser don't need different code when being called.
+* RequestBuilder::parseRequest now can be called with an array or a stdClass object.
+* Bugfixes.
+
 # Version 1.2.0
 
 * Fixed bugs in UniqueItems validator.
