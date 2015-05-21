@@ -707,6 +707,8 @@ private $objectWithAllIntegerProperties;
 // accepts Arrays or objects of int of any size.
 ```
 
+**Note:** This annotation was added as a json-schema-like annotation. Please have in mind that it could be better to use sub-object creation through ParseAs annotation in most of the cases.
+
 #### RegExp
 
 This validator checks the field against a given regular expression.
@@ -770,14 +772,14 @@ Validates that the received value is an array containing all unique values.
 private $noRepeatedValues;
 ```
 
-#### Url
+#### Uri*
 
 This validator checks that the field contains a valid URL.
 
 ##### Example:
 ```php
 /**
- * @Url
+ * @Uri
  */
 private $webpage;
 // accepts 'localhost', 'www.server.com', 'http://www.webserver.com/page.php?t=1#anchor', etc
