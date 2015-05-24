@@ -3,7 +3,7 @@ namespace Unit\Validator;
 
 use Mcustiel\SimpleRequest\Validator\Url;
 
-class UrlAccountValidatorTest extends \PHPUnit_Framework_TestCase
+class UrlValidatorTest extends \PHPUnit_Framework_TestCase
 {
     const VALID_VALUE_1 = 'http://some.host.com';
     const VALID_VALUE_2 = 'https://some.host.com';

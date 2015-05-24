@@ -49,6 +49,22 @@ class UniqueItems implements ValidatorInterface
             return true;
         }
 
-        return count(array_count_values($value)) == count($value);
+        return $this->checkIfAllUniques($value);
+    }
+
+    private function checkIfAllUniques($value)
+    {
+        $keys = array_keys($value);
+        $count = count($keys);
+
+        for ($i = 0; $i < $count - 1; $i++) {
+            for ($j = $i + 1; $j < $count; $j++) {
+                if ($value[$keys[$i]] == $value[$keys[$j]]) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }
