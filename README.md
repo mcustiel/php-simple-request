@@ -174,6 +174,8 @@ try {
 // Now you can use the validated and filtered personRequest to access the requestData.
 ```
 
+**Note:** InvalidRequestException::getErrors() is available for default behaviour too, it returns an array with only one error. 
+
 #### Sub-objects
 
 php-simple-request also allows you to specify the class to which parse a property's value using the annotation ParseAs. It's better to see it in an example:
