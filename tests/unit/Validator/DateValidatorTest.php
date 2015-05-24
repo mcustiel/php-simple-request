@@ -18,7 +18,7 @@ class DateValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($validator->validate('1981-10-17'));
     }
 
-    public function testValidationStrict()
+    public function testValidationWithSpecifiedFormat()
     {
         $validator = new Date();
         $validator->setSpecification(\DateTime::ATOM);

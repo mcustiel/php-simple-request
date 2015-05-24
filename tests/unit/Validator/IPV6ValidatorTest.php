@@ -10,8 +10,6 @@ class IPV6ValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = new IPV6();
         $validator->setSpecification(null);
 
-
-
         $this->assertFalse($validator->validate('1'));
         $this->assertFalse($validator->validate('1:1'));
         $this->assertFalse($validator->validate('1:1:1'));

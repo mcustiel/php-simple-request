@@ -10,7 +10,7 @@ class RegExpValidatorTest extends \PHPUnit_Framework_TestCase
     const INVALID_VALUE = 'A';
 
     /**
-     * @expectedException \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
+     * @expectedException        \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
      * @expectedExceptionMessage The validator RegExp is being initialized without a specified regular expression
      */
     public function testSpecificationWithoutValue()
