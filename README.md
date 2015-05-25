@@ -225,6 +225,8 @@ $cacheConfig->path = '/your/own/cache/path';
 $requestBuilder = new RequestBuilder($cacheConfig);
 ```  
 
+**Note:** The default path in which php-simple-request caches the parsers is SYSTEM_TEMP_DIR/php-simple-request/cache/
+
 Filters
 -------
 
