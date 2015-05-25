@@ -201,6 +201,7 @@ class CoupleRequest
     private $person2;
     
     //... Getters and setters (setters are required by the library)
+}
 ``` 
 
 php-simple-request will automatically convert the value received in the fields person1 and person2 from the request into the type PersonRequest.
