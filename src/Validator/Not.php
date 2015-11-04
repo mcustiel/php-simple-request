@@ -26,7 +26,7 @@ class Not extends AbstractAnnotationSpecifiedValidator
 {
     /**
      *
-     * @var \Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation
+     * @var \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
      */
     private $validator;
 

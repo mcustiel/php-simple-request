@@ -40,7 +40,7 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
         foreach ($cyclesList as $cycles) {
             $start = microtime(true);
             for ($i = $cycles; $i > 0; $i --) {
-                $personRequest = $builder->parseRequest($request, PersonRequest::class);
+                $builder->parseRequest($request, PersonRequest::class);
             }
             echo "\n{$cycles} cycles executed in " . (microtime(true) - $start)
                 . " seconds without cache and FIRST_ERROR_PARSER \n";
@@ -65,7 +65,7 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
         foreach ($cyclesList as $cycles) {
             $start = microtime(true);
             for ($i = $cycles; $i > 0; $i --) {
-                $personRequest = $builder->parseRequest($request, PersonRequest::class);
+                $builder->parseRequest($request, PersonRequest::class);
             }
             echo "\n{$cycles} cycles executed in " . (microtime(true) - $start)
                 . " seconds with cache and FIRST_ERROR_PARSER \n";
@@ -90,7 +90,7 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
         foreach ($cyclesList as $cycles) {
             $start = microtime(true);
             for ($i = $cycles; $i > 0; $i --) {
-                $personRequest = $builder->parseRequest(
+                $builder->parseRequest(
                     $request,
                     PersonRequest::class,
                     RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
@@ -119,7 +119,7 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
         foreach ($cyclesList as $cycles) {
             $start = microtime(true);
             for ($i = $cycles; $i > 0; $i --) {
-                $personRequest = $builder->parseRequest(
+                $builder->parseRequest(
                     $request,
                     PersonRequest::class,
                     RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION

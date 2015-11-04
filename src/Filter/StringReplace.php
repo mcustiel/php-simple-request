@@ -18,7 +18,6 @@
 namespace Mcustiel\SimpleRequest\Filter;
 
 use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
-use Mcustiel\SimpleRequest\Exception\FilterErrorException;
 
 class StringReplace implements FilterInterface
 {

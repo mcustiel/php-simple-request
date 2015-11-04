@@ -17,8 +17,8 @@
  */
 namespace Mcustiel\SimpleRequest\Annotation\Filter;
 
-use Mcustiel\SimpleRequest\Annotation\FilterAnnotation;
 use Mcustiel\SimpleRequest\Filter\RegexReplace as RegexReplaceFilter;
+use Mcustiel\SimpleRequest\Annotation\FilterAnnotation;
 
 /**
  * @Annotation
@@ -26,10 +26,15 @@ use Mcustiel\SimpleRequest\Filter\RegexReplace as RegexReplaceFilter;
  *
  * @author mcustiel
  */
-class RegexReplace extends StringReplace
+class RegexReplace extends FilterAnnotation
 {
     public function __construct()
     {
         parent::__construct(RegexReplaceFilter::class);
+    }
+
+    public function getValue()
+    {
+        return ['pattern' => $this->pattern, 'replacement' => $this->replacement];
     }
 }
