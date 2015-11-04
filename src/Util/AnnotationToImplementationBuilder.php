@@ -45,8 +45,7 @@ trait AnnotationToImplementationBuilder
      *
      * @param string $type Name of the class given by the annotation.
      *
-     * @return \Mcustiel\SimpleRequest\Util\AnnotationToImplementationBuilder $this
-     *      For fluent interface
+     * @return FilterBuilder|ValidatorBuilder $this For fluent interface
      */
     public function withClass($type)
     {
@@ -59,8 +58,7 @@ trait AnnotationToImplementationBuilder
      *
      * @param mixed $specification Specification set in the annotation.
      *
-     * @return \Mcustiel\SimpleRequest\Util\AnnotationToImplementationBuilder $this
-     *      For fluent interface
+     * @return FilterBuilder|ValidatorBuilder $this For fluent interface
      */
     public function withSpecification($specification)
     {
@@ -81,4 +79,12 @@ trait AnnotationToImplementationBuilder
 
         return $validator;
     }
+
+    /**
+     * @param string $type The type to instantiate.
+     *
+     * @return \Mcustiel\SimpleRequest\Interfaces\FilterInterface|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
+     * @throws \Mcustiel\SimpleRequest\Exception\FilterDoesNotExistException
+     */
+    private abstract function getClassForType($type);
 }

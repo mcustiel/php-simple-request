@@ -37,7 +37,7 @@ class PropertyParser
     private $validators;
     /**
      *
-     * @var \Mcustiel\SimpleRequest\Interfaces\FilterInterface
+     * @var \Mcustiel\SimpleRequest\Interfaces\FilterInterface[]
      */
     private $filters;
     /**
@@ -102,7 +102,7 @@ class PropertyParser
 
     /**
      *
-     * @param unknown $type
+     * @param string $type
      */
     public function setType($type)
     {
@@ -116,6 +116,7 @@ class PropertyParser
      *
      * @param mixed $value
      * @return mixed
+     *
      * @throws \Mcustiel\SimpleRequest\Exception\InvalidValueException
      */
     public function parse($value)
