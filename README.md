@@ -1,6 +1,14 @@
 php-simple-request
 ===============
 
+Code information
+----------------
+
+[![Build Status](https://travis-ci.org/mcustiel/php-simple-request.png?branch=master)](https://travis-ci.org/mcustiel/php-simple-request)
+[![Coverage Status](https://coveralls.io/repos/mcustiel/php-simple-request/badge.png)](https://coveralls.io/r/mcustiel/php-simple-request)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mcustiel/php-simple-request/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mcustiel/php-simple-request/?branch=master)
+
+
 What is it
 ----------
 
