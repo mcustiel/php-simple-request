@@ -26,7 +26,7 @@ use Mcustiel\SimpleRequest\Validator\Date as DateValidator;
  *
  * @author mcustiel
  */
-class DateTimeFormat extends ValidatorAnnotation
+class DateTime extends ValidatorAnnotation
 {
     public function __construct()
     {
