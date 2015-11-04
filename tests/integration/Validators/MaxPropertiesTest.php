@@ -72,4 +72,3 @@ class MaxPropertiesTest extends AbstractValidatorTest
         return $object;
     }
 }
-

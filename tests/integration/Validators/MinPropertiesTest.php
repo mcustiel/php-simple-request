@@ -72,4 +72,3 @@ class MinPropertiesTest extends AbstractValidatorTest
         return $object;
     }
 }
-

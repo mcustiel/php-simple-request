@@ -31,35 +31,41 @@ class FloatFilterTest extends BaseTestForNumericFilters
     public function testFloatWithAStringRepresentingAFloat()
     {
         $this->assertEquals(
-            4.3, $this->filter->filter('4.3')
+            4.3,
+            $this->filter->filter('4.3')
         );
     }
 
     public function testFloatWithAStringRepresentingAnIntegerAsAFloat()
     {
         $this->assertEquals(
-            $this->getVariableInfo(4.0), $this->getVariableInfo($this->filter->filter('4.0'))
+            $this->getVariableInfo(4.0),
+            $this->getVariableInfo($this->filter->filter('4.0'))
         );
 
         $this->assertNotEquals(
-            $this->getVariableInfo(4), $this->getVariableInfo($this->filter->filter('4.0'))
+            $this->getVariableInfo(4),
+            $this->getVariableInfo($this->filter->filter('4.0'))
         );
     }
 
     public function testFloatWithAStringRepresentingAnInteger()
     {
         $this->assertEquals(
-            43, $this->filter->filter('43')
+            43,
+            $this->filter->filter('43')
         );
         $this->assertEquals(
-            $this->getVariableInfo(43.0), $this->getVariableInfo($this->filter->filter('43'))
+            $this->getVariableInfo(43.0),
+            $this->getVariableInfo($this->filter->filter('43'))
         );
     }
 
     public function testFloatWithANotNumericString()
     {
         $this->assertEquals(
-            0, $this->filter->filter('potato')
+            0,
+            $this->filter->filter('potato')
         );
     }
 }

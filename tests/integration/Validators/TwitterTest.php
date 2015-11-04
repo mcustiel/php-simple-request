@@ -26,5 +26,4 @@ class TwitterTest extends AbstractValidatorTest
         $this->request[self::TEST_FIELD] = 'pepe';
         $this->buildRequestAndTestErrorFieldPresent(self::TEST_FIELD);
     }
-
 }

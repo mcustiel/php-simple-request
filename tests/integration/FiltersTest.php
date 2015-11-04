@@ -24,10 +24,12 @@ use Mcustiel\SimpleRequest\ParserResponse;
 class FiltersTest extends \PHPUnit_Framework_TestCase
 {
     const TEST_VALUE = 'test ONE Two';
+
     private $request;
     private $builder;
 
-    public function setUp() {
+    public function setUp()
+    {
         $this->request = [
             'custom' => self::TEST_VALUE,
             'capitalize' => self::TEST_VALUE,

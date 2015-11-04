@@ -1,145 +1,164 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="SSMS-Classes" default="all">
-	<php expression="require('vendor/autoload.php')" />
+<project name="Phing static code analysis" default="all">
+    <!-- Properties -->
+    <property name="dir.base" value="." />
+    <property name="dir.tests" value="${project.basedir}/tests" />
+    <property name="dir.tests.unit" value="${project.basedir}/tests" />
+    <property name="dir.build" value="${project.basedir}/build" />
+    <property name="dir.docs" value="${dir.build}/docs" />
+    <property name="dir.docs.phpdoc" value="${dir.docs}/phpdoc" />
+    <property name="dir.reports" value="${dir.build}/logs" />
+    <property name="dir.reports.pdepend" value="${dir.reports}/pdepend" />
+    <property name="dir.reports.unit" value="${dir.reports}/phpunit" />
+    <property name="dir.reports.coverage" value="${dir.reports}/phpunit/coverage" />
+    <property name="dir.reports.build" value="${dir.reports}/htmlreport" />
 
-	<!-- Properties -->
-	<property name="dir.base" value="." />
-	<property name="dir.tests" value="${project.basedir}/tests" />
-	<property name="dir.build" value="${project.basedir}/build" />
-	<property name="dir.docs" value="${dir.build}/docs" />
-	<property name="dir.docs.phpdoc" value="${dir.docs}/phpdoc" />
-	<property name="dir.reports" value="${dir.build}/logs" />
-	<property name="dir.reports.pdepend" value="${dir.reports}/pdepend" />
-	<property name="dir.reports.coverage" value="${dir.reports}/phpunit/coverage" />
-	<property name="dir.reports.build" value="${dir.reports}/htmlreport" />
+    <!-- ============================================ -->
+    <!-- Fileset: sources (all php files but those in test) -->
+    <!-- ============================================ -->
+    <fileset expandsymboliclinks="true" dir="${dir.base}" id="sources">
+        <include name="src/**/*.php" />
+    	<include name="tests/**/*.php" />
+    </fileset>
 
-	<!-- ============================================ -->
-	<!-- Fileset: sources (all php files but those in test) -->
-	<!-- ============================================ -->
-	<fileset expandsymboliclinks="true" dir="${dir.base}" id="sources">
-		<include name="src/**/*.php" />
-	</fileset>
+    <!-- ============================================ -->
+    <!-- Target: clean -->
+    <!-- ============================================ -->
+    <target name="clean" description="Clean up build directories.">
+        <echo msg="Cleaning build directories ..." />
+        <delete dir="${dir.build}" verbose="false" />
+    </target>
 
-	<!-- ============================================ -->
-	<!-- Target: clean -->
-	<!-- ============================================ -->
-	<target name="clean" description="Clean up build directories.">
-		<echo msg="Cleaning build directories ..." />
-		<delete dir="${dir.build}" verbose="false" />
-	</target>
+    <!-- ============================================ -->
+    <!-- Target: prepare -->
+    <!-- ============================================ -->
+    <target name="prepare" description="Create build directories.">
+        <echo msg="Creating build directories ..." />
+        <mkdir dir="${dir.build}" />
+        <mkdir dir="${dir.docs}" />
+        <mkdir dir="${dir.docs.phpdoc}" />
+        <mkdir dir="${dir.reports}" />
+        <mkdir dir="${dir.reports.unit}" />
+        <mkdir dir="${dir.reports.coverage}" />
+        <mkdir dir="${dir.reports.pdepend}" />
+        <mkdir dir="${dir.reports.build}" />
+    </target>
 
-	<!-- ============================================ -->
-	<!-- Target: prepare -->
-	<!-- ============================================ -->
-	<target name="prepare" description="Create build directories.">
-		<echo msg="Creating build directories ..." />
-		<mkdir dir="${dir.build}" />
-		<mkdir dir="${dir.docs}" />
-		<mkdir dir="${dir.docs.phpdoc}" />
-		<mkdir dir="${dir.reports}" />
-		<mkdir dir="${dir.reports.coverage}" />
-		<mkdir dir="${dir.reports.pdepend}" />
-		<mkdir dir="${dir.reports.build}" />
-	</target>
+    <!-- ============================================ -->
+    <!-- Target: all (default target) -->
+    <!-- ============================================ -->
+    <target name="all" depends="clean, prepare">
+        <phingcall target="codecheck" />
+        <phingcall target="tests" />
+    	<phingcall target="documentation" />
+    </target>
 
-	<!-- ============================================ -->
-	<!-- Target: all (default target) -->
-	<!-- ============================================ -->
-	<target name="all" depends="clean, prepare">
-		<phingcall target="codecheck" />
-		<phingcall target="tests" />
-	</target>
+    <!-- ============================================ -->
+    <!-- Target: codecheck (run all static code checks) -->
+    <!-- ============================================ -->
+    <target name="codecheck">
+        <phingcall target="lint" />
+        <phingcall target="codestyle" />
+        <phingcall target="mess" />
+        <phingcall target="copypaste" />
+    	<phingcall target="measure" />
+    </target>
 
-	<!-- ============================================ -->
-	<!-- Target: codecheck (run all static code checks) -->
-	<!-- ============================================ -->
-	<target name="codecheck">
-		<phingcall target="codestyle" />
-		<phingcall target="mess" />
-		<phingcall target="copypaste" />
-		<phingcall target="measure" />
-		<phingcall target="pdepend" />
-	</target>
+    <!-- ============================================ -->
+    <!-- Target: tests (run all tests) -->
+    <!-- ============================================ -->
+    <target name="tests">
+        <!-- Now we are not running unit tests -->
+        <phingcall target="unittests" />
+    </target>
 
-	<!-- ============================================ -->
-	<!-- Target: tests (run all tests) -->
-	<!-- ============================================ -->
-	<target name="tests">
-		<phingcall target="unittests" />
-	</target>
+    <!-- ============================================ -->
+    <!-- Target: lint (Checks code syntax) -->
+    <!-- ============================================ -->
+    <target name="lint">
+        <echo msg="Running lint to check code syntax..." />
+        <phplint>
+            <fileset refid="sources" />
+        </phplint>
+    </target>
+    
+    <!-- ============================================ -->
+    <!-- Target: codestyle (Checks code style compliance) -->
+    <!-- ============================================ -->
+    <target name="codestyle">
+        <echo msg="Running code sniffer to check PSR2 standard..." />
+        <phpcodesniffer standard="PSR2" showSniffs="true" showWarnings="true" verbosity="0" encoding="UTF-8">
+            <fileset refid="sources" />
+            <formatter type="full" outfile="${dir.reports}/reportcs.txt" />
+            <formatter type="checkstyle" outfile="${dir.reports}/checkstylecs.xml" />
+        </phpcodesniffer>
+    </target>
 
-	<!-- ============================================ -->
-	<!-- Target: codestyle (Checks code style compliance) -->
-	<!-- ============================================ -->
-	<target name="codestyle">
-		<echo msg="Running code sniffer to check zend standard..." />
-		<phpcodesniffer standard="PSR2" showSniffs="true" showWarnings="true" verbosity="0" encoding="UTF-8">
-			<fileset refid="sources" />
-			<formatter type="full" outfile="${dir.reports}/reportcs.txt" />
-			<formatter type="checkstyle" outfile="${dir.reports}/checkstylecs.xml" />
-		</phpcodesniffer>
-	</target>
+    <!-- ============================================ -->
+    <!-- Target: mess (Detects mess in code. Recommended rulesets: --> 
+    <!-- unusedcode,codesize,controversial,design,naming) -->
+    <!-- ============================================ -->
+    <target name="mess">
+        <echo msg="Running mess detector" />
+        <phpmd rulesets="unusedcode,codesize,controversial,design,naming">
+           <fileset refid="sources" />
+           <formatter type="xml" outfile="${dir.reports}/pmd.xml"/>
+        </phpmd>
+    </target>
 
-	<!-- ============================================ -->
-	<!-- Target: mess (Detects mess in code. Recommended rulesets: -->
-	<!-- unusedcode,codesize,controversial,design,naming) -->
-	<!-- ============================================ -->
-	<target name="mess">
-		<echo msg="Running mess detector" />
-		<exec 
-			command="./vendor/bin/phpmd ${dir.base}/src xml unusedcode,codesize,controversial,design,naming --reportfile ${dir.reports}/pmd.xml" 
-			outputProperty="output"
-		/>
-		<echo msg="${output}" />
-	</target>
+    <!-- ============================================ -->
+    <!-- Target: copypaste (detects copy/paste in code) -->
+    <!-- ============================================ -->
+    <target name="copypaste">
+        <echo msg="Running copy/paste detector..." />
+        <phpcpd>
+            <fileset refid="sources" />
+            <formatter type="pmd" outfile="${dir.reports}/pmd-cpd.xml" />
+        </phpcpd>
+    </target>
 
-	<target name="pdepend">
-		<echo msg="Running phpdepend analysis..." />
-		<phpdepend>
-			<fileset refid="sources" />
-			<analyzer type="coderank-mode" value="method" />
-			<logger type="jdepend-xml" outfile="${dir.reports}/pdepend/pdepend.xml" />
-			<logger type="jdepend-chart" outfile="${dir.reports}/pdepend/dependencies.svg"/>
-			<logger type="overview-pyramid" outfile="${dir.reports}/pdepend/overview-pyramid.svg"/>
-		</phpdepend>
-	</target>
-
-	<!-- ============================================ -->
-	<!-- Target: copypaste (detects copy/paste in code) -->
-	<!-- ============================================ -->
-	<target name="copypaste">
-		<echo msg="Running copy/paste detector..." />
-		<phpcpd>
-			<fileset refid="sources" />
-			<formatter type="pmd" outfile="${dir.reports}/pmd-cpd.xml" />
-		</phpcpd>
-	</target>
+    <!-- ============================================ -->
+    <!-- Target: measure (measures the code) -->
+    <!-- ============================================ -->
+    <target name="measure">
+        <echo msg="Running code measurements..." />
+        <phploc reportType="csv" reportName="phploc" reportDirectory="${dir.reports}">
+            <fileset refid="sources" />
+        </phploc>
+    	<phpdepend>
+    	   <fileset refid="sources" />
+    	   <logger type="jdepend-xml" outfile="${dir.reports}/jdepend.xml"/>
+    	   <analyzer type="coderank-mode" value="method"/>
+    	 </phpdepend>
+    </target>
 	
 	<!-- ============================================ -->
-	<!-- Target: measure (measures the code) -->
-	<!-- ============================================ -->
-	<target name="measure">
-		<echo msg="Running code measurements..." />
-		<phploc reportType="csv" reportName="phploc" reportDirectory="${dir.reports}">
-			<fileset refid="sources" />
-		</phploc>
-	</target>
-
-	<!-- ============================================ -->
-	<!-- Target: unittests (unit testing) -->
-	<!-- ============================================ -->
-	<target name="unittests">
-		<echo msg="Running unit tests..." />
-		<exec command="./vendor/bin/phpunit -d zend.enable_gc=0 --log-junit ${dir.reports}/phpunit/phpunit.xml --coverage-clover ${dir.reports.coverage}/clover.xml --coverage-html ${dir.reports.coverage}/ --testdox-html ${dir.reports}/phpunit/testdox.html -c ${dir.tests}" outputProperty="output" returnProperty="returnout" />
-		<echo msg="${output}" />
-		<if>
-			<not>
-				<equals arg1="${returnout}" arg2="0" />
-			</not>
-			<then>
-				<fail msg="Failures occurred in unit tests." />
-			</then>
-		</if>
-	</target>
+    <!-- Target: documentation (PHP Documentor parsing) -->
+    <!-- ============================================ -->
+    <target name="documentation">
+    	<phpdoc2 title="Project Documentation" destdir="${dir.docs.phpdoc}" template="responsive-twig">
+    		<fileset refid="sources" />
+    	</phpdoc2>
+    </target>
+	
+    <!-- ============================================ -->
+    <!-- Target: unittests (unit testing) -->
+    <!-- ============================================ -->
+    <target name="unittests">
+        <echo msg="Running unit tests..." />
+        <coverage-setup database="${dir.reports.unit}/coverage.db">
+              <fileset refid="sources" />
+        </coverage-setup>
+        <phpunit configuration="${dir.tests}/phpunit.xml" codecoverage="true">
+            <formatter todir="${dir.reports.unit}" type="xml" />
+            <formatter todir="${dir.reports.unit}" type="clover" />
+            <batchtest>
+                <fileset dir="${dir.tests.unit}" />
+            </batchtest>
+        </phpunit>
+        <coverage-report outfile="${dir.reports.unit}/coverage.xml">
+              <report todir="${dir.reports.coverage}" title="Phing unit tests run" usesorttable="true"/>
+        </coverage-report>
+    </target>
 </project>

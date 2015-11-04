@@ -36,6 +36,6 @@ class UniqueItemsTest extends AbstractValidatorTest
     public function testBuildARequestWithValidValueBecauseEmptyArray()
     {
         $this->request[self::TEST_FIELD] = [];
-        $this->assertRequestParsedCorrectly();
+        $this->assertRequestParsesCorrectly();
     }
 }
