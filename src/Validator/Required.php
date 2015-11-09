@@ -30,7 +30,7 @@ class Required implements ValidatorInterface
 {
     /**
      *
-     * @var unknown
+     * @var number[]|string[]
      */
     protected $items;
 

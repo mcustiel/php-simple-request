@@ -34,7 +34,7 @@ class Items extends AbstractIterableValidator
     const ADDITIONAL_ITEMS_INDEX = 'additionalItems';
 
     /**
-     * @var boolean|\Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation
+     * @var boolean|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
      */
     private $additionalItems = true;
 
