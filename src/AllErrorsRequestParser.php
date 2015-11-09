@@ -17,7 +17,6 @@
  */
 namespace Mcustiel\SimpleRequest;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Mcustiel\SimpleRequest\Exception\InvalidValueException;
 use Mcustiel\SimpleRequest\Exception\InvalidRequestException;
 

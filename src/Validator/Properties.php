@@ -18,7 +18,6 @@
 namespace Mcustiel\SimpleRequest\Validator;
 
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
-use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
 
 /**
@@ -34,6 +33,9 @@ class Properties extends AbstractIterableValidator
     const ITEMS_INDEX = 'properties';
     const ADDITIONAL_ITEMS_INDEX = 'additionalProperties';
 
+    /**
+     * @var boolean|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
+     */
     private $additionalItems = true;
 
     /**
@@ -58,7 +60,7 @@ class Properties extends AbstractIterableValidator
      */
     public function validate($value)
     {
-        if (!is_array($value) && ! ($value instanceof \stdClass)) {
+        if (!is_array($value) && !($value instanceof \stdClass)) {
             return false;
         }
 

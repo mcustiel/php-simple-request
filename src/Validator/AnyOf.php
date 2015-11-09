@@ -17,9 +17,6 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
-use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
-use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
-
 /**
  * Validates that a given value is valid against any of the specified validators.
  *

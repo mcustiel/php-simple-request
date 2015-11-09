@@ -19,7 +19,6 @@ namespace Mcustiel\SimpleRequest\Validator;
 
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
-use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
 
 /**
  * Abstract class for validators that recibes an array as specification.
@@ -30,7 +29,7 @@ abstract class AbstractIterableValidator extends AbstractAnnotationSpecifiedVali
     /**
      * List of items specified in the annotation.
      *
-     * @var \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface[]
+     * @var \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface[]
      */
     protected $items = [];
 

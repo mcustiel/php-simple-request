@@ -19,5 +19,8 @@ namespace Mcustiel\SimpleRequest\Interfaces;
 
 interface Specificable
 {
+    /**
+     * @param mixed $specification
+     */
     public function setSpecification($specification = null);
 }

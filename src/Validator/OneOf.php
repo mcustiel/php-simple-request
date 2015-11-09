@@ -17,10 +17,6 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
-use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
-use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
-use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
-
 /**
  * Checks if the value validates against exactly one of the given validators.
  *

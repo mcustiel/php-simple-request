@@ -17,10 +17,6 @@
  */
 namespace Mcustiel\SimpleRequest;
 
-use Doctrine\Common\Annotations\AnnotationReader;
-use Mcustiel\SimpleRequest\Exception\InvalidAnnotationException;
-use Mcustiel\SimpleRequest\Exception\InvalidValueException;
-
 /**
  * Abstract class with the common methods used by the current two RequestParser implementations.
  * This class contains the abstract method parse, which should be implemented in specific parser classes.

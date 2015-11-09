@@ -25,7 +25,7 @@ namespace Mcustiel\SimpleRequest\Validator;
 class Not extends AbstractAnnotationSpecifiedValidator
 {
     /**
-     *
+     * The validator to negate.
      * @var \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
      */
     private $validator;

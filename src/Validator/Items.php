@@ -18,7 +18,6 @@
 namespace Mcustiel\SimpleRequest\Validator;
 
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
-use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
 
 /**
@@ -35,7 +34,7 @@ class Items extends AbstractIterableValidator
     const ADDITIONAL_ITEMS_INDEX = 'additionalItems';
 
     /**
-     * @var boolean
+     * @var boolean|\Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation
      */
     private $additionalItems = true;
 
@@ -119,7 +118,6 @@ class Items extends AbstractIterableValidator
     private function validateTuple(array $tuple)
     {
         $keys = array_keys($tuple);
-        $index = 0;
         $count = count($this->items);
         for ($index = 0; $index < $count; $index++) {
             $validator = $this->items[$index];

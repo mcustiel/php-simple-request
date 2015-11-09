@@ -17,9 +17,6 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
-use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
-use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
-
 /**
  * Validates that the number of elements in an array is greater than or equal to
  * the specified value.

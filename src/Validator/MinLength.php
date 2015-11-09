@@ -17,8 +17,6 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
-use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
-
 /**
  * Validates that the length of a string is greater than or equal to
  * the specified value.

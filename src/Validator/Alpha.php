@@ -18,7 +18,6 @@
 namespace Mcustiel\SimpleRequest\Validator;
 
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
-use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 
 /**
  * Validates that a given value is a string containing only alphabetic characters.

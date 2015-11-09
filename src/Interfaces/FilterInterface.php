@@ -19,5 +19,10 @@ namespace Mcustiel\SimpleRequest\Interfaces;
 
 interface FilterInterface extends Specificable
 {
+    /**
+     * @param mixed $value
+     *
+     * @return mixed
+     */
     public function filter($value);
 }

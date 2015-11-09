@@ -19,5 +19,10 @@ namespace Mcustiel\SimpleRequest\Interfaces;
 
 interface ValidatorInterface extends Specificable
 {
+    /**
+     * @param mixed $value
+     *
+     * @return boolean
+     */
     public function validate($value);
 }
