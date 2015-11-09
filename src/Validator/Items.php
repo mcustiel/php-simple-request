@@ -102,7 +102,8 @@ class Items extends AbstractIterableValidator
         return $this->validateTuple($list) && (
             $this->additionalItems === true ||
             $this->validateArray(
-                array_slice($list, $count, count($list) - $count), $this->additionalItems
+                array_slice($list, $count, count($list) - $count),
+                $this->additionalItems
             )
         );
     }
