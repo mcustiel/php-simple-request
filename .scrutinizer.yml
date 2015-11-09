@@ -16,3 +16,11 @@ tools:
     php_cpd:
         enabled: true
         excluded_dirs: [vendor, test]
+build:
+    tests:
+        override:
+            -
+                command: 'phpunit -c tests --testsuite PhpSimpleRequestUnitTests --coverage-clover=clover.xml'
+                coverage:
+                    file: 'clover.xml'
+                    format: 'php-clover'
