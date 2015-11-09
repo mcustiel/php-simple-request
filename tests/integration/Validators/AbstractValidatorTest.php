@@ -77,7 +77,7 @@ abstract class AbstractValidatorTest extends \PHPUnit_Framework_TestCase
     protected function buildRequestAndTestErrorFieldPresent($fieldName)
     {
         try {
-            $validatorRequest = $this->builder->parseRequest(
+            $this->builder->parseRequest(
                 $this->request,
                 AllValidatorsRequest::class,
                 RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION

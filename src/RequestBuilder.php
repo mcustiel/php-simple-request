@@ -33,9 +33,9 @@ class RequestBuilder
 
     /**
      *
-     * @var \Mcustiel\SimpleCache\Drivers\file\Cache
+     * @var string
      */
-    private $cache;
+    private $cachePath;
     /**
      *
      * @var ParserGenerator
@@ -86,7 +86,7 @@ class RequestBuilder
         $class = new \ReflectionClass($className);
         $name = str_replace('\\', '', $className . $parserClass);
 
-        if ($this->cache === null) {
+        if ($this->cachePath === null) {
             return $this->parserGenerator->createRequestParser($name, $className, $class, $parserClass);
         }
 
@@ -95,11 +95,11 @@ class RequestBuilder
 
     private function getRequestParserFromCache($name, $className, \ReflectionClass $class, $parserClass)
     {
-        $fileName = $this->cache . $name;
+        $fileName = $this->cachePath . $name;
         if (!file_exists($fileName)) {
             $return = $this->parserGenerator->createRequestParser($name, $className, $class, $parserClass);
-            if (!is_dir($this->cache)) {
-                mkdir($this->cache, 0777, true);
+            if (!is_dir($this->cachePath)) {
+                mkdir($this->cachePath, 0777, true);
             }
             file_put_contents($fileName, serialize($return));
 
@@ -115,13 +115,13 @@ class RequestBuilder
             if (isset($cacheConfig->disabled) && $cacheConfig->disabled) {
                 return null;
             }
-            $this->cache =
+            $this->cachePath =
                 isset($cacheConfig->path) ? $cacheConfig->path
                     : sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::DEFAULT_CACHE_PATH
             ;
             return;
         }
-        $this->cache = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::DEFAULT_CACHE_PATH;
+        $this->cachePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::DEFAULT_CACHE_PATH;
     }
 
     private function checkRequestType($request)

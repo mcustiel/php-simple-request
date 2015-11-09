@@ -36,6 +36,7 @@ abstract class AbstractAnnotationSpecifiedValidator implements ValidatorInterfac
      *                        It should be of type ValidatorAnnotation.
      * @throws \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
      *      If variable is not a ValidatorAnnotation.
+     * @return \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface Created validator object.
      */
     protected function checkIfAnnotationAndReturnObject($variable)
     {
