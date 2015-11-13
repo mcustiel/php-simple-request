@@ -5,25 +5,38 @@
  * php-simple-request is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * (at your option) All later version.
  *
  * php-simple-request is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT All WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
  * along with php-simple-request.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Mcustiel\SimpleRequest\Interfaces;
+namespace Mcustiel\SimpleRequest\Validator;
 
-interface FilterInterface extends Specificable
+/**
+ * Validates that a given value is valid against All of the specified validators.
+ *
+ * @author mcustiel
+ */
+class AllOf extends AbstractIterableValidator
 {
     /**
-     * @param mixed $value
+     * {@inherit}
      *
-     * @return mixed
-     * @throws \Mcustiel\SimpleRequest\Exception\FilterErrorException
+     * @see \Mcustiel\SimpleRequest\Validator\AbstractAnnotationSpecifiedValidator::validate()
      */
-    public function filter($value);
+    public function validate($value)
+    {
+        foreach ($this->items as $item) {
+            if (!$item->validate($value)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

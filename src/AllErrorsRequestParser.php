@@ -44,11 +44,7 @@ class AllErrorsRequestParser extends RequestParser
         foreach ($this->properties as $propertyParser) {
             $propertyName = $propertyParser->getName();
             try {
-                $value = $propertyParser->parse(
-                    $this->getFromRequest($request, $propertyName)
-                );
-                $method = 'set' . ucfirst($propertyName);
-                $object->$method($value);
+                $this->setProperty($request, $object, $propertyName, $propertyParser);
             } catch (InvalidValueException $e) {
                 $invalidValues[$propertyName] = $e->getMessage();
             }

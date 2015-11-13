@@ -126,7 +126,7 @@ class RequestBuilder
 
     private function checkRequestType($request)
     {
-        if (!is_array($request) && ! ($request instanceof \stdClass)) {
+        if (!is_array($request) && !($request instanceof \stdClass)) {
             throw new InvalidRequestException(
                 'Request builder is intended to be used with arrays or instances of \\stdClass'
             );

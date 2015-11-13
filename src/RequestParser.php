@@ -26,6 +26,9 @@ namespace Mcustiel\SimpleRequest;
  */
 abstract class RequestParser
 {
+    /**
+     * @var PropertyParser[]
+     */
     protected $properties;
     protected $requestObject;
 
@@ -69,6 +72,15 @@ abstract class RequestParser
             return isset($request->{$propertyName}) ? $request->{$propertyName} : null;
         }
         return isset($request[$propertyName]) ? $request[$propertyName] : null;
+    }
+
+    protected function setProperty($request, $object, $propertyName, $propertyParser)
+    {
+        $value = $propertyParser->parse(
+            $this->getFromRequest($request, $propertyName)
+        );
+        $method = 'set' . ucfirst($propertyName);
+        $object->$method($value);
     }
 
     abstract public function parse($request);
