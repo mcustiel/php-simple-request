@@ -207,7 +207,7 @@ Also it can be used for some REST json request:
 
 ```php
 $request = file_get_contents('php://input');
-$personRequest = $requestBuilder->parseRequest(json_decode($request), PersonRequest::class);
+$personRequest = $requestBuilder->parseRequest(json_decode($request, true), PersonRequest::class);
 ```
 
 The previous behaviour throws an exception when it finds an error in the validation. It's the default behaviour.
