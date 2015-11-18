@@ -19,7 +19,7 @@ namespace Mcustiel\SimpleRequest\Filter;
 
 use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
 
-class Integer implements FilterInterface
+class ToInteger implements FilterInterface
 {
     public function setSpecification($specification = null)
     {

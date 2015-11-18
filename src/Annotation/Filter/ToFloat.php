@@ -18,7 +18,7 @@
 namespace Mcustiel\SimpleRequest\Annotation\Filter;
 
 use Mcustiel\SimpleRequest\Annotation\FilterAnnotation;
-use Mcustiel\SimpleRequest\Filter\Integer as IntegerFilter;
+use Mcustiel\SimpleRequest\Filter\ToFloat as ToFloatFilter;
 
 /**
  * @Annotation
@@ -26,10 +26,10 @@ use Mcustiel\SimpleRequest\Filter\Integer as IntegerFilter;
  *
  * @author mcustiel
  */
-class Integer extends FilterAnnotation
+class ToFloat extends FilterAnnotation
 {
     public function __construct()
     {
-        parent::__construct(IntegerFilter::class);
+        parent::__construct(ToFloatFilter::class);
     }
 }

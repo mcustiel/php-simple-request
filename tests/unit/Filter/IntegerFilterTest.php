@@ -17,7 +17,7 @@
  */
 namespace Unit\Filter;
 
-use Mcustiel\SimpleRequest\Filter\Integer;
+use Mcustiel\SimpleRequest\Filter\ToInteger;
 
 class IntegerFilterTest extends BaseTestForNumericFilters
 {
@@ -25,7 +25,7 @@ class IntegerFilterTest extends BaseTestForNumericFilters
 
     public function setUp()
     {
-        $this->filter = new Integer();
+        $this->filter = new ToInteger();
     }
 
     public function testIntegerWithAStringRepresentingAInteger()

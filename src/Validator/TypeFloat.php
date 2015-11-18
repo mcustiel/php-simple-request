@@ -20,20 +20,19 @@ namespace Mcustiel\SimpleRequest\Validator;
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 
 /**
- * Validates that a given value is an integer number. If the
- * specification value is true it checks if it's strictly an integer,
- * if false, an integer in float format is validated as an integer.
+ * Validates that a given value is a floating point number. If the
+ * specification value is true it checks if it's strictly a float,
+ * if false, an integer number is validated as a float.
  *
  * @author mcustiel
  */
-class Integer implements ValidatorInterface
+class TypeFloat implements ValidatorInterface
 {
     /**
-     * Wheather or not strictly check the value.
      *
      * @var boolean
      */
-    private $strict = true;
+    private $strict = false;
 
     /**
      * (non-PHPdoc)
@@ -53,13 +52,9 @@ class Integer implements ValidatorInterface
         if (!is_numeric($value)) {
             return false;
         }
-
+        // Convert possible strings to number
         $number = $value + 0;
 
-        if ($this->strict) {
-            return is_int($number);
-        }
-
-        return $number == round($number);
+        return is_double($number) || !$this->strict && is_int($number);
     }
 }

@@ -17,7 +17,7 @@
  */
 namespace Unit\Validator;
 
-use Mcustiel\SimpleRequest\Validator\Float;
+use Mcustiel\SimpleRequest\Validator\TypeFloat;
 
 class FloatValidatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,7 +25,7 @@ class FloatValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->validator = new Float();
+        $this->validator = new TypeFloat();
     }
 
     public function testValidationDefaultSpecification()

@@ -24,11 +24,12 @@ Table of contents
 - [Filters](#filters)
     - [Capitalize](#capitalize)
     - [CustomFilter](#customfilter)
-    - [Float](#float)
-    - [Integer](#integer)
+    - [DefaultValue](#defaultvalue)
     - [Lowercase](#lowercase)
     - [RegexReplace](#regexreplace)
     - [StringReplace](#stringreplace)
+    - [ToFloat](#tofloat)
+    - [ToInteger](#tointeger)
     - [Trim](#trim)
     - [Uppercase](#uppercase)
 - [Validators](#validators)
@@ -41,8 +42,8 @@ Table of contents
     - [Enum](#enum)
     - [ExclusiveMaximum](#exclusivemaximum)
     - [ExclusiveMinimum](#exclusiveminimum)
-    - [Float](#float-1)
-    - [Integer](#integer-1)
+    - [TypeFloat](#typefloat)
+    - [TypeInteger](#typeinteger)
     - [IPV4](#ipv4)
     - [IPV6](#ipv6)
     - [Items](#items)
@@ -320,13 +321,16 @@ private $somethingHardToFilter;
 // Will call Vendor\\App\\MyFilters\\MyFilter::filter($value) using "yourSpecifier".
 ```
 
-#### Float
+#### DefaultValue
 
-This filters just forces a cast to float of the received value.
+Sets a default value when the received value is null or an empty string.
 
-#### Integer
-
-Analog to Float, forces a cast to integer to the received value.
+```php
+/**
+ * @DefaultValue("I am a default value")
+ */
+private $thisCanHaveADefault;
+```
 
 #### LowerCase
 
@@ -365,6 +369,14 @@ It accepts two parameters:
 private $whyAmIChangingThis;
 // Will replace all non E with 3.
 ```
+
+#### ToFloat
+
+This filters just forces a cast to float of the received value.
+
+#### ToInteger
+
+Analog to Float, forces a cast to integer to the received value.
 
 #### Trim
 
@@ -492,7 +504,7 @@ private $age;
 // Will match any number > 0.
 ```
 
-#### Float
+#### TypeFloat
 
 This validator checks that the given value is a float. A boolean modifier can be specified in this annotation, indicating if the value must be a strict float or if integers can be validated as floats too.
 
@@ -513,7 +525,7 @@ private $meters;
 
 **Default specifier value:** false, indicating that integers are validated as floats
 
-#### Integer
+#### TypeInteger
 
 This validator checks that the given value is numeric and it's an integer. It expects a boolean modifier, strict, that indicates if integers in float format like 1.0, 2.0, etc. should be validated as integers. Default strict value: true, meaning that no float format accepted.
 

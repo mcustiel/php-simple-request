@@ -17,7 +17,7 @@
  */
 namespace Unit\Validator;
 
-use Mcustiel\SimpleRequest\Validator\Integer;
+use Mcustiel\SimpleRequest\Validator\TypeInteger;
 
 class IntegerValidatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,7 +25,7 @@ class IntegerValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->validator = new Integer();
+        $this->validator = new TypeInteger();
     }
 
     public function testValidationNotStrictSpecification()

@@ -17,9 +17,8 @@
  */
 namespace Fixtures;
 
-use Mcustiel\SimpleRequest\Annotation\Validator\NotNull;
 use Mcustiel\SimpleRequest\Annotation\Validator\NotEmpty;
-use Mcustiel\SimpleRequest\Annotation\Validator\Integer;
+use Mcustiel\SimpleRequest\Annotation\Validator\TypeInteger;
 use Mcustiel\SimpleRequest\Annotation\Filter\Trim;
 use Mcustiel\SimpleRequest\Annotation\Filter\UpperCase;
 
@@ -42,7 +41,7 @@ class PersonRequest
      */
     private $lastName;
     /**
-     * @Integer
+     * @TypeInteger
      * @var unknown
      */
     private $age;

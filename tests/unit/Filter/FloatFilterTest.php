@@ -17,7 +17,7 @@
  */
 namespace Unit\Filter;
 
-use Mcustiel\SimpleRequest\Filter\Float;
+use Mcustiel\SimpleRequest\Filter\ToFloat;
 
 class FloatFilterTest extends BaseTestForNumericFilters
 {
@@ -25,7 +25,7 @@ class FloatFilterTest extends BaseTestForNumericFilters
 
     public function setUp()
     {
-        $this->filter = new Float();
+        $this->filter = new ToFloat();
     }
 
     public function testFloatWithAStringRepresentingAFloat()

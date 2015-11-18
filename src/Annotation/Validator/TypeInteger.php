@@ -15,21 +15,21 @@
  * You should have received a copy of the GNU General Public License
  * along with php-simple-request.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Mcustiel\SimpleRequest\Annotation\Filter;
+namespace Mcustiel\SimpleRequest\Annotation\Validator;
 
-use Mcustiel\SimpleRequest\Annotation\FilterAnnotation;
-use Mcustiel\SimpleRequest\Filter\Float as FloatFilter;
+use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
+use Mcustiel\SimpleRequest\Validator\TypeInteger as IntegerValidator;
 
 /**
  * @Annotation
- * @Target("PROPERTY")
+ * @Target({ "PROPERTY", "ANNOTATION" })
  *
  * @author mcustiel
  */
-class Float extends FilterAnnotation
+class TypeInteger extends ValidatorAnnotation
 {
     public function __construct()
     {
-        parent::__construct(FloatFilter::class);
+        parent::__construct(IntegerValidator::class);
     }
 }

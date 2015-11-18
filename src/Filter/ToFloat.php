@@ -15,21 +15,18 @@
  * You should have received a copy of the GNU General Public License
  * along with php-simple-request.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Mcustiel\SimpleRequest\Annotation\Validator;
+namespace Mcustiel\SimpleRequest\Filter;
 
-use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
-use Mcustiel\SimpleRequest\Validator\Integer as IntegerValidator;
+use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
 
-/**
- * @Annotation
- * @Target({ "PROPERTY", "ANNOTATION" })
- *
- * @author mcustiel
- */
-class Integer extends ValidatorAnnotation
+class ToFloat implements FilterInterface
 {
-    public function __construct()
+    public function setSpecification($specification = null)
     {
-        parent::__construct(IntegerValidator::class);
+    }
+
+    public function filter($value)
+    {
+        return (float) $value;
     }
 }

@@ -25,13 +25,13 @@ use Mcustiel\SimpleRequest\Annotation\Validator as Annot;
 class AllValidatorsRequest
 {
     /**
-     * @Annot\AnyOf({ @Annot\IPV4, @Annot\Integer })
+     * @Annot\AnyOf({ @Annot\IPV4, @Annot\TypeInteger })
      *
      * @var unknown
      */
     private $anyOf;
     /**
-     * @Annot\CustomValidator(class="Mcustiel\SimpleRequest\Validator\Integer")
+     * @Annot\CustomValidator(class="Mcustiel\SimpleRequest\Validator\TypeInteger")
      *
      * @var unknown
      */
@@ -67,7 +67,7 @@ class AllValidatorsRequest
      */
     private $exclusiveMinimum;
     /**
-     * @Annot\Float(true)
+     * @Annot\TypeFloat(true)
      *
      * @var unknown
      */
@@ -79,7 +79,7 @@ class AllValidatorsRequest
      */
     private $hostName;
     /**
-     * @Annot\Integer
+     * @Annot\TypeInteger
      *
      * @var unknown
      */
@@ -175,7 +175,7 @@ class AllValidatorsRequest
      */
     private $not;
     /**
-     * @Annot\OneOf({ @Annot\IPV4, @Annot\Integer, @Annot\Enum({ 1, 2, 3 }) })
+     * @Annot\OneOf({ @Annot\IPV4, @Annot\TypeInteger, @Annot\Enum({ 1, 2, 3 }) })
      *
      * @var unknown
      */
