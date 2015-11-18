@@ -5,8 +5,17 @@
 	<testsuite name="PhpSimpleRequestUnitTests">
 		<directory>./unit</directory>
 	</testsuite>
-	<testsuite name="PhpSimpleRequestIntegrationTests">
+	<testsuite name="PhpSimpleRequestTests">
+	    <directory>./unit</directory>
         <directory>./integration</directory>
+        <exclude>./integration/PerformanceTest.php</exclude>
+    </testsuite>
+    <testsuite name="PhpSimpleRequestIntegrationTests">
+        <directory>./integration</directory>
+        <exclude>./integration/PerformanceTest.php</exclude>
+    </testsuite>
+    <testsuite name="PhpSimpleRequestPerformanceTests">
+        <file>./integration/PerformanceTest.php</file>
     </testsuite>
 	<php>
 	</php>
