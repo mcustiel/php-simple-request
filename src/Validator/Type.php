@@ -43,7 +43,7 @@ class Type implements ValidatorInterface
         'number' => [ 'integer', 'double' ],
         'string' => [ 'string' ],
         'boolean' => ['boolean'],
-        'null' => 'NULL',
+        'null' => ['NULL'],
     ];
 
     /**
@@ -54,7 +54,7 @@ class Type implements ValidatorInterface
     {
         if (!in_array($specification, array_keys($this->validTypes))) {
             throw new UnspecifiedValidatorException(
-                "The validator ExclusiveMinimum is being initialized without a valid type name"
+                "The validator Type is being initialized without a valid type name"
             );
         }
         $this->type = $specification;
