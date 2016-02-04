@@ -121,13 +121,22 @@ class PropertyParser
      */
     public function parse($value)
     {
+        $return = $this->cloneValue($value);
         if ($this->type !== null) {
-            return $this->createInstanceOfTypeFromValue($value);
+            $return = $this->createInstanceOfTypeFromValue($return);
         }
-        $return = $this->runFilters($value);
+        $return = $this->runFilters($return);
         $this->validate($return);
 
         return $return;
+    }
+
+    private function cloneValue($value)
+    {
+        if (is_object($value)) {
+            return clone $value;
+        }
+        return $value;
     }
 
     /**
@@ -177,6 +186,9 @@ class PropertyParser
      */
     private function createInstanceOfTypeFromValue($value)
     {
+        if ($value === null) {
+            return null;
+        }
         if (class_exists($this->type)) {
             return $this->requestBuilder->parseRequest($value, $this->type);
         }
