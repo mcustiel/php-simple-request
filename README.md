@@ -265,7 +265,7 @@ class CoupleRequest
 
 php-simple-request will automatically convert the value received in the fields person1 and person2 from the request into the type PersonRequest.
 
-**Note:** If a property has the ParseAs annotation and also validations and filters, php-simple-request will ignore them and the validation and filtering will be done using the annotations from the target class.
+**Note:** If a property has the ParseAs annotation and also validations and filters, php-simple-request will first execute parseAs and then filters and validations as usual.
 
 #### File caching:
 
