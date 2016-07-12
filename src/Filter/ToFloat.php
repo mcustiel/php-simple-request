@@ -21,10 +21,18 @@ use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
 
 class ToFloat implements FilterInterface
 {
+    /**
+     * {@inheritDoc}
+     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
+     */
     public function setSpecification($specification = null)
     {
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \Mcustiel\SimpleRequest\Interfaces\FilterInterface::filter()
+     */
     public function filter($value)
     {
         return (float) $value;

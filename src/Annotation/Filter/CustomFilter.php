@@ -38,6 +38,10 @@ class CustomFilter extends FilterAnnotation
         parent::__construct(null);
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \Mcustiel\SimpleRequest\Annotation\AnnotationWithAssociatedClass::getAssociatedClass()
+     */
     public function getAssociatedClass()
     {
         return $this->class;

@@ -19,5 +19,4 @@ namespace Mcustiel\SimpleRequest\Exception;
 
 class InvalidValueException extends PhpSimpleRequestException
 {
-
 }

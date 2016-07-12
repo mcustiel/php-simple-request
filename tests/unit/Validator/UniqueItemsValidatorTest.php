@@ -35,7 +35,6 @@ class UniqueItemsValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->validator->validate([1, 2, 3]));
         $this->assertTrue($this->validator->validate(['a', 'b', 'c']));
         $this->assertTrue($this->validator->validate([1, 'b', 3]));
-
     }
 
     public function testUnsuccessfulValidation()

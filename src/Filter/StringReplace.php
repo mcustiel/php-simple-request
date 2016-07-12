@@ -24,12 +24,20 @@ class StringReplace implements FilterInterface
     protected $search;
     protected $replacement;
 
+    /**
+     * {@inheritDoc}
+     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
+     */
     public function setSpecification($specification = null)
     {
         $this->search = $specification['pattern'];
         $this->replacement = $specification['replacement'];
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \Mcustiel\SimpleRequest\Interfaces\FilterInterface::filter()
+     */
     public function filter($value)
     {
         return str_replace($this->search, $this->replacement, $value);

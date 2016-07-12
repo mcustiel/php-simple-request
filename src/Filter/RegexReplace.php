@@ -21,6 +21,10 @@ use Mcustiel\SimpleRequest\Exception\FilterErrorException;
 
 class RegexReplace extends StringReplace
 {
+    /**
+     * {@inheritDoc}
+     * @see \Mcustiel\SimpleRequest\Filter\StringReplace::filter()
+     */
     public function filter($value)
     {
         $result = preg_replace($this->search, $this->replacement, $value);

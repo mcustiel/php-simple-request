@@ -18,6 +18,13 @@
 			"Mcustiel\\SimpleRequest\\" : "src"
 		}
 	},
+    "autoload-dev" : {
+        "psr-4" : {
+            "Unit\\" : "tests/unit",
+            "Integration\\" : "tests/integration",
+            "Fixtures\\": "tests/fixtures"
+        }
+    },
 	"name" : "mcustiel/php-simple-request",
 	"type" : "library",
 	"description" : "php-simple-request is a minimalist library designed to simplify requests validation and filtering",
@@ -34,7 +41,8 @@
 		"sebastian/phpcpd" : ">=2.0.2",
 		"pdepend/pdepend" : ">=2.0.6",
 		"phploc/phploc" : ">=2.1.1",
-		"phpdocumentor/phpdocumentor" : ">=2.8.5"
+		"phpdocumentor/phpdocumentor" : ">=2.8.5",
+		"friendsofphp/php-cs-fixer": "~1.11"
 	},
 	"minimum-stability" : "stable"
 }

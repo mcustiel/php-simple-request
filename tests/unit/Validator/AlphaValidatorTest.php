@@ -19,7 +19,7 @@ namespace Unit\Validator;
 
 use Mcustiel\SimpleRequest\Validator\AlphaNumeric;
 
-class AlphaNumericValidatorTest extends \PHPUnit_Framework_TestCase
+class AlphaValidatorTest extends \PHPUnit_Framework_TestCase
 {
     public function testValidationSuccessful()
     {

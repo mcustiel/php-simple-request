@@ -17,21 +17,32 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
+use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
+
 /**
  * Validates that a given value is a string with ipv4 format.
  *
  * @author mcustiel
  */
-class IPV4 extends RegExp
+class IPV4 implements ValidatorInterface
 {
-    const URL_REGEXP = '/^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9][0-9]|[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9][0-9]|[0-9])){3}$/';
-
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Validator\RegExp::setSpecification()
      */
     public function setSpecification($specification = null)
     {
-        parent::setSpecification(self::URL_REGEXP);
+    }
+
+    /**
+     *
+     * {@inheritdoc}
+     *
+     * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
+     */
+    public function validate($value)
+    {
+        return filter_var($value, FILTER_VALIDATE_IP, ['flags' => FILTER_FLAG_IPV4]) !== false;
     }
 }

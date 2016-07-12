@@ -17,21 +17,33 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
+use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
+
 /**
  * Validates that a given value is a string with email format.
  *
  * @author mcustiel
  */
-class Email extends RegExp
+class Email implements ValidatorInterface
 {
-    const URL_REGEXP = '/^(?:[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+\.)*[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+@(?:(?:(?:[A-Z0-9_](?:[A-Z0-9_\-](?!\.)){0,61}[A-Z0-9_-]?\.)+[A-Z0-9_](?:[A-Z0-9_\-](?!$)){0,61}[A-Z0-9_]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/i';
 
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Validator\RegExp::setSpecification()
      */
     public function setSpecification($specification = null)
     {
-        parent::setSpecification(self::URL_REGEXP);
+    }
+
+    /**
+     *
+     * {@inheritdoc}
+     *
+     * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
+     */
+    public function validate($value)
+    {
+        return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
     }
 }

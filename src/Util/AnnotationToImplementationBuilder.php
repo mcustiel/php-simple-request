@@ -86,5 +86,5 @@ trait AnnotationToImplementationBuilder
      * @return \Mcustiel\SimpleRequest\Interfaces\FilterInterface|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
      * @throws \Mcustiel\SimpleRequest\Exception\FilterDoesNotExistException
      */
-    protected abstract function getClassForType($type);
+    abstract protected function getClassForType($type);
 }

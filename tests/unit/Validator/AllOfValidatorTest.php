@@ -21,7 +21,7 @@ use Mcustiel\SimpleRequest\Validator\AllOf;
 use Mcustiel\SimpleRequest\Annotation\Validator\Alpha;
 use Mcustiel\SimpleRequest\Annotation\Validator\AlphaNumeric;
 
-class AllOfTest extends \PHPUnit_Framework_TestCase
+class AllOfValidatorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface

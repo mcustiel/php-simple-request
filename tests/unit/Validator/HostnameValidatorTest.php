@@ -19,7 +19,7 @@ namespace Unit\Validator;
 
 use Mcustiel\SimpleRequest\Validator\HostName;
 
-class HostNameValidatorTest extends \PHPUnit_Framework_TestCase
+class HostnameValidatorTest extends \PHPUnit_Framework_TestCase
 {
     private $validator;
 

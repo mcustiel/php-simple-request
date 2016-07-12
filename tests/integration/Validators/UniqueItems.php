@@ -17,7 +17,7 @@
  */
 namespace Integration\Validators;
 
-class UniqueItemsTest extends AbstractValidatorTest
+class UniqueItems extends AbstractValidatorTest
 {
     const TEST_FIELD = 'uniqueItems';
 

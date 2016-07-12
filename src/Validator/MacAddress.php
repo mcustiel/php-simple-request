@@ -15,25 +15,31 @@
  * You should have received a copy of the GNU General Public License
  * along with php-simple-request.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Mcustiel\SimpleRequest\Annotation;
+namespace Mcustiel\SimpleRequest\Validator;
 
-class AnnotationWithAssociatedClass extends RequestAnnotation
+use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
+
+/**
+ * Validates that a given value is lower than or equal to the specified value.
+ *
+ * @author mcustiel
+ */
+class MacAddress implements ValidatorInterface
 {
     /**
-     * @var string
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
      */
-    private $associatedClass;
-
-    protected function __construct($associatedClass)
+    public function setSpecification($specification = null)
     {
-        $this->associatedClass = $associatedClass;
     }
 
     /**
-     * @return string
+     * (non-PHPdoc)
+     * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
      */
-    public function getAssociatedClass()
+    public function validate($value)
     {
-        return $this->associatedClass;
+        return filter_var($value, FILTER_VALIDATE_MAC) !== false;
     }
 }
