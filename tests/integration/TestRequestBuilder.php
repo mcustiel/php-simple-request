@@ -22,6 +22,11 @@ use Fixtures\AllValidatorsRequest;
 use Mcustiel\SimpleRequest\RequestBuilder;
 use Mcustiel\SimpleRequest\Exception\InvalidRequestException;
 use Fixtures\CoupleRequest;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Cache\Adapter\NullAdapter;
+use Mcustiel\SimpleRequest\ParserGenerator;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Mcustiel\SimpleRequest\Strategies\AnnotationParserFactory;
 
 abstract class TestRequestBuilder extends \PHPUnit_Framework_TestCase
 {
@@ -36,12 +41,24 @@ abstract class TestRequestBuilder extends \PHPUnit_Framework_TestCase
      */
     protected $builderWithoutCache;
 
-    public function __construct()
+    /**
+     * @before
+     */
+    public function initBuilders()
     {
-        $this->builderWithCache = new RequestBuilder();
-        $cacheConfig = new \stdClass();
-        $cacheConfig->disabled = true;
-        $this->builderWithoutCache = new RequestBuilder($cacheConfig);
+        $this->builderWithCache = $this->createCachedRequestBuilder();
+        $this->builderWithoutCache = new RequestBuilder(
+            new NullAdapter(),
+            new ParserGenerator(new AnnotationReader(), new AnnotationParserFactory())
+        );
+    }
+
+    protected function createCachedRequestBuilder($namespace = 'PhpSimpleRequestTest')
+    {
+        return new RequestBuilder(
+            new FilesystemAdapter($namespace),
+            new ParserGenerator(new AnnotationReader(), new AnnotationParserFactory())
+        );
     }
 
     protected function assertPersonIsOk($personRequest)

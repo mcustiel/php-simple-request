@@ -18,6 +18,8 @@
 namespace Mcustiel\SimpleRequest;
 
 use Mcustiel\SimpleRequest\Exception\InvalidRequestException;
+use Psr\Cache\CacheItemPoolInterface as PsrCache;
+use Symfony\Component\Cache\CacheItem;
 
 /**
  * Builds a request by parsing all the resulting object's annotations and running
@@ -30,12 +32,10 @@ class RequestBuilder
     const DEFAULT_CACHE_PATH = 'php-simple-request/cache/';
 
     /**
-     *
-     * @var string
+     * @var \Psr\Cache\CacheItemPoolInterface
      */
-    private $cachePath;
+    private $cache;
     /**
-     *
      * @var ParserGenerator
      */
     private $parserGenerator;
@@ -49,10 +49,10 @@ class RequestBuilder
      *
      */
     public function __construct(
-        \stdClass $cacheConfig = null,
-        ParserGenerator $parserGenerator = null
+        PsrCache $cache,
+        ParserGenerator $parserGenerator
     ) {
-        $this->setCache($cacheConfig);
+        $this->cache = $cache;
         $this->parserGenerator = $parserGenerator ?: new ParserGenerator();
     }
 
@@ -78,42 +78,16 @@ class RequestBuilder
 
     private function generateRequestParserObject($className, $parser)
     {
-        if ($this->cachePath === null) {
-            return $this->parserGenerator->createRequestParser($className, $parser);
-        }
-
-        return  $this->getRequestParserFromCache($className, $parser);
-    }
-
-    private function getRequestParserFromCache($className, $parser)
-    {
-        $fileName = $this->cachePath . str_replace('\\', '', $className . get_class($parser));
-        if (!file_exists($fileName)) {
+        $cacheKey = str_replace('\\', '', $className . get_class($parser));
+        $cacheItem = $this->cache->getItem($cacheKey);
+        $return = $cacheItem->get();
+        if ($return === null) {
             $return = $this->parserGenerator->createRequestParser($className, $parser);
-            if (!is_dir($this->cachePath)) {
-                mkdir($this->cachePath, 0777, true);
-            }
-            file_put_contents($fileName, serialize($return));
-
-            return $return;
+            $cacheItem->set($return);
+            $this->cache->save($cacheItem);
         }
 
-        return unserialize(file_get_contents($fileName));
-    }
-
-    private function setCache(\stdClass $cacheConfig = null)
-    {
-        if ($cacheConfig !== null) {
-            if (isset($cacheConfig->disabled) && $cacheConfig->disabled) {
-                return null;
-            }
-            $this->cachePath =
-                isset($cacheConfig->path) ? $cacheConfig->path
-                    : sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::DEFAULT_CACHE_PATH
-            ;
-            return;
-        }
-        $this->cachePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::DEFAULT_CACHE_PATH;
+        return $return;
     }
 
     private function sanitizeRequestOrThrowExceptionIfInvalid($request)

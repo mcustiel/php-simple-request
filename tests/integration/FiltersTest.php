@@ -18,18 +18,18 @@
 namespace Integration;
 
 use Fixtures\AllFiltersRequest;
-use Mcustiel\SimpleRequest\RequestBuilder;
-use Mcustiel\SimpleRequest\ParserResponse;
 use Mcustiel\SimpleRequest\AllErrorsRequestParser;
 
-class FiltersTest extends \PHPUnit_Framework_TestCase
+class FiltersTest extends TestRequestBuilder
 {
     const TEST_VALUE = 'test ONE Two';
 
     private $request;
-    private $builder;
 
-    public function setUp()
+    /**
+     * @before
+     */
+    public function prepare()
     {
         $this->request = [
             'custom' => self::TEST_VALUE,
@@ -37,12 +37,15 @@ class FiltersTest extends \PHPUnit_Framework_TestCase
             'upperCase' => self::TEST_VALUE,
             'lowerCase' => self::TEST_VALUE
         ];
-        $this->builder = new RequestBuilder();
     }
 
     public function testBuildARequestAndFilters()
     {
-        $request = $this->builder->parseRequest($this->request, AllFiltersRequest::class, new AllErrorsRequestParser());
+        $request = $this->builderWithoutCache->parseRequest(
+            $this->request,
+            AllFiltersRequest::class,
+            new AllErrorsRequestParser()
+        );
 
         $this->assertInstanceOf(AllFiltersRequest::class, $request);
         $this->assertEquals('Test One Two', $request->getCustom());

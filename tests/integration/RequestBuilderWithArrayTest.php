@@ -55,7 +55,7 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
         );
         $this->assertPersonIsOk($parserResponse);
 
-        $builderCached = new RequestBuilder();
+        $builderCached = $this->createCachedRequestBuilder();
         $parserResponse = $builderCached->parseRequest(
             $request,
             PersonRequest::class,
@@ -107,9 +107,9 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
             'uniqueItems' => [ '1', 2, 'potato' ],
             'url' => 'https://this.isaurl.com/test.php?id=1#test'
         ];
-        $builder = new RequestBuilder($cacheConfig);
+        $builder = $this->createCachedRequestBuilder('PhpSimpleRequestTestAlt');
         $builder->parseRequest($request, AllValidatorsRequest::class);
-        $builder = new RequestBuilder($cacheConfig);
+        $builder = $this->createCachedRequestBuilder('PhpSimpleRequestTestAlt');
         $builder->parseRequest($request, AllValidatorsRequest::class);
     }
 

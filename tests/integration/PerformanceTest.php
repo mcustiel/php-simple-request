@@ -21,7 +21,7 @@ use Mcustiel\SimpleRequest\RequestBuilder;
 use Fixtures\PersonRequest;
 use Mcustiel\SimpleRequest\AllErrorsRequestParser;
 
-class PerformanceTest extends \PHPUnit_Framework_TestCase
+class PerformanceTest extends TestRequestBuilder
 {
     public function testRequestBuilderWithoutCacheUsingFirstErrorParser()
     {
@@ -30,10 +30,6 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
             'lastName' => 'DOE',
             'age' => 30
         ];
-        $config = new \stdClass;
-        $config->disabled = true;
-        $builder = new RequestBuilder($config);
-
         $cyclesList = [
             5000
         ];
@@ -41,9 +37,10 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
         foreach ($cyclesList as $cycles) {
             $start = microtime(true);
             for ($i = $cycles; $i > 0; $i --) {
-                $builder->parseRequest($request, PersonRequest::class);
+                $this->builderWithoutCache->parseRequest($request, PersonRequest::class);
             }
-            echo "\n{$cycles} cycles executed in " . (microtime(true) - $start)
+            echo "\n{$cycles} cycles executed in "
+                . (microtime(true) - $start)
                 . " seconds without cache and FIRST_ERROR_PARSER \n";
         }
     }
@@ -55,10 +52,6 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
             'lastName' => 'DOE',
             'age' => 30
         ];
-        $config = new \stdClass;
-        $config->path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'php-simple-request/cache/';
-        $builder = new RequestBuilder($config);
-
         $cyclesList = [
             25000
         ];
@@ -66,9 +59,10 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
         foreach ($cyclesList as $cycles) {
             $start = microtime(true);
             for ($i = $cycles; $i > 0; $i --) {
-                $builder->parseRequest($request, PersonRequest::class);
+                $this->builderWithCache->parseRequest($request, PersonRequest::class);
             }
-            echo "\n{$cycles} cycles executed in " . (microtime(true) - $start)
+            echo "\n{$cycles} cycles executed in "
+                . (microtime(true) - $start)
                 . " seconds with cache and FIRST_ERROR_PARSER \n";
         }
     }
@@ -80,10 +74,6 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
             'lastName' => 'DOE',
             'age' => 30
         ];
-        $config = new \stdClass;
-        $config->disabled = true;
-        $builder = new RequestBuilder($config);
-
         $cyclesList = [
             5000
         ];
@@ -91,14 +81,15 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
         foreach ($cyclesList as $cycles) {
             $start = microtime(true);
             for ($i = $cycles; $i > 0; $i --) {
-                $builder->parseRequest(
+                $this->builderWithoutCache->parseRequest(
                     $request,
                     PersonRequest::class,
                     new AllErrorsRequestParser()
                 );
             }
-            echo "\n{$cycles} cycles executed in " . (microtime(true) - $start)
-            . " seconds without cache and RETURN_ALL_ERRORS_IN_EXCEPTION \n";
+            echo "\n{$cycles} cycles executed in "
+                . (microtime(true) - $start)
+                . " seconds without cache and RETURN_ALL_ERRORS_IN_EXCEPTION \n";
         }
     }
 
@@ -109,10 +100,6 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
             'lastName' => 'DOE',
             'age' => 30
         ];
-        $config = new \stdClass;
-        $config->path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'php-simple-request/cache/';
-        $builder = new RequestBuilder($config);
-
         $cyclesList = [
             25000
         ];
@@ -120,14 +107,15 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
         foreach ($cyclesList as $cycles) {
             $start = microtime(true);
             for ($i = $cycles; $i > 0; $i --) {
-                $builder->parseRequest(
+                $this->builderWithCache->parseRequest(
                     $request,
                     PersonRequest::class,
                     new AllErrorsRequestParser()
                 );
             }
-            echo "\n{$cycles} cycles executed in " . (microtime(true) - $start)
-            . " seconds with cache and RETURN_ALL_ERRORS_IN_EXCEPTION \n";
+            echo "\n{$cycles} cycles executed in "
+                . (microtime(true) - $start)
+                . " seconds with cache and RETURN_ALL_ERRORS_IN_EXCEPTION \n";
         }
     }
 }

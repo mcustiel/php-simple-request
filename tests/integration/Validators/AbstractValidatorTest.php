@@ -22,13 +22,16 @@ use Mcustiel\SimpleRequest\RequestBuilder;
 use Mcustiel\SimpleRequest\ParserResponse;
 use Mcustiel\SimpleRequest\Exception\InvalidRequestException;
 use Mcustiel\SimpleRequest\AllErrorsRequestParser;
+use Integration\TestRequestBuilder;
 
-abstract class AbstractValidatorTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractValidatorTest extends TestRequestBuilder
 {
     protected $request;
-    protected $builder;
 
-    public function setUp()
+    /**
+     * @before
+     */
+    public function prepare()
     {
         $class = new \stdClass();
         $class->key1 = 'val1';
@@ -70,15 +73,12 @@ abstract class AbstractValidatorTest extends \PHPUnit_Framework_TestCase
             'uniqueItems' => [ '1', 2, 'potato' ],
             'url' => 'https://this.isaurl.com/test.php?id=1#test'
         ];
-        $cacheConfig = new \stdClass();
-        $cacheConfig->disabled = true;
-        $this->builder = new RequestBuilder($cacheConfig);
     }
 
     protected function buildRequestAndTestErrorFieldPresent($fieldName)
     {
         try {
-            $this->builder->parseRequest(
+            $this->builderWithoutCache->parseRequest(
                 $this->request,
                 AllValidatorsRequest::class,
                 new AllErrorsRequestParser()
@@ -90,7 +90,11 @@ abstract class AbstractValidatorTest extends \PHPUnit_Framework_TestCase
 
     protected function assertRequestParsesCorrectly()
     {
-        $response = $this->builder->parseRequest($this->request, AllValidatorsRequest::class, new AllErrorsRequestParser());
+        $response = $this->builderWithoutCache->parseRequest(
+            $this->request,
+            AllValidatorsRequest::class,
+            new AllErrorsRequestParser()
+        );
         $this->assertInstanceOf(AllValidatorsRequest::class, $response);
     }
 
