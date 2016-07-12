@@ -29,8 +29,6 @@ use Symfony\Component\Cache\CacheItem;
  */
 class RequestBuilder
 {
-    const DEFAULT_CACHE_PATH = 'php-simple-request/cache/';
-
     /**
      * @var \Psr\Cache\CacheItemPoolInterface
      */
@@ -53,7 +51,7 @@ class RequestBuilder
         ParserGenerator $parserGenerator
     ) {
         $this->cache = $cache;
-        $this->parserGenerator = $parserGenerator ?: new ParserGenerator();
+        $this->parserGenerator = $parserGenerator;
     }
 
     /**
