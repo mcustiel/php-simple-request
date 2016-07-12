@@ -38,10 +38,10 @@ class AllErrorsRequestParser extends RequestParser
      */
     public function parse($request)
     {
-        $object = new $this->requestObject;
+        $object = clone $this->requestObject;
         $invalidValues = [];
 
-        foreach ($this->properties as $propertyParser) {
+        foreach ($this->propertyParsers as $propertyParser) {
             $propertyName = $propertyParser->getName();
             try {
                 $this->setProperty($request, $object, $propertyName, $propertyParser);

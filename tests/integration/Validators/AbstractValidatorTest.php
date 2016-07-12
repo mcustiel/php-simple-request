@@ -21,6 +21,7 @@ use Fixtures\AllValidatorsRequest;
 use Mcustiel\SimpleRequest\RequestBuilder;
 use Mcustiel\SimpleRequest\ParserResponse;
 use Mcustiel\SimpleRequest\Exception\InvalidRequestException;
+use Mcustiel\SimpleRequest\AllErrorsRequestParser;
 
 abstract class AbstractValidatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -80,7 +81,7 @@ abstract class AbstractValidatorTest extends \PHPUnit_Framework_TestCase
             $this->builder->parseRequest(
                 $this->request,
                 AllValidatorsRequest::class,
-                RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+                new AllErrorsRequestParser()
             );
         } catch (InvalidRequestException $e) {
             $this->assertTrue(isset($e->getErrors()[$fieldName]));
@@ -89,7 +90,7 @@ abstract class AbstractValidatorTest extends \PHPUnit_Framework_TestCase
 
     protected function assertRequestParsesCorrectly()
     {
-        $response = $this->builder->parseRequest($this->request, AllValidatorsRequest::class, RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION);
+        $response = $this->builder->parseRequest($this->request, AllValidatorsRequest::class, new AllErrorsRequestParser());
         $this->assertInstanceOf(AllValidatorsRequest::class, $response);
     }
 

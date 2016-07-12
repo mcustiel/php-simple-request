@@ -19,6 +19,7 @@ namespace Integration;
 
 use Mcustiel\SimpleRequest\RequestBuilder;
 use Fixtures\PersonRequest;
+use Mcustiel\SimpleRequest\AllErrorsRequestParser;
 
 class PerformanceTest extends \PHPUnit_Framework_TestCase
 {
@@ -93,7 +94,7 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
                 $builder->parseRequest(
                     $request,
                     PersonRequest::class,
-                    RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+                    new AllErrorsRequestParser()
                 );
             }
             echo "\n{$cycles} cycles executed in " . (microtime(true) - $start)
@@ -122,7 +123,7 @@ class PerformanceTest extends \PHPUnit_Framework_TestCase
                 $builder->parseRequest(
                     $request,
                     PersonRequest::class,
-                    RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+                    new AllErrorsRequestParser()
                 );
             }
             echo "\n{$cycles} cycles executed in " . (microtime(true) - $start)

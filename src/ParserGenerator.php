@@ -25,73 +25,58 @@ use Mcustiel\SimpleRequest\Annotation\FilterAnnotation;
 use Mcustiel\SimpleRequest\Util\FilterBuilder;
 use Mcustiel\SimpleRequest\Annotation\ParseAs;
 use Mcustiel\SimpleRequest\Annotation\AnnotationWithAssociatedClass;
+use Mcustiel\SimpleRequest\Strategies\AnnotationParserFactory;
 
 class ParserGenerator
 {
     /**
-     *
      * @var \Doctrine\Common\Annotations\AnnotationReader
      */
-    private $annotationParser;
+    private $annotationReader;
     /**
-     *
-     * @var RequestBuilder
+     * @var \Mcustiel\SimpleRequest\Strategies\AnnotationParserFactory
+     */
+    private $annotationParserFactory;
+    /**
+     * @var \Mcustiel\SimpleRequest\RequestBuilder
      */
     private $requestBuilder;
 
     /**
-     *
      * @param \Doctrine\Common\Annotations\AnnotationReader $annotationReader
      *      External annotation reader instance (mostly for DI in tests). Created
      *      if not is set.
      */
-    public function __construct(RequestBuilder $requestBuilder, AnnotationReader $annotationReader = null)
+    public function __construct(
+        RequestBuilder $requestBuilder = null,
+        AnnotationReader $annotationReader = null,
+        AnnotationParserFactory $annotationParserFactory = null
+    ) {
+        $this->annotationReader = $annotationReader ?: new AnnotationReader();
+        $this->annotationParserFactory = $annotationParserFactory ?: new AnnotationParserFactory();
+        $this->requestBuilder = $requestBuilder ?: new RequestBuilder();
+    }
+
+    public function addPropertyParser(PropertyParser $propertyParser)
     {
-        $this->annotationParser = $annotationReader == null ? new AnnotationReader() : $annotationReader;
-        $this->requestBuilder = $requestBuilder;
+        $this->propertyParsers[] = $propertyParser;
     }
 
     public function createRequestParser(
-        $name,
         $className,
-        \ReflectionClass $class,
-        $parserClass
+        $parserObject
     ) {
-        $return = new $parserClass($name);
-        $return->setRequestObject($className);
+        $class = new \ReflectionClass($className);
+        $parserObject->setRequestObject(new $className);
         foreach ($class->getProperties() as $property) {
             $propertyParser = new PropertyParser($property->getName(), $this->requestBuilder);
-            foreach ($this->annotationParser->getPropertyAnnotations($property) as $propertyAnnotation) {
-                $this->parsePropertyAnnotation($propertyAnnotation, $propertyParser);
+            foreach ($this->annotationReader->getPropertyAnnotations($property) as $propertyAnnotation) {
+                $this->annotationParserFactory
+                    ->getAnnotationParserFor($propertyAnnotation)
+                    ->parse($propertyAnnotation, $propertyParser);
             }
-            $return->addProperty($propertyParser);
+            $parserObject->addProperty($propertyParser);
         }
-        return $return;
-    }
-
-    private function parsePropertyAnnotation(
-        RequestAnnotation $propertyAnnotation,
-        PropertyParser $propertyParser
-    ) {
-        if ($propertyAnnotation instanceof AnnotationWithAssociatedClass) {
-            $associatedClass = $propertyAnnotation->getAssociatedClass();
-            if ($propertyAnnotation instanceof ValidatorAnnotation) {
-                $propertyParser->addValidator(
-                    ValidatorBuilder::builder()
-                    ->withClass($associatedClass)
-                    ->withSpecification($propertyAnnotation->getValue())
-                    ->build()
-                );
-            } elseif ($propertyAnnotation instanceof FilterAnnotation) {
-                $propertyParser->addFilter(
-                    FilterBuilder::builder()
-                    ->withClass($associatedClass)
-                    ->withSpecification($propertyAnnotation->getValue())
-                    ->build()
-                );
-            }
-        } elseif ($propertyAnnotation instanceof ParseAs) {
-            $propertyParser->setType($propertyAnnotation->getValue());
-        }
+        return $parserObject;
     }
 }

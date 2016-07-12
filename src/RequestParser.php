@@ -29,7 +29,7 @@ abstract class RequestParser
     /**
      * @var PropertyParser[]
      */
-    protected $properties;
+    protected $propertyParsers;
     protected $requestObject;
 
     /**
@@ -37,7 +37,7 @@ abstract class RequestParser
      */
     public function __construct()
     {
-        $this->properties = [];
+        $this->propertyParsers = [];
     }
 
     /**
@@ -45,9 +45,9 @@ abstract class RequestParser
      *
      * @param PropertyParser $parser
      */
-    public function addProperty(PropertyParser $parser)
+    public function addPropertyParser(PropertyParser $parser)
     {
-        $this->properties[$parser->getName()] = $parser;
+        $this->propertyParsers[$parser->getName()] = $parser;
     }
 
     /**
@@ -68,9 +68,6 @@ abstract class RequestParser
      */
     protected function getFromRequest($request, $propertyName)
     {
-        if ($request instanceof \stdClass) {
-            return isset($request->{$propertyName}) ? $request->{$propertyName} : null;
-        }
         return isset($request[$propertyName]) ? $request[$propertyName] : null;
     }
 

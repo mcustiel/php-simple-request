@@ -36,9 +36,8 @@ class FirstErrorRequestParser extends RequestParser
      */
     public function parse($request)
     {
-        $object = new $this->requestObject;
-
-        foreach ($this->properties as $propertyParser) {
+        $object = clone $this->requestObject;
+        foreach ($this->propertyParsers as $propertyParser) {
             $propertyName = $propertyParser->getName();
             try {
                 $this->setProperty($request, $object, $propertyName, $propertyParser);
@@ -49,6 +48,6 @@ class FirstErrorRequestParser extends RequestParser
             }
         }
 
-        return $object;
+        return clone $object;
     }
 }

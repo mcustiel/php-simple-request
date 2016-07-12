@@ -27,8 +27,6 @@ use Mcustiel\SimpleRequest\Exception\InvalidRequestException;
  */
 class RequestBuilder
 {
-    const RETURN_ALL_ERRORS_IN_EXCEPTION = 'AllErrorsRequestParser';
-    const THROW_EXCEPTION_ON_FIRST_ERROR = 'FirstErrorRequestParser';
     const DEFAULT_CACHE_PATH = 'php-simple-request/cache/';
 
     /**
@@ -69,35 +67,29 @@ class RequestBuilder
     public function parseRequest(
         $request,
         $className,
-        $behaviour = self::THROW_EXCEPTION_ON_FIRST_ERROR
+        RequestParser $requestParser = null
     ) {
-        $this->checkRequestType($request);
-
-        $requestParser = $this->generateRequestParserObject(
-            $className,
-            '\\Mcustiel\\SimpleRequest\\' . $behaviour
-        );
-
-        return $requestParser->parse($request);
+        if (!$requestParser) {
+            $requestParser = new FirstErrorRequestParser();
+        }
+        $this->sanitizeRequestOrThrowExceptionIfInvalid($request);
+        return $this->generateRequestParserObject($className, $requestParser)->parse($request);
     }
 
-    private function generateRequestParserObject($className, $parserClass)
+    private function generateRequestParserObject($className, $parser)
     {
-        $class = new \ReflectionClass($className);
-        $name = str_replace('\\', '', $className . $parserClass);
-
         if ($this->cachePath === null) {
-            return $this->parserGenerator->createRequestParser($name, $className, $class, $parserClass);
+            return $this->parserGenerator->createRequestParser($className, $parser);
         }
 
-        return  $this->getRequestParserFromCache($name, $className, $class, $parserClass);
+        return  $this->getRequestParserFromCache($className, $parser);
     }
 
-    private function getRequestParserFromCache($name, $className, \ReflectionClass $class, $parserClass)
+    private function getRequestParserFromCache($className, $parser)
     {
-        $fileName = $this->cachePath . $name;
+        $fileName = $this->cachePath . str_replace('\\', '', $className . get_class($parser));
         if (!file_exists($fileName)) {
-            $return = $this->parserGenerator->createRequestParser($name, $className, $class, $parserClass);
+            $return = $this->parserGenerator->createRequestParser($className, $parser);
             if (!is_dir($this->cachePath)) {
                 mkdir($this->cachePath, 0777, true);
             }
@@ -124,12 +116,14 @@ class RequestBuilder
         $this->cachePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::DEFAULT_CACHE_PATH;
     }
 
-    private function checkRequestType($request)
+    private function sanitizeRequestOrThrowExceptionIfInvalid($request)
     {
-        if (!is_array($request) && !($request instanceof \stdClass)) {
+        $isObject = ($request instanceof \stdClass);
+        if (!is_array($request) && !$isObject) {
             throw new InvalidRequestException(
                 'Request builder is intended to be used with arrays or instances of \\stdClass'
             );
         }
+        return $isObject ? json_decode(json_encode($request), true) : $request;
     }
 }

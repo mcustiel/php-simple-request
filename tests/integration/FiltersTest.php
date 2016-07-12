@@ -20,6 +20,7 @@ namespace Integration;
 use Fixtures\AllFiltersRequest;
 use Mcustiel\SimpleRequest\RequestBuilder;
 use Mcustiel\SimpleRequest\ParserResponse;
+use Mcustiel\SimpleRequest\AllErrorsRequestParser;
 
 class FiltersTest extends \PHPUnit_Framework_TestCase
 {
@@ -41,7 +42,7 @@ class FiltersTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildARequestAndFilters()
     {
-        $request = $this->builder->parseRequest($this->request, AllFiltersRequest::class, RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION);
+        $request = $this->builder->parseRequest($this->request, AllFiltersRequest::class, new AllErrorsRequestParser());
 
         $this->assertInstanceOf(AllFiltersRequest::class, $request);
         $this->assertEquals('Test One Two', $request->getCustom());

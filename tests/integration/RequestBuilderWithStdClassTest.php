@@ -22,6 +22,7 @@ use Fixtures\AllValidatorsRequest;
 use Mcustiel\SimpleRequest\RequestBuilder;
 use Mcustiel\SimpleRequest\Exception\InvalidRequestException;
 use Fixtures\CoupleRequest;
+use Mcustiel\SimpleRequest\AllErrorsRequestParser;
 
 class RequestBuilderWithStdClassTest extends TestRequestBuilder
 {
@@ -32,7 +33,7 @@ class RequestBuilderWithStdClassTest extends TestRequestBuilder
         $parserResponse = $this->builderWithoutCache->parseRequest(
             $request,
             PersonRequest::class,
-            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+            new AllErrorsRequestParser()
         );
         $this->assertPersonIsOk($parserResponse);
     }
@@ -44,7 +45,7 @@ class RequestBuilderWithStdClassTest extends TestRequestBuilder
         $parserResponse = $this->builderWithCache->parseRequest(
             $request,
             PersonRequest::class,
-            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+            new AllErrorsRequestParser()
         );
         $this->assertPersonIsOk($parserResponse);
 
@@ -52,7 +53,7 @@ class RequestBuilderWithStdClassTest extends TestRequestBuilder
         $parserResponse = $builderCached->parseRequest(
             $request,
             PersonRequest::class,
-            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+            new AllErrorsRequestParser()
         );
         $this->assertPersonIsOk($parserResponse);
     }
@@ -117,7 +118,7 @@ class RequestBuilderWithStdClassTest extends TestRequestBuilder
             $this->builderWithoutCache->parseRequest(
                 $request,
                 PersonRequest::class,
-                RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+                new AllErrorsRequestParser()
             );
             $this->fail('Exception expected to be thrown');
         } catch (InvalidRequestException $e) {
@@ -136,7 +137,7 @@ class RequestBuilderWithStdClassTest extends TestRequestBuilder
             $this->builderWithoutCache->parseRequest(
                 $request,
                 PersonRequest::class,
-                RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+                new AllErrorsRequestParser()
             );
             $this->fail('Exception expected to be thrown');
         } catch (InvalidRequestException $e) {
@@ -154,7 +155,7 @@ class RequestBuilderWithStdClassTest extends TestRequestBuilder
             $this->builderWithoutCache->parseRequest(
                 $request,
                 PersonRequest::class,
-                RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+                new AllErrorsRequestParser()
             );
             $this->fail('Exception expected to be thrown');
         } catch (InvalidRequestException $e) {
@@ -183,7 +184,7 @@ class RequestBuilderWithStdClassTest extends TestRequestBuilder
         $parserResponse = $this->builderWithoutCache->parseRequest(
             $request,
             CoupleRequest::class,
-            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+            new AllErrorsRequestParser()
         );
         $this->assertPersonIsOk($parserResponse->getPerson1());
         $personRequest = $parserResponse->getPerson2();
