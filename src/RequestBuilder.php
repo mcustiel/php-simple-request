@@ -53,7 +53,7 @@ class RequestBuilder
         ParserGenerator $parserGenerator = null
     ) {
         $this->setCache($cacheConfig);
-        $this->parserGenerator = $parserGenerator === null ? new ParserGenerator($this) : $parserGenerator;
+        $this->parserGenerator = $parserGenerator ?: new ParserGenerator();
     }
 
     /**
@@ -72,8 +72,8 @@ class RequestBuilder
         if (!$requestParser) {
             $requestParser = new FirstErrorRequestParser();
         }
-        $this->sanitizeRequestOrThrowExceptionIfInvalid($request);
-        return $this->generateRequestParserObject($className, $requestParser)->parse($request);
+        return $this->generateRequestParserObject($className, $requestParser)
+            ->parse($this->sanitizeRequestOrThrowExceptionIfInvalid($request));
     }
 
     private function generateRequestParserObject($className, $parser)

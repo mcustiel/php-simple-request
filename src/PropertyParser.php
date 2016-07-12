@@ -50,24 +50,18 @@ class PropertyParser
      * @var string
      */
     private $type;
-    /**
-     *
-     * @var RequestBuilder
-     */
-    private $requestBuilder;
 
     /**
      * Class constructor. Initialized with the property name.
      *
      * @param string $name
      */
-    public function __construct($name, RequestBuilder $requestBuilder)
+    public function __construct($name)
     {
         $this->validators = [];
         $this->filters = [];
         $this->type = null;
         $this->name = $name;
-        $this->requestBuilder = $requestBuilder;
     }
 
     /**
@@ -122,9 +116,9 @@ class PropertyParser
     public function parse($value)
     {
         $return = $this->cloneValue($value);
-        if ($this->type !== null) {
+        /*if ($this->type !== null) {
             $return = $this->createInstanceOfTypeFromValue($return);
-        }
+        }*/
         $return = $this->runFilters($return);
         $this->validate($return);
 

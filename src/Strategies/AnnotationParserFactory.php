@@ -17,11 +17,16 @@ class AnnotationParserFactory
         ParseAs::class => ParseAsAnnotationParser::class,
     ];
 
+    /**
+     * @param RequestAnnotation $annotation
+     * @throws \Exception
+     * @return \Mcustiel\SimpleRequest\Strategies\Annotations\AnnotationParser
+     */
     public function getAnnotationParserFor(RequestAnnotation $annotation)
     {
         foreach ($this->map as $key => $val) {
             if ($annotation instanceof  $key) {
-                return $val;
+                return new $val;
             }
         }
         throw new \Exception('Unsupported annotation: ' . get_class($annotation));

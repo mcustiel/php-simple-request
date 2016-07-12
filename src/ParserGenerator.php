@@ -37,10 +37,6 @@ class ParserGenerator
      * @var \Mcustiel\SimpleRequest\Strategies\AnnotationParserFactory
      */
     private $annotationParserFactory;
-    /**
-     * @var \Mcustiel\SimpleRequest\RequestBuilder
-     */
-    private $requestBuilder;
 
     /**
      * @param \Doctrine\Common\Annotations\AnnotationReader $annotationReader
@@ -48,13 +44,11 @@ class ParserGenerator
      *      if not is set.
      */
     public function __construct(
-        RequestBuilder $requestBuilder = null,
         AnnotationReader $annotationReader = null,
         AnnotationParserFactory $annotationParserFactory = null
     ) {
         $this->annotationReader = $annotationReader ?: new AnnotationReader();
         $this->annotationParserFactory = $annotationParserFactory ?: new AnnotationParserFactory();
-        $this->requestBuilder = $requestBuilder ?: new RequestBuilder();
     }
 
     public function addPropertyParser(PropertyParser $propertyParser)
@@ -69,13 +63,13 @@ class ParserGenerator
         $class = new \ReflectionClass($className);
         $parserObject->setRequestObject(new $className);
         foreach ($class->getProperties() as $property) {
-            $propertyParser = new PropertyParser($property->getName(), $this->requestBuilder);
+            $propertyParser = new PropertyParser($property->getName());
             foreach ($this->annotationReader->getPropertyAnnotations($property) as $propertyAnnotation) {
                 $this->annotationParserFactory
                     ->getAnnotationParserFor($propertyAnnotation)
-                    ->parse($propertyAnnotation, $propertyParser);
+                    ->execute($propertyAnnotation, $propertyParser);
             }
-            $parserObject->addProperty($propertyParser);
+            $parserObject->addPropertyParser($propertyParser);
         }
         return $parserObject;
     }

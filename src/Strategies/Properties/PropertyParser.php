@@ -3,5 +3,5 @@ namespace Mcustiel\SimpleRequest\Strategies\Properties;
 
 interface PropertyParser
 {
-    public function parse()
+    public function parse();
 }
