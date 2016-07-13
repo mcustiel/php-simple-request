@@ -38,10 +38,10 @@ class FirstErrorRequestParser extends RequestParser
     {
         $object = clone $this->requestObject;
         foreach ($this->propertyParsers as $propertyParser) {
-            $propertyName = $propertyParser->getName();
             try {
-                $this->setProperty($request, $object, $propertyName, $propertyParser);
+                $this->setProperty($request, $object, $propertyParser);
             } catch (InvalidValueException $e) {
+                $propertyName = $propertyParser->getName();
                 $exception = new InvalidRequestException($propertyName . ': ' . $e->getMessage());
                 $exception->setErrors([$propertyName => $e->getMessage()]);
                 throw $exception;

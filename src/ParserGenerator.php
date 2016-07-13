@@ -20,7 +20,6 @@ namespace Mcustiel\SimpleRequest;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Mcustiel\SimpleRequest\Strategies\AnnotationParserFactory;
 use Mcustiel\SimpleRequest\Strategies\PropertyParserBuilder;
-use Mcustiel\SimpleRequest\Strategies\Properties\PropertyParser;
 
 class ParserGenerator
 {
@@ -44,11 +43,6 @@ class ParserGenerator
     ) {
         $this->annotationReader = $annotationReader;
         $this->annotationParserFactory = $annotationParserFactory;
-    }
-
-    public function addPropertyParser(PropertyParser $propertyParser)
-    {
-        $this->propertyParsers[] = $propertyParser;
     }
 
     public function createRequestParser(

@@ -73,8 +73,9 @@ abstract class RequestParser
         return isset($request[$propertyName]) ? $request[$propertyName] : null;
     }
 
-    protected function setProperty($request, $object, $propertyName, $propertyParser)
+    protected function setProperty($request, $object, $propertyParser)
     {
+        $propertyName = $propertyParser->getName();
         $value = $propertyParser->parse(
             $this->getFromRequest($request, $propertyName)
         );
