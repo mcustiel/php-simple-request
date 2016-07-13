@@ -13,8 +13,8 @@ class AnnotationParserFactory
 {
     private $map = [
         ValidatorAnnotation::class => ValidatorAnnotationParser::class,
-        FilterAnnotation::class => FilterAnnotationParser::class,
-        ParseAs::class => ParseAsAnnotationParser::class,
+        FilterAnnotation::class    => FilterAnnotationParser::class,
+        ParseAs::class             => ParseAsAnnotationParser::class,
     ];
 
     /**

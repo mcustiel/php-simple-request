@@ -30,8 +30,8 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
     {
         $request = [
             'firstName' => '  John  ',
-            'lastName' => 'DOE',
-            'age' => 30
+            'lastName'  => 'DOE',
+            'age'       => 30
         ];
         $parserResponse = $this->builderWithoutCache->parseRequest(
             $request,
@@ -45,8 +45,8 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
     {
         $request = [
             'firstName' => '  John  ',
-            'lastName' => 'DOE',
-            'age' => 30
+            'lastName'  => 'DOE',
+            'age'       => 30
         ];
         $parserResponse = $this->builderWithCache->parseRequest(
             $request,
@@ -73,39 +73,39 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
         $class->key2 = 'val2';
         $class->key3 = 'val3';
         $request = [
-            'anyOf' => 5,
-            'custom' => '5',
-            'date' => '17/10/1981 01:30:00',
-            'email' => 'pipicui@hotmail.com',
-            'enum' => 'val1',
+            'anyOf'            => 5,
+            'custom'           => '5',
+            'date'             => '17/10/1981 01:30:00',
+            'email'            => 'pipicui@hotmail.com',
+            'enum'             => 'val1',
             'exclusiveMaximum' => 3,
             'exclusiveMinimum' => 8,
-            'float' => '5.1',
-            'hostName' => 'es.wikipedia.org',
-            'integer' => '20',
-            'ipv4' => '192.168.0.1',
-            'ipv6' => '2001:0db8:85a3:08d3:1319:8a2e:0370:7334',
-            'items' => [1, '12345'],
-            'maximum' => 3,
-            'maxItems' => [ 'a', 'b' ],
-            'maxLength' => '12345',
-            'maxProperties' => [ 'a', 'b' ],
-            'minimum' => 8,
-            'minItems' => [ 'a', 'b', 'c', 'd' ],
-            'minLength' => '123',
-            'minProperties' => ['a', 'b', 'c', 'd'],
-            'multipleOf' => 5,
-            'notEmpty' => '-',
-            'notNull' => '',
-            'not' => null,
-            'oneOf' => 5,
-            'properties' => ['key1' => 1, 'key2' => '12345'],
-            'regExp' => 'abc123',
-            'required' => $class,
-            'type' => [ 'a' ],
-            'twitterAccount' => '@pepe_123',
-            'uniqueItems' => [ '1', 2, 'potato' ],
-            'url' => 'https://this.isaurl.com/test.php?id=1#test'
+            'float'            => '5.1',
+            'hostName'         => 'es.wikipedia.org',
+            'integer'          => '20',
+            'ipv4'             => '192.168.0.1',
+            'ipv6'             => '2001:0db8:85a3:08d3:1319:8a2e:0370:7334',
+            'items'            => [1, '12345'],
+            'maximum'          => 3,
+            'maxItems'         => [ 'a', 'b' ],
+            'maxLength'        => '12345',
+            'maxProperties'    => [ 'a', 'b' ],
+            'minimum'          => 8,
+            'minItems'         => [ 'a', 'b', 'c', 'd' ],
+            'minLength'        => '123',
+            'minProperties'    => ['a', 'b', 'c', 'd'],
+            'multipleOf'       => 5,
+            'notEmpty'         => '-',
+            'notNull'          => '',
+            'not'              => null,
+            'oneOf'            => 5,
+            'properties'       => ['key1' => 1, 'key2' => '12345'],
+            'regExp'           => 'abc123',
+            'required'         => $class,
+            'type'             => [ 'a' ],
+            'twitterAccount'   => '@pepe_123',
+            'uniqueItems'      => [ '1', 2, 'potato' ],
+            'url'              => 'https://this.isaurl.com/test.php?id=1#test'
         ];
         $builder = $this->createCachedRequestBuilder('PhpSimpleRequestTestAlt');
         $builder->parseRequest($request, AllValidatorsRequest::class, new FirstErrorRequestParser());
@@ -117,8 +117,8 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
     {
         $request = [
             'firstName' => '',
-            'lastName' => 'DOE',
-            'age' => 30
+            'lastName'  => 'DOE',
+            'age'       => 30
         ];
         try {
             $this->builderWithoutCache->parseRequest(
@@ -136,8 +136,8 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
     {
         $request = [
             'firstName' => null,
-            'lastName' => 'DOE',
-            'age' => 30
+            'lastName'  => 'DOE',
+            'age'       => 30
         ];
         try {
             $this->builderWithoutCache->parseRequest(
@@ -155,7 +155,7 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
     {
         $request = [
             'lastName' => 'DOE',
-            'age' => 30
+            'age'      => 30
         ];
         try {
             $this->builderWithoutCache->parseRequest(
@@ -173,15 +173,15 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
     {
         $request = [
             'togetherSince' => '2001-09-13',
-            'person1' => [
+            'person1'       => [
                 'firstName' => '  John  ',
-                'lastName' => 'DOE',
-                'age' => 30
+                'lastName'  => 'DOE',
+                'age'       => 30
             ],
             'person2' => [
                 'firstName' => '  Jane  ',
-                'lastName' => 'DoE',
-                'age' => 41
+                'lastName'  => 'DoE',
+                'age'       => 41
             ]
         ];
         /**

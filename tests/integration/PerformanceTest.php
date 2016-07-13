@@ -27,8 +27,8 @@ class PerformanceTest extends TestRequestBuilder
     {
         $request = [
             'firstName' => '  John  ',
-            'lastName' => 'DOE',
-            'age' => 30
+            'lastName'  => 'DOE',
+            'age'       => 30
         ];
         $cyclesList = [
             5000
@@ -49,8 +49,8 @@ class PerformanceTest extends TestRequestBuilder
     {
         $request = [
             'firstName' => '  John  ',
-            'lastName' => 'DOE',
-            'age' => 30
+            'lastName'  => 'DOE',
+            'age'       => 30
         ];
         $cyclesList = [
             25000
@@ -71,8 +71,8 @@ class PerformanceTest extends TestRequestBuilder
     {
         $request = [
             'firstName' => '  John  ',
-            'lastName' => 'DOE',
-            'age' => 30
+            'lastName'  => 'DOE',
+            'age'       => 30
         ];
         $cyclesList = [
             5000
@@ -97,8 +97,8 @@ class PerformanceTest extends TestRequestBuilder
     {
         $request = [
             'firstName' => '  John  ',
-            'lastName' => 'DOE',
-            'age' => 30
+            'lastName'  => 'DOE',
+            'age'       => 30
         ];
         $cyclesList = [
             25000

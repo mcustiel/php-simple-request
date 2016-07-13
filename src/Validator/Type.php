@@ -37,13 +37,13 @@ class Type implements ValidatorInterface
      * @var array
      */
     private $validTypes = [
-        'array' => [ 'array' ],
-        'object' => [ 'object' ],
+        'array'   => [ 'array' ],
+        'object'  => [ 'object' ],
         'integer' => [ 'integer' ],
-        'number' => [ 'integer', 'double' ],
-        'string' => [ 'string' ],
+        'number'  => [ 'integer', 'double' ],
+        'string'  => [ 'string' ],
         'boolean' => ['boolean'],
-        'null' => ['NULL'],
+        'null'    => ['NULL'],
     ];
 
     /**

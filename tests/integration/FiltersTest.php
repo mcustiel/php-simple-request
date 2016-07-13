@@ -32,10 +32,10 @@ class FiltersTest extends TestRequestBuilder
     public function prepare()
     {
         $this->request = [
-            'custom' => self::TEST_VALUE,
+            'custom'     => self::TEST_VALUE,
             'capitalize' => self::TEST_VALUE,
-            'upperCase' => self::TEST_VALUE,
-            'lowerCase' => self::TEST_VALUE
+            'upperCase'  => self::TEST_VALUE,
+            'lowerCase'  => self::TEST_VALUE
         ];
     }
 
