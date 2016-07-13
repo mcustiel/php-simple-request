@@ -34,7 +34,7 @@ class Properties extends AbstractIterableValidator
     const ADDITIONAL_ITEMS_INDEX = 'additionalProperties';
 
     /**
-     * @var boolean|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
+     * @var bool|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
      */
     private $additionalItems = true;
 
@@ -70,7 +70,7 @@ class Properties extends AbstractIterableValidator
             return true;
         }
 
-        return $this->executePropertiesValidation($this->convertToArray( $value ));
+        return $this->executePropertiesValidation($this->convertToArray($value));
     }
 
     private function executePropertiesValidation($value)
@@ -92,13 +92,13 @@ class Properties extends AbstractIterableValidator
         return $this->validateList($value);
     }
 
-	private function convertToArray($value)
-	{
-		if (!is_array($value))  {
-		    $value = json_decode(json_encode($value), true);
-		}
-		return $value;
-	}
+    private function convertToArray($value)
+    {
+        if (!is_array($value)) {
+            return json_decode(json_encode($value), true);
+        }
+        return $value;
+    }
 
 
     /**
@@ -106,7 +106,7 @@ class Properties extends AbstractIterableValidator
      *
      * @param array $array
      *
-     * @return boolean
+     * @return bool
      */
     private function validateWithoutAdditionalItemsConcern(array $array)
     {
@@ -125,7 +125,7 @@ class Properties extends AbstractIterableValidator
      *
      * @param array $list
      *
-     * @return boolean
+     * @return bool
      */
     private function validateList(array $list)
     {
@@ -156,7 +156,7 @@ class Properties extends AbstractIterableValidator
      *
      * @param array $tuple
      *
-     * @return boolean
+     * @return bool
      */
     private function validateTuple(array $tuple)
     {

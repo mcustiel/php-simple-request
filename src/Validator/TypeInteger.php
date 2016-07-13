@@ -31,7 +31,7 @@ class TypeInteger implements ValidatorInterface
     /**
      * Wheather or not strictly check the value.
      *
-     * @var boolean
+     * @var bool
      */
     private $strict = true;
 

@@ -18,7 +18,7 @@ class AnnotationParserFactory
     ];
 
     /**
-     * @param RequestAnnotation $annotation
+     * @param  RequestAnnotation                                               $annotation
      * @throws \Exception
      * @return \Mcustiel\SimpleRequest\Strategies\Annotations\AnnotationParser
      */

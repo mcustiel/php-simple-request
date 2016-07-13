@@ -1,7 +1,6 @@
 <?php
 namespace Mcustiel\SimpleRequest\Strategies\Properties;
 
-use Mcustiel\SimpleRequest\Strategies\Properties\SimplePropertyParser;
 use Mcustiel\SimpleRequest\Exception\InvalidAnnotationException;
 use Mcustiel\SimpleRequest\RequestBuilder;
 use Mcustiel\SimpleRequest\FirstErrorRequestParser;
@@ -45,7 +44,7 @@ class PropertyParserToObject extends SimplePropertyParser
      * @param array|\stdClass $value The value to parse and convert to an object
      *
      * @throws \Mcustiel\SimpleRequest\Exception\InvalidAnnotationException
-     * @return object Parsed value as instance of class specified in type property
+     * @return object                                                       Parsed value as instance of class specified in type property
      */
     private function createInstanceOfTypeFromValue($value)
     {

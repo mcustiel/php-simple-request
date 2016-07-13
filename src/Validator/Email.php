@@ -26,7 +26,6 @@ use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
  */
 class Email implements ValidatorInterface
 {
-
     /**
      * {@inheritdoc}
      *

@@ -30,7 +30,7 @@ class TypeFloat implements ValidatorInterface
 {
     /**
      *
-     * @var boolean
+     * @var bool
      */
     private $strict = false;
 

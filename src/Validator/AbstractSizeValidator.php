@@ -30,7 +30,7 @@ abstract class AbstractSizeValidator implements ValidatorInterface
     /**
      * The size to check.
      *
-     * @var integer
+     * @var int
      */
     protected $size;
 

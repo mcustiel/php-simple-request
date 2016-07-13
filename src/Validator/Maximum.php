@@ -29,7 +29,7 @@ class Maximum implements ValidatorInterface
 {
     /**
      *
-     * @var float|integer
+     * @var float|int
      */
     private $maximum;
 

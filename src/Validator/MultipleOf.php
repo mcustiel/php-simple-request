@@ -29,7 +29,7 @@ class MultipleOf implements ValidatorInterface
 {
     /**
      *
-     * @var float|integer
+     * @var float|int
      */
     private $number;
 

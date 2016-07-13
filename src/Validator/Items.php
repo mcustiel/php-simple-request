@@ -34,7 +34,7 @@ class Items extends AbstractIterableValidator
     const ADDITIONAL_ITEMS_INDEX = 'additionalItems';
 
     /**
-     * @var boolean|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
+     * @var bool|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
      */
     private $additionalItems = true;
 
@@ -99,7 +99,7 @@ class Items extends AbstractIterableValidator
      *
      * @param array $list
      *
-     * @return boolean
+     * @return bool
      */
     private function validateList(array $list)
     {
@@ -119,7 +119,7 @@ class Items extends AbstractIterableValidator
      *
      * @param array $tuple
      *
-     * @return boolean
+     * @return bool
      */
     private function validateTuple(array $tuple)
     {
@@ -159,7 +159,7 @@ class Items extends AbstractIterableValidator
     /**
      * Checks and sets the specified additionalItems.
      *
-     * @param boolean|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface $specification
+     * @param bool|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface $specification
      */
     private function setAdditionalItems($specification)
     {

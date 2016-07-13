@@ -18,13 +18,6 @@
 namespace Mcustiel\SimpleRequest;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Mcustiel\SimpleRequest\Util\ValidatorBuilder;
-use Mcustiel\SimpleRequest\Annotation\RequestAnnotation;
-use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
-use Mcustiel\SimpleRequest\Annotation\FilterAnnotation;
-use Mcustiel\SimpleRequest\Util\FilterBuilder;
-use Mcustiel\SimpleRequest\Annotation\ParseAs;
-use Mcustiel\SimpleRequest\Annotation\AnnotationWithAssociatedClass;
 use Mcustiel\SimpleRequest\Strategies\AnnotationParserFactory;
 use Mcustiel\SimpleRequest\Strategies\PropertyParserBuilder;
 use Mcustiel\SimpleRequest\Strategies\Properties\PropertyParser;
@@ -42,8 +35,8 @@ class ParserGenerator
 
     /**
      * @param \Doctrine\Common\Annotations\AnnotationReader $annotationReader
-     *      External annotation reader instance (mostly for DI in tests). Created
-     *      if not is set.
+     *                                                                        External annotation reader instance (mostly for DI in tests). Created
+     *                                                                        if not is set.
      */
     public function __construct(
         AnnotationReader $annotationReader,

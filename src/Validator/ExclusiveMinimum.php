@@ -29,7 +29,7 @@ class ExclusiveMinimum implements ValidatorInterface
 {
     /**
      *
-     * @var integer|float
+     * @var int|float
      */
     private $minimum;
 

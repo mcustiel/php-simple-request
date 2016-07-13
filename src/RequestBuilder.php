@@ -19,7 +19,6 @@ namespace Mcustiel\SimpleRequest;
 
 use Mcustiel\SimpleRequest\Exception\InvalidRequestException;
 use Psr\Cache\CacheItemPoolInterface as PsrCache;
-use Symfony\Component\Cache\CacheItem;
 
 /**
  * Builds a request by parsing all the resulting object's annotations and running
@@ -41,9 +40,9 @@ class RequestBuilder
     /**
      * Class constructor.
      *
-     * @param \stdClass        $cacheConfig
-     *      Config parameters for cache. By default cache is activated and saves files
-     *      under system's temp dir. This parameter is used to set alternative options.
+     * @param \stdClass $cacheConfig
+     *                               Config parameters for cache. By default cache is activated and saves files
+     *                               under system's temp dir. This parameter is used to set alternative options.
      *
      */
     public function __construct(
@@ -58,9 +57,9 @@ class RequestBuilder
      * Main method of this class. Used to convert a request to an object of a given class by
      * using a requestParser.
      *
-     * @param array|\stdClass  $request   The request to convert to an object.
-     * @param string           $className The class of the object to which the request must be converted.
-     * @param string           $behaviour The behaviour of the parser.
+     * @param array|\stdClass $request   The request to convert to an object.
+     * @param string          $className The class of the object to which the request must be converted.
+     * @param string          $behaviour The behaviour of the parser.
      */
     public function parseRequest(
         $request,

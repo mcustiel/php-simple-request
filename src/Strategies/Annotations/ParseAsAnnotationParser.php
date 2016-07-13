@@ -1,7 +1,6 @@
 <?php
 namespace Mcustiel\SimpleRequest\Strategies\Annotations;
 
-use Mcustiel\SimpleRequest\Strategies\Annotations\AnnotationParser;
 use Mcustiel\SimpleRequest\Annotation\RequestAnnotation;
 use Mcustiel\SimpleRequest\Strategies\PropertyParserBuilder;
 

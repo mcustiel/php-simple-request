@@ -1,7 +1,6 @@
 <?php
 namespace Mcustiel\SimpleRequest\Strategies\Annotations;
 
-use Mcustiel\SimpleRequest\Strategies\Annotations\AnnotationParser;
 use Mcustiel\SimpleRequest\Util\ValidatorBuilder;
 use Mcustiel\SimpleRequest\Annotation\AnnotationWithAssociatedClass;
 use Mcustiel\SimpleRequest\Annotation\RequestAnnotation;
