@@ -2,13 +2,13 @@
 namespace Mcustiel\SimpleRequest\Strategies\Annotations;
 
 use Mcustiel\SimpleRequest\Strategies\Annotations\AnnotationParser;
-use Mcustiel\SimpleRequest\PropertyParser;
 use Mcustiel\SimpleRequest\Annotation\RequestAnnotation;
+use Mcustiel\SimpleRequest\Strategies\PropertyParserBuilder;
 
 class ParseAsAnnotationParser implements AnnotationParser
 {
-    public function execute(RequestAnnotation $annotation, PropertyParser $propertyParser)
+    public function execute(RequestAnnotation $annotation, PropertyParserBuilder $propertyParser)
     {
-        $propertyParser->setType($annotation->getValue());
+        $propertyParser->parseAs($annotation->getValue());
     }
 }

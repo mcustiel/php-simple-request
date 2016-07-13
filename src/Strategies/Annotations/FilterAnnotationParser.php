@@ -2,9 +2,9 @@
 namespace Mcustiel\SimpleRequest\Strategies\Annotations;
 
 use Mcustiel\SimpleRequest\Strategies\Annotations\AnnotationParser;
-use Mcustiel\SimpleRequest\PropertyParser;
 use Mcustiel\SimpleRequest\Util\FilterBuilder;
 use Mcustiel\SimpleRequest\Annotation\RequestAnnotation;
+use Mcustiel\SimpleRequest\Strategies\PropertyParserBuilder;
 
 class FilterAnnotationParser implements AnnotationParser
 {
@@ -14,7 +14,7 @@ class FilterAnnotationParser implements AnnotationParser
      *
      * @see \Mcustiel\SimpleRequest\Strategies\Annotations\AnnotationParser::execute()
      */
-    public function execute(RequestAnnotation $annotation, PropertyParser $propertyParser)
+    public function execute(RequestAnnotation $annotation, PropertyParserBuilder $propertyParser)
     {
         $propertyParser->addFilter(
             FilterBuilder::builder()

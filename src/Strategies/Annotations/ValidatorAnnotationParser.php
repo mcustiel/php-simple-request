@@ -2,10 +2,10 @@
 namespace Mcustiel\SimpleRequest\Strategies\Annotations;
 
 use Mcustiel\SimpleRequest\Strategies\Annotations\AnnotationParser;
-use Mcustiel\SimpleRequest\PropertyParser;
 use Mcustiel\SimpleRequest\Util\ValidatorBuilder;
 use Mcustiel\SimpleRequest\Annotation\AnnotationWithAssociatedClass;
 use Mcustiel\SimpleRequest\Annotation\RequestAnnotation;
+use Mcustiel\SimpleRequest\Strategies\PropertyParserBuilder;
 
 class ValidatorAnnotationParser implements AnnotationParser
 {
@@ -15,7 +15,7 @@ class ValidatorAnnotationParser implements AnnotationParser
      *
      * @see \Mcustiel\SimpleRequest\Strategies\Annotations\AnnotationParser::execute()
      */
-    public function execute(RequestAnnotation $annotation, PropertyParser $propertyParser)
+    public function execute(RequestAnnotation $annotation, PropertyParserBuilder $propertyParser)
     {
         $propertyParser->addValidator(
             ValidatorBuilder::builder()

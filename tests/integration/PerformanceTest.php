@@ -15,11 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with php-simple-request.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Integration;
+namespace integration;
 
 use Mcustiel\SimpleRequest\RequestBuilder;
 use Fixtures\PersonRequest;
 use Mcustiel\SimpleRequest\AllErrorsRequestParser;
+use Mcustiel\SimpleRequest\FirstErrorRequestParser;
 
 class PerformanceTest extends TestRequestBuilder
 {
@@ -37,7 +38,7 @@ class PerformanceTest extends TestRequestBuilder
         foreach ($cyclesList as $cycles) {
             $start = microtime(true);
             for ($i = $cycles; $i > 0; $i --) {
-                $this->builderWithoutCache->parseRequest($request, PersonRequest::class);
+                $this->builderWithoutCache->parseRequest($request, PersonRequest::class, new FirstErrorRequestParser());
             }
             echo "\n{$cycles} cycles executed in "
                 . (microtime(true) - $start)
@@ -59,7 +60,7 @@ class PerformanceTest extends TestRequestBuilder
         foreach ($cyclesList as $cycles) {
             $start = microtime(true);
             for ($i = $cycles; $i > 0; $i --) {
-                $this->builderWithCache->parseRequest($request, PersonRequest::class);
+                $this->builderWithCache->parseRequest($request, PersonRequest::class, new FirstErrorRequestParser());
             }
             echo "\n{$cycles} cycles executed in "
                 . (microtime(true) - $start)

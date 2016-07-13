@@ -15,14 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with php-simple-request.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Integration;
+namespace integration;
 
 use Fixtures\PersonRequest;
 use Fixtures\AllValidatorsRequest;
-use Mcustiel\SimpleRequest\RequestBuilder;
 use Mcustiel\SimpleRequest\Exception\InvalidRequestException;
 use Fixtures\CoupleRequest;
 use Mcustiel\SimpleRequest\AllErrorsRequestParser;
+use Mcustiel\SimpleRequest\FirstErrorRequestParser;
 
 class RequestBuilderWithArrayTest extends TestRequestBuilder
 {
@@ -108,9 +108,9 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
             'url' => 'https://this.isaurl.com/test.php?id=1#test'
         ];
         $builder = $this->createCachedRequestBuilder('PhpSimpleRequestTestAlt');
-        $builder->parseRequest($request, AllValidatorsRequest::class);
+        $builder->parseRequest($request, AllValidatorsRequest::class, new FirstErrorRequestParser());
         $builder = $this->createCachedRequestBuilder('PhpSimpleRequestTestAlt');
-        $builder->parseRequest($request, AllValidatorsRequest::class);
+        $builder->parseRequest($request, AllValidatorsRequest::class, new FirstErrorRequestParser());
     }
 
     public function testBuildARequestAndValidatorNotEmpty()
@@ -185,7 +185,7 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
             ]
         ];
         /**
-         * @var $parserResponse \Fixtures\CoupleRequest
+         * @var \Fixtures\CoupleRequest $parserResponse
          */
         $parserResponse = $this->builderWithoutCache->parseRequest(
             $request,

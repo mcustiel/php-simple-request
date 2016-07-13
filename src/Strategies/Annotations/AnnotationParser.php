@@ -2,7 +2,7 @@
 namespace Mcustiel\SimpleRequest\Strategies\Annotations;
 
 use Mcustiel\SimpleRequest\Annotation\RequestAnnotation;
-use Mcustiel\SimpleRequest\PropertyParser;
+use Mcustiel\SimpleRequest\Strategies\PropertyParserBuilder;
 
 interface AnnotationParser
 {
@@ -10,5 +10,5 @@ interface AnnotationParser
      * @param \Mcustiel\SimpleRequest\Annotation\RequestAnnotation $annotation
      * @return
      */
-    public function execute(RequestAnnotation $annotation, PropertyParser $propertyParser);
+    public function execute(RequestAnnotation $annotation, PropertyParserBuilder $propertyParser);
 }

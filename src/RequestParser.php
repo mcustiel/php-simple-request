@@ -17,6 +17,8 @@
  */
 namespace Mcustiel\SimpleRequest;
 
+use Mcustiel\SimpleRequest\Strategies\Properties\PropertyParser;
+
 /**
  * Abstract class with the common methods used by the current two RequestParser implementations.
  * This class contains the abstract method parse, which should be implemented in specific parser classes.

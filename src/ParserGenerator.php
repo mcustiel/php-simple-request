@@ -26,6 +26,8 @@ use Mcustiel\SimpleRequest\Util\FilterBuilder;
 use Mcustiel\SimpleRequest\Annotation\ParseAs;
 use Mcustiel\SimpleRequest\Annotation\AnnotationWithAssociatedClass;
 use Mcustiel\SimpleRequest\Strategies\AnnotationParserFactory;
+use Mcustiel\SimpleRequest\Strategies\PropertyParserBuilder;
+use Mcustiel\SimpleRequest\Strategies\Properties\PropertyParser;
 
 class ParserGenerator
 {
@@ -44,11 +46,11 @@ class ParserGenerator
      *      if not is set.
      */
     public function __construct(
-        AnnotationReader $annotationReader = null,
-        AnnotationParserFactory $annotationParserFactory = null
+        AnnotationReader $annotationReader,
+        AnnotationParserFactory $annotationParserFactory
     ) {
-        $this->annotationReader = $annotationReader ?: new AnnotationReader();
-        $this->annotationParserFactory = $annotationParserFactory ?: new AnnotationParserFactory();
+        $this->annotationReader = $annotationReader;
+        $this->annotationParserFactory = $annotationParserFactory;
     }
 
     public function addPropertyParser(PropertyParser $propertyParser)
@@ -58,18 +60,19 @@ class ParserGenerator
 
     public function createRequestParser(
         $className,
-        $parserObject
+        $parserObject,
+        RequestBuilder $requestBuilder
     ) {
         $class = new \ReflectionClass($className);
         $parserObject->setRequestObject(new $className);
         foreach ($class->getProperties() as $property) {
-            $propertyParser = new PropertyParser($property->getName());
+            $propertyParserBuilder = new PropertyParserBuilder($property->getName());
             foreach ($this->annotationReader->getPropertyAnnotations($property) as $propertyAnnotation) {
                 $this->annotationParserFactory
                     ->getAnnotationParserFor($propertyAnnotation)
-                    ->execute($propertyAnnotation, $propertyParser);
+                    ->execute($propertyAnnotation, $propertyParserBuilder);
             }
-            $parserObject->addPropertyParser($propertyParser);
+            $parserObject->addPropertyParser($propertyParserBuilder->build($requestBuilder));
         }
         return $parserObject;
     }
