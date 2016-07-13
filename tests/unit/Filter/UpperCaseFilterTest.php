@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with php-simple-request.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace unit\Filter;
+namespace Unit\Filter;
 
 use Mcustiel\SimpleRequest\Filter\UpperCase;
 

@@ -38,13 +38,13 @@ class Required implements ValidatorInterface
     {
         $this->specificationIsArrayOrThrowException($specification);
         foreach ($specification as $item) {
-            $this->specificationItemisValidOrThrowException();
+            $this->specificationItemisValidOrThrowException($item);
         }
 
         $this->items = $specification;
     }
 
-    private function specificationItemisValidOrThrowException()
+    private function specificationItemisValidOrThrowException($item)
     {
         if (!is_string($item) || is_numeric($item)) {
             throw new UnspecifiedValidatorException(
