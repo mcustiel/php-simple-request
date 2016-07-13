@@ -18,8 +18,6 @@
 namespace Integration\Validators;
 
 use Fixtures\AllValidatorsRequest;
-use Mcustiel\SimpleRequest\RequestBuilder;
-use Mcustiel\SimpleRequest\ParserResponse;
 use Mcustiel\SimpleRequest\Exception\InvalidRequestException;
 use Mcustiel\SimpleRequest\AllErrorsRequestParser;
 use Integration\TestRequestBuilder;

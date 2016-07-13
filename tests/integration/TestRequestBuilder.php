@@ -18,10 +18,7 @@
 namespace Integration;
 
 use Fixtures\PersonRequest;
-use Fixtures\AllValidatorsRequest;
 use Mcustiel\SimpleRequest\RequestBuilder;
-use Mcustiel\SimpleRequest\Exception\InvalidRequestException;
-use Fixtures\CoupleRequest;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Adapter\NullAdapter;
 use Mcustiel\SimpleRequest\ParserGenerator;
