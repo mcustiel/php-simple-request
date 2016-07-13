@@ -36,20 +36,30 @@ class Required implements ValidatorInterface
 
     public function setSpecification($specification = null)
     {
+        $this->specificationIsArrayOrThrowException($specification);
+        foreach ($specification as $item) {
+            $this->specificationItemisValidOrThrowException();
+        }
+
+        $this->items = $specification;
+    }
+
+    private function specificationItemisValidOrThrowException()
+    {
+        if (!is_string($item) || is_numeric($item)) {
+            throw new UnspecifiedValidatorException(
+                "The validator Required is being initialized without a valid array"
+            );
+        }
+    }
+
+    private function specificationIsArrayOrThrowException($specification)
+    {
         if (!is_array($specification)) {
             throw new UnspecifiedValidatorException(
                 "The validator Required is being initialized without an array"
             );
         }
-        foreach ($specification as $item) {
-            if (!is_string($item) || is_numeric($item)) {
-                throw new UnspecifiedValidatorException(
-                    "The validator Required is being initialized without a valid array"
-                );
-            }
-        }
-
-        $this->items = $specification;
     }
 
     public function validate($value)

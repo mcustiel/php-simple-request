@@ -60,7 +60,7 @@ class Properties extends AbstractIterableValidator
      */
     public function validate($value)
     {
-        if (!is_array($value) && !($value instanceof \stdClass)) {
+        if (!(is_array($value) || $value instanceof \stdClass)) {
             return false;
         }
 
@@ -70,10 +70,11 @@ class Properties extends AbstractIterableValidator
             return true;
         }
 
-        if (!is_array($value)) {
-            $value = (array) $value;
-        }
+        return $this->executePropertiesValidation($this->convertToArray( $value ));
+    }
 
+    private function executePropertiesValidation($value)
+    {
         if ($this->items instanceof ValidatorInterface) {
             return $this->validateWithoutAdditionalItemsConcern($value);
         }
@@ -83,13 +84,22 @@ class Properties extends AbstractIterableValidator
         // equal to, the size of "items".
         if ($this->additionalItems === false) {
             return (count($value) <= count($this->items))
-                && $this->validateTuple($value);
+            && $this->validateTuple($value);
         }
 
         // From json-schema definition: if the value of "additionalItems" is
         // boolean value true or an object, validation of the instance always succeeds;
         return $this->validateList($value);
     }
+
+	private function convertToArray($value)
+	{
+		if (!is_array($value))  {
+		    $value = json_decode(json_encode($value), true);
+		}
+		return $value;
+	}
+
 
     /**
      * Checks all properties against a validator.
@@ -119,24 +129,26 @@ class Properties extends AbstractIterableValidator
      */
     private function validateList(array $list)
     {
-        if ($this->validateTuple($list)) {
-            if ($this->additionalItems === true) {
-                return true;
-            }
-
-            $keys = (array_keys($this->items));
-            $count = count($this->items);
-            $array = array_slice($keys, $count, count($list) - $count);
-            foreach ($array as $item) {
-                if (!$this->additionalItems->validate($item)) {
-                    return false;
-                }
-            }
-
+        if (!$this->validateTuple($list)) {
+            return false;
+        }
+        if ($this->additionalItems === true) {
             return true;
         }
 
-        return false;
+        $keys = array_keys($this->items);
+        $count = count($this->items);
+        return $this->validateListItems(array_slice($keys, $count, count($list) - $count));
+    }
+
+    private function validateListItems($array)
+    {
+        foreach ($array as $item) {
+            if (!$this->additionalItems->validate($item)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

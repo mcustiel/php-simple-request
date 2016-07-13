@@ -70,6 +70,11 @@ class Items extends AbstractIterableValidator
             return true;
         }
 
+        return $this->executeItemsValidation($value);
+    }
+
+    private function executeItemsValidation($value)
+    {
         if ($this->items instanceof ValidatorInterface) {
             return $this->validateArray($value, $this->items);
         }
@@ -79,7 +84,7 @@ class Items extends AbstractIterableValidator
         // equal to, the size of "items".
         if ($this->additionalItems === false) {
             return (count($value) <= count($this->items))
-                && $this->validateTuple($value);
+            && $this->validateTuple($value);
         }
 
         // From json-schema definition: if the value of "additionalItems" is
