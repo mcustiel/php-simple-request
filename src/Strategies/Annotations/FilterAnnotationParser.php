@@ -17,9 +17,9 @@ class FilterAnnotationParser implements AnnotationParser
     {
         $propertyParser->addFilter(
             FilterBuilder::builder()
-                ->withClass($annotation->getAssociatedClass())
-                ->withSpecification($annotation->getValue())
-                ->build()
+            ->withClass($annotation->getAssociatedClass())
+            ->withSpecification($annotation->getValue())
+            ->build()
         );
     }
 }

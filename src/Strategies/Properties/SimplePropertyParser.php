@@ -103,10 +103,8 @@ class SimplePropertyParser implements PropertyParser
     protected function runFilters($value)
     {
         $return = $value;
-        if ($return !== null) {
-            foreach ($this->filters as $filter) {
-                $return = $filter->filter($return);
-            }
+        foreach ($this->filters as $filter) {
+            $return = $filter->filter($return);
         }
 
         return $return;

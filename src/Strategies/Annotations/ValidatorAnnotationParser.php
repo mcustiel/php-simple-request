@@ -18,9 +18,9 @@ class ValidatorAnnotationParser implements AnnotationParser
     {
         $propertyParser->addValidator(
             ValidatorBuilder::builder()
-                ->withClass($annotation->getAssociatedClass())
-                ->withSpecification($annotation->getValue())
-                ->build()
-            );
+            ->withClass($annotation->getAssociatedClass())
+            ->withSpecification($annotation->getValue())
+            ->build()
+        );
     }
 }

@@ -154,7 +154,7 @@
         <coverage-setup database="${dir.reports.unit}/coverage.db">
               <fileset refid="code" />
         </coverage-setup>
-        <phpunit configuration="${dir.tests}/phpunit.xml" codecoverage="true">
+        <phpunit configuration="${dir.tests}/phing-config.xml" codecoverage="true">
             <formatter todir="${dir.reports.unit}" type="xml" />
             <formatter todir="${dir.reports.unit}" type="clover" />
             <batchtest>
