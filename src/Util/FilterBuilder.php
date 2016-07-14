@@ -25,10 +25,8 @@ use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
  *
  * @author mcustiel
  */
-class FilterBuilder
+class FilterBuilder extends AnnotationToImplementationBuilder
 {
-    use AnnotationToImplementationBuilder;
-
     /**
      * This method is used from AnnotationToImplementationBuilder trait. It checks the existence
      * of the Filter class and then checks it's of type FilterInterface.

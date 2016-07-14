@@ -24,18 +24,16 @@ use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
  * Builds Validator objects from the data taken from an annotation.
  * @author mcustiel
  */
-class ValidatorBuilder
+class ValidatorBuilder extends AnnotationToImplementationBuilder
 {
-    use AnnotationToImplementationBuilder;
-
     /**
      * This method is used from AnnotationToImplementationBuilder trait. It checks the existence
      * of the Validator class and then checks it's of type ValidatorInterface.
      *
-     * @param  string                                                           $type Name of the class to instantiate.
+     * @param  string $type Name of the class to instantiate.
      * @throws \Mcustiel\SimpleRequest\Exception\ValidatorDoesNotExistException
-     *                                                                               If class does not exist or is not of type ValidatorInterface.
-     * @return \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface            The created object.
+     *     If class does not exist or is not of type ValidatorInterface.
+     * @return \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface The created object.
      */
     final protected function getClassForType($type)
     {

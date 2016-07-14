@@ -24,17 +24,24 @@ namespace Mcustiel\SimpleRequest\Util;
  *
  * @author mcustiel
  */
-trait AnnotationToImplementationBuilder
+abstract class AnnotationToImplementationBuilder
 {
+    /**
+     * @var string
+     */
     protected $type;
+    /**
+     * @var mixed
+     */
     protected $specification;
 
     /**
      * Creator method. Creates an instance of this object.
+     * return \Mcustiel\SimpleRequest\Util\AnnotationToImplementationBuilder
      */
     public static function builder()
     {
-        return new self;
+        return new static;
     }
 
     /**
@@ -42,7 +49,7 @@ trait AnnotationToImplementationBuilder
      *
      * @param string $type Name of the class given by the annotation.
      *
-     * @return FilterBuilder|ValidatorBuilder $this For fluent interface
+     * @return \Mcustiel\SimpleRequest\Util\AnnotationToImplementationBuilder $this For fluent interface
      */
     public function withClass($type)
     {
@@ -55,7 +62,7 @@ trait AnnotationToImplementationBuilder
      *
      * @param mixed $specification Specification set in the annotation.
      *
-     * @return FilterBuilder|ValidatorBuilder $this For fluent interface
+     * @return \Mcustiel\SimpleRequest\Util\AnnotationToImplementationBuilder $this For fluent interface
      */
     public function withSpecification($specification)
     {
@@ -82,6 +89,7 @@ trait AnnotationToImplementationBuilder
      *
      * @return \Mcustiel\SimpleRequest\Interfaces\FilterInterface|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
      * @throws \Mcustiel\SimpleRequest\Exception\FilterDoesNotExistException
+     * @throws \Mcustiel\SimpleRequest\Exception\ValidatorDoesNotExistException
      */
     abstract protected function getClassForType($type);
 }
