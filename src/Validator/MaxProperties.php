@@ -26,7 +26,7 @@ namespace Mcustiel\SimpleRequest\Validator;
 class MaxProperties extends MaxItems
 {
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
      * @see \Mcustiel\SimpleRequest\Validator\MaxItems::validate()
      */
     public function validate($value)

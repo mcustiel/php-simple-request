@@ -25,7 +25,7 @@ namespace Mcustiel\SimpleRequest\Validator;
 class AnyOf extends AbstractIterableValidator
 {
     /**
-     * {@inherit}
+     * {@inheritdoc}
      *
      * @see \Mcustiel\SimpleRequest\Validator\AbstractAnnotationSpecifiedValidator::validate()
      */

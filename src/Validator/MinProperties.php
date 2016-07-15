@@ -26,7 +26,7 @@ namespace Mcustiel\SimpleRequest\Validator;
 class MinProperties extends MinItems
 {
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
      * @see \Mcustiel\SimpleRequest\Validator\MinItems::validate()
      */
     public function validate($value)

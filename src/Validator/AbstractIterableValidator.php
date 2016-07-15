@@ -28,12 +28,12 @@ abstract class AbstractIterableValidator extends AbstractAnnotationSpecifiedVali
     /**
      * List of items specified in the annotation.
      *
-     * @var \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface[]
+     * @var \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface[]
      */
     protected $items = [];
 
     /**
-     * {@inherit}
+     * {@inheritdoc}
      *
      * @see \Mcustiel\SimpleRequest\Validator\AbstractAnnotationSpecifiedValidator::setSpecification()
      */
@@ -47,7 +47,7 @@ abstract class AbstractIterableValidator extends AbstractAnnotationSpecifiedVali
     }
 
     /**
-     * {@inherit}
+     * {@inheritdoc}
      *
      * @see \Mcustiel\SimpleRequest\Validator\AbstractAnnotationSpecifiedValidator::validate()
      */
@@ -55,7 +55,7 @@ abstract class AbstractIterableValidator extends AbstractAnnotationSpecifiedVali
     {
         if (!is_array($specification)) {
             throw new UnspecifiedValidatorException(
-                "The validator is being initialized without an array"
+                'The validator is being initialized without an array'
             );
         }
     }

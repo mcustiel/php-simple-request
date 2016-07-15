@@ -34,7 +34,7 @@ class ExclusiveMaximum implements ValidatorInterface
     private $maximum;
 
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
      * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
      */
     public function setSpecification($specification = null)
@@ -48,7 +48,7 @@ class ExclusiveMaximum implements ValidatorInterface
     }
 
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
      * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
      */
     public function validate($value)

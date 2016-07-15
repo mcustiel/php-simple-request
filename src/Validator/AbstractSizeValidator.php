@@ -35,7 +35,7 @@ abstract class AbstractSizeValidator implements ValidatorInterface
     protected $size;
 
     /**
-     * {@inherit}
+     * {@inheritdoc}
      *
      * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
      */
@@ -50,7 +50,7 @@ abstract class AbstractSizeValidator implements ValidatorInterface
     }
 
     /**
-     * {@inherit}
+     * {@inheritdoc}
      *
      * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
      */

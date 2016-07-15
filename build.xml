@@ -158,7 +158,9 @@
             <formatter todir="${dir.reports.unit}" type="xml" />
             <formatter todir="${dir.reports.unit}" type="clover" />
             <batchtest>
-                <fileset dir="${dir.tests.unit}" />
+                <fileset dir="${dir.tests.unit}">
+                	<exclude name="**/Performance*.php"/>
+                </fileset>
             </batchtest>
         </phpunit>
         <coverage-report outfile="${dir.reports.unit}/coverage.xml">

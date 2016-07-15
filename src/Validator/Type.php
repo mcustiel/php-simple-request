@@ -47,7 +47,7 @@ class Type implements ValidatorInterface
     ];
 
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
      * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
      */
     public function setSpecification($specification = null)
@@ -61,7 +61,7 @@ class Type implements ValidatorInterface
     }
 
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
      * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
      */
     public function validate($value)

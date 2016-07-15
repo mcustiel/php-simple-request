@@ -37,7 +37,7 @@ abstract class AnnotationToImplementationBuilder
 
     /**
      * Creator method. Creates an instance of this object.
-     * return \Mcustiel\SimpleRequest\Util\AnnotationToImplementationBuilder
+     * return $this
      */
     public static function builder()
     {
@@ -49,7 +49,7 @@ abstract class AnnotationToImplementationBuilder
      *
      * @param string $type Name of the class given by the annotation.
      *
-     * @return \Mcustiel\SimpleRequest\Util\AnnotationToImplementationBuilder $this For fluent interface
+     * @return $this For fluent interface
      */
     public function withClass($type)
     {
@@ -62,7 +62,7 @@ abstract class AnnotationToImplementationBuilder
      *
      * @param mixed $specification Specification set in the annotation.
      *
-     * @return \Mcustiel\SimpleRequest\Util\AnnotationToImplementationBuilder $this For fluent interface
+     * @return $this For fluent interface
      */
     public function withSpecification($specification)
     {

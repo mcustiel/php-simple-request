@@ -26,7 +26,7 @@ namespace Mcustiel\SimpleRequest\Validator;
 class MinLength extends AbstractSizeValidator
 {
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
      * @see \Mcustiel\SimpleRequest\Validator\AbstractSizeValidator::validate()
      */
     public function validate($value)

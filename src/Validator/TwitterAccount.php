@@ -27,7 +27,7 @@ class TwitterAccount extends RegExp
     const REGEXP = '/^@\w{1,15}$/';
 
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
      * @see \Mcustiel\SimpleRequest\Validator\RegExp::setSpecification()
      */
     public function setSpecification($specification = null)
