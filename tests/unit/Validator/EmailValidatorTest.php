@@ -24,6 +24,7 @@ class EmailValidatorTest extends \PHPUnit_Framework_TestCase
     public function testValidationDefaultSpecification()
     {
         $validator = new Email();
+        $validator->setSpecification();
 
         $this->assertTrue($validator->validate('pipicui@hotmail.com'));
         $this->assertFalse($validator->validate('mailto:pipicui@hotmail.com'));

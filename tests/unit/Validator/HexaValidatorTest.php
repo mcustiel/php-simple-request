@@ -24,6 +24,7 @@ class HexaValidatorTest extends \PHPUnit_Framework_TestCase
     public function testValidationDefaultSpecification()
     {
         $validator = new Hexa();
+        $validator->setSpecification();
 
         $this->assertTrue($validator->validate('0'));
         $this->assertTrue($validator->validate('9'));

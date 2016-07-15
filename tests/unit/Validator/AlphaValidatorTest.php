@@ -24,6 +24,7 @@ class AlphaValidatorTest extends \PHPUnit_Framework_TestCase
     public function testValidationSuccessful()
     {
         $validator = new AlphaNumeric();
+        $validator->setSpecification();
 
         $this->assertTrue($validator->validate('AaBbCc'));
         $this->assertTrue($validator->validate('Aa1Bb2Cc'));

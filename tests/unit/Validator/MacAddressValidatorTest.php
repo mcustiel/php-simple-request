@@ -24,6 +24,7 @@ class MacAddressValidatorTest extends \PHPUnit_Framework_TestCase
     public function testValidationDefaultSpecification()
     {
         $validator = new MacAddress();
+        $validator->setSpecification();
 
         $this->assertTrue($validator->validate('01-23-45-67-89-ab'));
         $this->assertTrue($validator->validate('01-23-45-67-89-AB'));

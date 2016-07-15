@@ -37,11 +37,11 @@ class Type implements ValidatorInterface
      * @var array
      */
     private $validTypes = [
-        'array'   => [ 'array' ],
-        'object'  => [ 'object' ],
-        'integer' => [ 'integer' ],
-        'number'  => [ 'integer', 'double' ],
-        'string'  => [ 'string' ],
+        'array'   => ['array'],
+        'object'  => ['object'],
+        'integer' => ['integer'],
+        'number'  => ['integer', 'double'],
+        'string'  => ['string'],
         'boolean' => ['boolean'],
         'null'    => ['NULL'],
     ];
@@ -52,9 +52,9 @@ class Type implements ValidatorInterface
      */
     public function setSpecification($specification = null)
     {
-        if (!in_array($specification, array_keys($this->validTypes))) {
+        if (!isset($this->validTypes[$specification])) {
             throw new UnspecifiedValidatorException(
-                "The validator Type is being initialized without a valid type name"
+                'The validator Type is being initialized without a valid type name'
             );
         }
         $this->type = $specification;

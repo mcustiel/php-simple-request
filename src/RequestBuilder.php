@@ -54,9 +54,9 @@ class RequestBuilder
      * Main method of this class. Used to convert a request to an object of a given class by
      * using a requestParser.
      *
-     * @param array|\stdClass                       $request   The request to convert to an object.
-     * @param string                                $className The class of the object to which the request must be converted.
-     * @param \Mcustiel\SimpleRequest\RequestParser $behaviour The behaviour of the parser.
+     * @param array|\stdClass                       $request       The request to convert to an object.
+     * @param string                                $className     The class of the object to which the request must be converted.
+     * @param \Mcustiel\SimpleRequest\RequestParser $requestParser The behaviour of the parser.
      */
     public function parseRequest(
         $request,
