@@ -17,30 +17,35 @@
  */
 namespace Unit\Validator;
 
-use Mcustiel\SimpleRequest\Validator\MaxLength;
+use Mcustiel\SimpleRequest\Validator\MaxItems;
 
-class MaxLengthValidatorTest extends \PHPUnit_Framework_TestCase
+class MaxItemsValidatorTest extends \PHPUnit_Framework_TestCase
 {
-    const STRING_WITH_LENGTH_255 = '123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345';
-    const STRING_WITH_LENGTH_50 = '12345678901234567890123456789012345678901234567890';
-
-    public function testValidationDefaultSpecification()
+    /**
+     * @test
+     */
+    public function validatesCorrectly()
     {
-        $validator = new MaxLength();
-        $this->assertTrue($validator->validate(self::STRING_WITH_LENGTH_50));
-        $this->assertTrue($validator->validate(''));
-        $this->assertTrue($validator->validate(self::STRING_WITH_LENGTH_255));
-        $this->assertFalse($validator->validate(self::STRING_WITH_LENGTH_255 . 'A'));
+        $b = 2;
+        $obj = new \stdClass();
+        $obj->test = ['potato'];
+        $validator = new MaxItems();
+        $validator->setSpecification(5);
+        $this->assertTrue($validator->validate(['a', $b, ['c'], ['d', 3], $obj]));
+        $this->assertTrue($validator->validate(['a', $b, ['c'], ['d', 3]]));
+        $this->assertTrue($validator->validate([]));
+        $this->assertFalse($validator->validate(['a', $b, ['c'], ['d', 3], $obj, 8]));
     }
 
-    public function testValidationSpecifiedValue()
+    /**
+     * @test
+     */
+    public function notValidIfIsNotArray()
     {
-        $validator = new MaxLength();
-        $validator->setSpecification(50);
-        $this->assertTrue($validator->validate('12345678901234567890123456789012345678901234567890'));
-        $this->assertTrue($validator->validate(''));
-        $this->assertTrue($validator->validate(self::STRING_WITH_LENGTH_50));
-        $this->assertFalse($validator->validate(self::STRING_WITH_LENGTH_50 . 'A'));
+        $validator = new MaxItems();
+        $validator->setSpecification(5);
+        $validator->validate('test');
+        $this->assertFalse($validator->validate('tomato'));
     }
 
     /**
@@ -50,7 +55,7 @@ class MaxLengthValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function specificationShouldFailWithNotIntegerValue()
     {
-        $validator = new MaxLength();
+        $validator = new MaxItems();
         $validator->setSpecification('A');
     }
 
@@ -61,7 +66,7 @@ class MaxLengthValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function specificationShouldFailWithNegativeValue()
     {
-        $validator = new MaxLength();
+        $validator = new MaxItems();
         $validator->setSpecification(-1);
     }
 }

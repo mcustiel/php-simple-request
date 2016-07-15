@@ -41,4 +41,26 @@ class MinLengthValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($validator->validate('aaaa'));
         $this->assertTrue($validator->validate('aaaaa'));
     }
+
+    /**
+     * @test
+     * @expectedException \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
+     * @expectedExceptionMessage Size validator is being initialized without a valid number
+     */
+    public function specificationShouldFailWithNotIntegerValue()
+    {
+        $validator = new MinLength();
+        $validator->setSpecification('A');
+    }
+
+    /**
+     * @test
+     * @expectedException \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
+     * @expectedExceptionMessage Size validator is being initialized without a valid number
+     */
+    public function specificationShouldFailWithNegativeValue()
+    {
+        $validator = new MinLength();
+        $validator->setSpecification(-1);
+    }
 }
