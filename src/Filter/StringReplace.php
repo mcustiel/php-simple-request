@@ -40,6 +40,9 @@ class StringReplace implements FilterInterface
      */
     public function filter($value)
     {
+        if (!is_string($value) && !is_array($value)) {
+            return $value;
+        }
         return str_replace($this->search, $this->replacement, $value);
     }
 }

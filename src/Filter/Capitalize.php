@@ -38,6 +38,9 @@ class Capitalize implements FilterInterface
      */
     public function filter($value)
     {
+        if (!is_string($value)) {
+            return $value;
+        }
         return $this->allWords ? ucwords(strtolower($value)) : ucfirst(strtolower($value));
     }
 }
