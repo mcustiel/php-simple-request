@@ -43,7 +43,8 @@
 		"pdepend/pdepend" : "^2.0.6",
 		"phploc/phploc" : "^2.1.1",
 		"friendsofphp/php-cs-fixer": "^1.11",
-        "symfony/cache": "dev-master"
+        	"symfony/cache": "dev-master",
+		"satooshi/php-coveralls": "~1.0"
 	},
 	"minimum-stability" : "stable"
 }
