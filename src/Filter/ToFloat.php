@@ -17,20 +17,8 @@
  */
 namespace Mcustiel\SimpleRequest\Filter;
 
-use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
-
-class ToFloat implements FilterInterface
+class ToFloat extends AbstractEmptySpecificationFilter
 {
-    /**
-     * {@inheritDoc}
-     *
-     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
-     * @codeCoverageIgnore
-     */
-    public function setSpecification($specification = null)
-    {
-    }
-
     /**
      * {@inheritDoc}
      *

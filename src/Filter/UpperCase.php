@@ -17,20 +17,8 @@
  */
 namespace Mcustiel\SimpleRequest\Filter;
 
-use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
-
-class UpperCase implements FilterInterface
+class UpperCase extends AbstractEmptySpecificationFilter
 {
-    /**
-     * {@inheritDoc}
-     *
-     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
-     * @codeCoverageIgnore
-     */
-    public function setSpecification($specification = null)
-    {
-    }
-
     /**
      * {@inheritDoc}
      *

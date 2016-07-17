@@ -17,15 +17,24 @@
  */
 namespace Mcustiel\SimpleRequest\Filter;
 
-class ToInteger extends AbstractEmptySpecificationFilter
+use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
+
+abstract class AbstractEmptySpecificationFilter implements FilterInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
+     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
+     * @codeCoverageIgnore
+     */
+    public function setSpecification($specification = null)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
      *
      * @see \Mcustiel\SimpleRequest\Interfaces\FilterInterface::filter()
      */
-    public function filter($value)
-    {
-        return (integer) $value;
-    }
+    abstract public function filter($value);
 }

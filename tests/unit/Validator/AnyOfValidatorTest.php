@@ -21,13 +21,8 @@ use Mcustiel\SimpleRequest\Annotation\Validator\Alpha;
 use Mcustiel\SimpleRequest\Annotation\Validator\AlphaNumeric;
 use Mcustiel\SimpleRequest\Validator\AnyOf;
 
-class AnyOfValidatorTest extends \PHPUnit_Framework_TestCase
+class AnyOfValidatorTest extends TestIterableValidator
 {
-    /**
-     * @var \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
-     */
-    private $validator;
-
     public function setUp()
     {
         $this->validator = new AnyOf();

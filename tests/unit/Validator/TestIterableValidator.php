@@ -15,17 +15,22 @@
  * You should have received a copy of the GNU General Public License
  * along with php-simple-request.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Mcustiel\SimpleRequest\Filter;
+namespace Unit\Validator;
 
-class ToInteger extends AbstractEmptySpecificationFilter
+class TestIterableValidator extends \PHPUnit_Framework_TestCase
 {
     /**
-     * {@inheritDoc}
-     *
-     * @see \Mcustiel\SimpleRequest\Interfaces\FilterInterface::filter()
+     * @var \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
      */
-    public function filter($value)
+    protected $validator;
+
+    /**
+     * @test
+     * @expectedException \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
+     * @expectedExceptionMessage The validator is being initialized without an array
+     */
+    public function failWithNoIterableSpecification()
     {
-        return (integer) $value;
+        $this->validator->setSpecification('No iterable');
     }
 }
