@@ -43,7 +43,7 @@ abstract class AbstractSizeValidator implements ValidatorInterface
     {
         if (!is_int($specification) || $specification < 0) {
             throw new UnspecifiedValidatorException(
-                "Size validator is being initialized without a valid number"
+                'Size validator is being initialized without a valid number'
             );
         }
         $this->size = $specification;

@@ -48,7 +48,7 @@ class Required implements ValidatorInterface
     {
         if (!is_string($item) || is_numeric($item)) {
             throw new UnspecifiedValidatorException(
-                "The validator Required is being initialized without a valid array"
+                'The validator Required is being initialized without a valid array'
             );
         }
     }
@@ -57,7 +57,7 @@ class Required implements ValidatorInterface
     {
         if (!is_array($specification)) {
             throw new UnspecifiedValidatorException(
-                "The validator Required is being initialized without an array"
+                'The validator Required is being initialized without an array'
             );
         }
     }

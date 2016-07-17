@@ -23,6 +23,7 @@ class RegexReplace extends StringReplace
 {
     /**
      * {@inheritDoc}
+     *
      * @see \Mcustiel\SimpleRequest\Filter\StringReplace::filter()
      */
     public function filter($value)
@@ -32,7 +33,7 @@ class RegexReplace extends StringReplace
         }
         $result = preg_replace($this->search, $this->replacement, $value);
         if ($result === null) {
-            throw new FilterErrorException("An error occurred executing RegexReplace filter");
+            throw new FilterErrorException('An error occurred executing RegexReplace filter');
         }
 
         return $result;

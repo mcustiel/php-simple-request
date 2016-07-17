@@ -21,6 +21,7 @@ use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 
 /**
  * Abstract class for validators that recibes an array as specification.
+ *
  * @author mcustiel
  */
 abstract class AbstractIterableValidator extends AbstractAnnotationSpecifiedValidator

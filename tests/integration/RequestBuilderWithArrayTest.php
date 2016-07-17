@@ -31,7 +31,7 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
         $request = [
             'firstName' => '  John  ',
             'lastName'  => 'DOE',
-            'age'       => 30
+            'age'       => 30,
         ];
         $parserResponse = $this->builderWithoutCache->parseRequest(
             $request,
@@ -46,7 +46,7 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
         $request = [
             'firstName' => '  John  ',
             'lastName'  => 'DOE',
-            'age'       => 30
+            'age'       => 30,
         ];
         $parserResponse = $this->builderWithCache->parseRequest(
             $request,
@@ -105,7 +105,7 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
             'type'             => [ 'a' ],
             'twitterAccount'   => '@pepe_123',
             'uniqueItems'      => [ '1', 2, 'potato' ],
-            'url'              => 'https://this.isaurl.com/test.php?id=1#test'
+            'url'              => 'https://this.isaurl.com/test.php?id=1#test',
         ];
         $builder = $this->createCachedRequestBuilder('PhpSimpleRequestTestAlt');
         $builder->parseRequest($request, AllValidatorsRequest::class, new FirstErrorRequestParser());
@@ -118,7 +118,7 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
         $request = [
             'firstName' => '',
             'lastName'  => 'DOE',
-            'age'       => 30
+            'age'       => 30,
         ];
         try {
             $this->builderWithoutCache->parseRequest(
@@ -137,7 +137,7 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
         $request = [
             'firstName' => null,
             'lastName'  => 'DOE',
-            'age'       => 30
+            'age'       => 30,
         ];
         try {
             $this->builderWithoutCache->parseRequest(
@@ -155,7 +155,7 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
     {
         $request = [
             'lastName' => 'DOE',
-            'age'      => 30
+            'age'      => 30,
         ];
         try {
             $this->builderWithoutCache->parseRequest(
@@ -176,13 +176,13 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
             'person1'       => [
                 'firstName' => '  John  ',
                 'lastName'  => 'DOE',
-                'age'       => 30
+                'age'       => 30,
             ],
             'person2' => [
                 'firstName' => '  Jane  ',
                 'lastName'  => 'DoE',
-                'age'       => 41
-            ]
+                'age'       => 41,
+            ],
         ];
         /**
          * @var \Fixtures\CoupleRequest $parserResponse

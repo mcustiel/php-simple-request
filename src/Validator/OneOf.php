@@ -26,6 +26,7 @@ class OneOf extends AbstractIterableValidator
 {
     /**
      * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Validator\AbstractAnnotationSpecifiedValidator::validate()
      */
     public function validate($value)

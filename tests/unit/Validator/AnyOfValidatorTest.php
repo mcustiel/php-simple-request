@@ -34,7 +34,7 @@ class AnyOfValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->setSpecification(
             [
                 new Alpha(\Mcustiel\SimpleRequest\Validator\Alpha::class),
-                new AlphaNumeric(\Mcustiel\SimpleRequest\Validator\AlphaNumeric::class)
+                new AlphaNumeric(\Mcustiel\SimpleRequest\Validator\AlphaNumeric::class),
             ]
         );
     }

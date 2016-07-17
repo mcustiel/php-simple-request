@@ -8,6 +8,7 @@ interface AnnotationParser
 {
     /**
      * @param \Mcustiel\SimpleRequest\Annotation\RequestAnnotation $annotation
+     *
      * @return
      */
     public function execute(RequestAnnotation $annotation, PropertyParserBuilder $propertyParser);

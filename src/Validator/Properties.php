@@ -40,6 +40,7 @@ class Properties extends AbstractIterableValidator
 
     /**
      * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Validator\AbstractIterableValidator::setSpecification()
      */
     public function setSpecification($specification = null)
@@ -56,6 +57,7 @@ class Properties extends AbstractIterableValidator
 
     /**
      * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Validator\AbstractAnnotationSpecifiedValidator::validate()
      */
     public function validate($value)

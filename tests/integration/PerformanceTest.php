@@ -28,10 +28,10 @@ class PerformanceTest extends TestRequestBuilder
         $request = [
             'firstName' => '  John  ',
             'lastName'  => 'DOE',
-            'age'       => 30
+            'age'       => 30,
         ];
         $cyclesList = [
-            5000
+            5000,
         ];
 
         foreach ($cyclesList as $cycles) {
@@ -50,10 +50,10 @@ class PerformanceTest extends TestRequestBuilder
         $request = [
             'firstName' => '  John  ',
             'lastName'  => 'DOE',
-            'age'       => 30
+            'age'       => 30,
         ];
         $cyclesList = [
-            25000
+            25000,
         ];
 
         foreach ($cyclesList as $cycles) {
@@ -72,10 +72,10 @@ class PerformanceTest extends TestRequestBuilder
         $request = [
             'firstName' => '  John  ',
             'lastName'  => 'DOE',
-            'age'       => 30
+            'age'       => 30,
         ];
         $cyclesList = [
-            5000
+            5000,
         ];
 
         foreach ($cyclesList as $cycles) {
@@ -98,10 +98,10 @@ class PerformanceTest extends TestRequestBuilder
         $request = [
             'firstName' => '  John  ',
             'lastName'  => 'DOE',
-            'age'       => 30
+            'age'       => 30,
         ];
         $cyclesList = [
-            25000
+            25000,
         ];
 
         foreach ($cyclesList as $cycles) {

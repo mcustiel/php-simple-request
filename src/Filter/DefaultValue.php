@@ -28,6 +28,7 @@ class DefaultValue implements FilterInterface
 
     /**
      * {@inheritDoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
      */
     public function setSpecification($specification = null)
@@ -37,6 +38,7 @@ class DefaultValue implements FilterInterface
 
     /**
      * {@inheritDoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\FilterInterface::filter()
      */
     public function filter($value)

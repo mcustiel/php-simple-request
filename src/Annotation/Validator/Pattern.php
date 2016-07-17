@@ -17,8 +17,6 @@
  */
 namespace Mcustiel\SimpleRequest\Annotation\Validator;
 
-use Mcustiel\SimpleRequest\Annotation\Validator\RegExp;
-
 /**
  * This is an alias for RegExp.
  *

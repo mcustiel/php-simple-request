@@ -31,15 +31,15 @@ class FiltersTest extends TestRequestBuilder
     public function shouldFilterARequest()
     {
         $requestParams = [
-            'custom'     => self::TEST_VALUE,
-            'capitalize' => self::TEST_VALUE,
-            'upperCase'  => self::TEST_VALUE,
-            'lowerCase'  => self::TEST_VALUE,
+            'custom'        => self::TEST_VALUE,
+            'capitalize'    => self::TEST_VALUE,
+            'upperCase'     => self::TEST_VALUE,
+            'lowerCase'     => self::TEST_VALUE,
             'stringReplace' => self::TEST_VALUE,
-            'regexReplace' => self::TEST_VALUE,
-            'trim'       => self::TRIM_TEST_VALUE,
-            'toInteger'   => '214.72',
-            'toFloat'   => '35'
+            'regexReplace'  => self::TEST_VALUE,
+            'trim'          => self::TRIM_TEST_VALUE,
+            'toInteger'     => '214.72',
+            'toFloat'       => '35',
         ];
         /**
          * @var AllFiltersRequest $request

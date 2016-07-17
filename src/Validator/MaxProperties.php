@@ -27,6 +27,7 @@ class MaxProperties extends MaxItems
 {
     /**
      * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Validator\MaxItems::validate()
      */
     public function validate($value)

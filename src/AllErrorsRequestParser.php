@@ -64,7 +64,7 @@ class AllErrorsRequestParser extends RequestParser
     private function checkIfRequestIsValidOrThrowException($invalidValues)
     {
         if (!empty($invalidValues)) {
-            $exception = new InvalidRequestException("Errors occurred while parsing the request");
+            $exception = new InvalidRequestException('Errors occurred while parsing the request');
             $exception->setErrors($invalidValues);
             throw $exception;
         }

@@ -27,6 +27,7 @@ class MinItems extends AbstractSizeValidator
 {
     /**
      * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Validator\AbstractSizeValidator::validate()
      */
     public function validate($value)

@@ -35,13 +35,14 @@ class ExclusiveMaximum implements ValidatorInterface
 
     /**
      * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
      */
     public function setSpecification($specification = null)
     {
         if (!is_numeric($specification)) {
             throw new UnspecifiedValidatorException(
-                "The validator ExclusiveMaximum is being initialized without a valid number"
+                'The validator ExclusiveMaximum is being initialized without a valid number'
             );
         }
         $this->maximum = $specification;
@@ -49,6 +50,7 @@ class ExclusiveMaximum implements ValidatorInterface
 
     /**
      * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
      */
     public function validate($value)

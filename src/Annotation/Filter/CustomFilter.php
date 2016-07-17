@@ -40,6 +40,7 @@ class CustomFilter extends FilterAnnotation
 
     /**
      * {@inheritDoc}
+     *
      * @see \Mcustiel\SimpleRequest\Annotation\AnnotationWithAssociatedClass::getAssociatedClass()
      */
     public function getAssociatedClass()

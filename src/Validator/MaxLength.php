@@ -27,6 +27,7 @@ class MaxLength extends AbstractSizeValidator
 {
     /**
      * Default expected size: 255.
+     *
      * @var int
      */
     protected $size = 255;

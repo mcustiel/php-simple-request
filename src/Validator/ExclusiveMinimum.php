@@ -35,13 +35,14 @@ class ExclusiveMinimum implements ValidatorInterface
 
     /**
      * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
      */
     public function setSpecification($specification = null)
     {
         if (!is_numeric($specification)) {
             throw new UnspecifiedValidatorException(
-                "The validator ExclusiveMinimum is being initialized without a valid number"
+                'The validator ExclusiveMinimum is being initialized without a valid number'
             );
         }
         $this->minimum = $specification;
@@ -49,6 +50,7 @@ class ExclusiveMinimum implements ValidatorInterface
 
     /**
      * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
      */
     public function validate($value)

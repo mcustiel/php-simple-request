@@ -81,7 +81,7 @@ class ExclusiveMaximumValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->validator->validate('5.09999'));
         $this->assertFalse($this->validator->validate('5.1'));
-        $this->assertTrue($this->validator->validate("5"));
+        $this->assertTrue($this->validator->validate('5'));
         $this->assertTrue($this->validator->validate('-1.3'));
         $this->assertTrue($this->validator->validate('0.1'));
     }

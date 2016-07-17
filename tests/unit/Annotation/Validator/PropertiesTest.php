@@ -2,7 +2,6 @@
 namespace Unit\Annotation\Validator;
 
 use Mcustiel\SimpleRequest\Annotation\Validator\Properties;
-use Mcustiel\SimpleRequest\Validator\Properties as PropertiesValidator;
 
 class PropertiesTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,7 +14,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     public function failWhenNumberOfArgumentsIsInvalid()
     {
         $properties = new Properties();
-        $properties->properties = ["We're", "three", "args"];
+        $properties->properties = ["We're", 'three', 'args'];
         $properties->getValue();
     }
 }

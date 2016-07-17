@@ -47,7 +47,8 @@ class SimplePropertyParser implements PropertyParser
      * Filters and validates a value. And return the filtered value.
      * It throws an exception if the value is not valid.
      *
-     * @param  mixed $value
+     * @param mixed $value
+     *
      * @return mixed
      *
      * @throws \Mcustiel\SimpleRequest\Exception\InvalidValueException
@@ -64,7 +65,8 @@ class SimplePropertyParser implements PropertyParser
     /**
      * Returns a copy of the received value.
      *
-     * @param  mixed $value
+     * @param mixed $value
+     *
      * @return mixed
      */
     protected function cloneValue($value)

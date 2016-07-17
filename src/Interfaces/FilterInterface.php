@@ -23,6 +23,7 @@ interface FilterInterface extends Specificable
      * @param mixed $value
      *
      * @return mixed
+     *
      * @throws \Mcustiel\SimpleRequest\Exception\FilterErrorException
      */
     public function filter($value);

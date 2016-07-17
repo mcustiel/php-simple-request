@@ -26,7 +26,7 @@ class MinLengthValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = new MinLength();
         $this->assertTrue($validator->validate(''));
         $this->assertTrue($validator->validate(''));
-        $this->assertTrue($validator->validate("AAAAAAAA"));
+        $this->assertTrue($validator->validate('AAAAAAAA'));
     }
 
     public function testValidationSpecifiedValue()

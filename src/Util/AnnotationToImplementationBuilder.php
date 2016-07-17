@@ -88,6 +88,7 @@ abstract class AnnotationToImplementationBuilder
      * @param string $type The type to instantiate.
      *
      * @return \Mcustiel\SimpleRequest\Interfaces\FilterInterface|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
+     *
      * @throws \Mcustiel\SimpleRequest\Exception\FilterDoesNotExistException
      * @throws \Mcustiel\SimpleRequest\Exception\ValidatorDoesNotExistException
      */

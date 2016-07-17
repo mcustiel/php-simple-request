@@ -32,12 +32,13 @@ abstract class AbstractAnnotationSpecifiedValidator implements ValidatorInterfac
     /**
      * This method checks if the given variable is a validator annotation.
      *
-     * @param  mixed $variable This is the variable to check. It should be of type ValidatorAnnotation.
+     * @param mixed $variable This is the variable to check. It should be of type ValidatorAnnotation.
      *
      * @throws \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
-     *     If variable is not a ValidatorAnnotation.
+     *                                                                         If variable is not a ValidatorAnnotation.
+     *
      * @return \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
-     *     Created validator object.
+     *                                                               Created validator object.
      */
     protected function checkIfAnnotationAndReturnObject($variable)
     {
@@ -67,12 +68,14 @@ abstract class AbstractAnnotationSpecifiedValidator implements ValidatorInterfac
 
     /**
      * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
      */
     abstract public function setSpecification($specification = null);
 
     /**
      * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
      */
     abstract public function validate($value);

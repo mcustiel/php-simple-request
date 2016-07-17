@@ -28,6 +28,7 @@ class TwitterAccount extends RegExp
 
     /**
      * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Validator\RegExp::setSpecification()
      */
     public function setSpecification($specification = null)

@@ -83,8 +83,8 @@ class MinimumValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->setSpecification('5.1');
 
         $this->assertTrue($this->validator->validate('5.10001'));
-        $this->assertTrue($this->validator->validate("5.1"));
-        $this->assertTrue($this->validator->validate("400.12"));
+        $this->assertTrue($this->validator->validate('5.1'));
+        $this->assertTrue($this->validator->validate('400.12'));
         $this->assertFalse($this->validator->validate('5.09999'));
         $this->assertFalse($this->validator->validate('-1.3'));
     }

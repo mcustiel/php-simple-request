@@ -35,13 +35,14 @@ class Enum implements ValidatorInterface
 
     /**
      * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
      */
     public function setSpecification($specification = null)
     {
         if (!is_array($specification) || count($specification) == 0) {
             throw new UnspecifiedValidatorException(
-                "The validator Enum is being initialized without an array"
+                'The validator Enum is being initialized without an array'
             );
         }
         $this->items = $specification;
@@ -49,6 +50,7 @@ class Enum implements ValidatorInterface
 
     /**
      * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
      */
     public function validate($value)

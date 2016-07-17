@@ -235,6 +235,7 @@ class AllValidatorsRequest
 
     /**
      * @Annot\Pattern("/[a-z]{3}[0-9]{3}/")
+     *
      * @var unknown
      */
     private $pattern;
@@ -255,6 +256,7 @@ class AllValidatorsRequest
 
     /**
      * @Annot\MacAddress
+     *
      * @var unknown
      */
     private $macAddress;

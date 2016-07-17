@@ -27,6 +27,7 @@ class MinProperties extends MinItems
 {
     /**
      * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Validator\MinItems::validate()
      */
     public function validate($value)

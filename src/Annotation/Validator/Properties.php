@@ -43,8 +43,8 @@ class Properties extends ValidatorAnnotation
         $this->validatePropertiesCountOrThrowException($count);
 
         return [
-            'properties' => $this->getPropertiesConfig($count),
-            'additionalProperties' => $this->additionalProperties
+            'properties'           => $this->getPropertiesConfig($count),
+            'additionalProperties' => $this->additionalProperties,
         ];
     }
 

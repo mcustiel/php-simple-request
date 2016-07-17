@@ -35,13 +35,14 @@ class MultipleOf implements ValidatorInterface
 
     /**
      * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
      */
     public function setSpecification($specification = null)
     {
         if (empty($specification) || !is_numeric($specification) || $specification <= 0) {
             throw new UnspecifiedValidatorException(
-                "The validator MultipleOf is being initialized without a valid number"
+                'The validator MultipleOf is being initialized without a valid number'
             );
         }
         $this->number = $specification;
@@ -49,6 +50,7 @@ class MultipleOf implements ValidatorInterface
 
     /**
      * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
      */
     public function validate($value)

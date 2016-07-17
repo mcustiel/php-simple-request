@@ -26,12 +26,14 @@ class Not extends AbstractAnnotationSpecifiedValidator
 {
     /**
      * The validator to negate.
+     *
      * @var \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
      */
     private $validator;
 
     /**
      * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Validator\AbstractAnnotationSpecifiedValidator::setSpecification()
      */
     public function setSpecification($specification = null)
@@ -41,6 +43,7 @@ class Not extends AbstractAnnotationSpecifiedValidator
 
     /**
      * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Validator\AbstractAnnotationSpecifiedValidator::validate()
      */
     public function validate($value)

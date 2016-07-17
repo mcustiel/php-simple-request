@@ -29,6 +29,7 @@ class NotEmpty implements ValidatorInterface
 {
     /**
      * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
      */
     public function setSpecification($specification = null)
@@ -37,6 +38,7 @@ class NotEmpty implements ValidatorInterface
 
     /**
      * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
      */
     public function validate($value)

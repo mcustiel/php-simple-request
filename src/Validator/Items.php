@@ -40,6 +40,7 @@ class Items extends AbstractIterableValidator
 
     /**
      * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Validator\AbstractIterableValidator::setSpecification()
      */
     public function setSpecification($specification = null)
@@ -56,6 +57,7 @@ class Items extends AbstractIterableValidator
 
     /**
      * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Validator\AbstractAnnotationSpecifiedValidator::validate()
      */
     public function validate($value)
@@ -175,7 +177,7 @@ class Items extends AbstractIterableValidator
     /**
      * Validates an array against a specific validator.
      *
-     * @param array $array
+     * @param array                                                 $array
      * @param \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface $validator
      */
     private function validateArray(array $array, ValidatorInterface $validator)

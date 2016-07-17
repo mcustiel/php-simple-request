@@ -47,48 +47,56 @@ class AllFiltersRequest
 
     /**
      * @DefaultValue("potato")
+     *
      * @var unknown
      */
     private $defaultValue;
 
     /**
      * @LowerCase
+     *
      * @var unknown
      */
     private $lowerCase;
 
     /**
      * @RegexReplace(pattern="/(\b[a-z]{3}\b)/i", replacement="12${1}34")
+     *
      * @var unknown
      */
     private $regexReplace;
 
     /**
      * @StringReplace(pattern="ONE", replacement="Four")
+     *
      * @var unknown
      */
     private $stringReplace;
 
     /**
      * @ToFloat
+     *
      * @var unknown
      */
     private $toFloat;
 
     /**
      * @ToInteger
+     *
      * @var unknown
      */
     private $toInteger;
 
     /**
      * @Trim
+     *
      * @var unknown
      */
     private $trim;
 
     /**
      * @UpperCase
+     *
      * @var unknown
      */
     private $upperCase;

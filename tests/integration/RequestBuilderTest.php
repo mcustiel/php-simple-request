@@ -29,7 +29,7 @@ class RequestBuilderTest extends TestRequestBuilder
      */
     public function failWhenAnInvalidRequestIsPassed()
     {
-        $request = "potato";
+        $request = 'potato';
 
         $parserResponse = $this->builderWithoutCache->parseRequest(
             $request,
