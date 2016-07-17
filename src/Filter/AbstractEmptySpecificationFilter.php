@@ -19,13 +19,18 @@ namespace Mcustiel\SimpleRequest\Filter;
 
 use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
 
+/**
+ * Filter that does not receive a specification.
+ *
+ * @author mcustiel
+ * @codeCoverageIgnore
+ */
 abstract class AbstractEmptySpecificationFilter implements FilterInterface
 {
     /**
      * {@inheritdoc}
      *
      * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
-     * @codeCoverageIgnore
      */
     public function setSpecification($specification = null)
     {

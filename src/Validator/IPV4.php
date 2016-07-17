@@ -22,7 +22,7 @@ namespace Mcustiel\SimpleRequest\Validator;
  *
  * @author mcustiel
  */
-class IPV4  extends AbstractEmptySpecificationValidator
+class IPV4 extends AbstractEmptySpecificationValidator
 {
     /**
      *

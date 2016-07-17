@@ -22,7 +22,7 @@ namespace Mcustiel\SimpleRequest\Validator;
  *
  * @author mcustiel
  */
-class MacAddress  extends AbstractEmptySpecificationValidator
+class MacAddress extends AbstractEmptySpecificationValidator
 {
     /**
      * {@inheritdoc}

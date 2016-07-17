@@ -22,7 +22,7 @@ namespace Mcustiel\SimpleRequest\Validator;
  *
  * @author mcustiel
  */
-class Hexa  extends AbstractEmptySpecificationValidator
+class Hexa extends AbstractEmptySpecificationValidator
 {
     /**
      * {@inheritdoc}

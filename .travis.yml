@@ -30,6 +30,5 @@ install:
 script:
   - if [[ $EXECUTE_TEST_COVERALLS == 'true' ]]; then ./vendor/bin/phpunit -c tests --testsuite=PhpSimpleRequestTests --coverage-clover clover.xml ; fi
   - if [[ $EXECUTE_TEST_COVERALLS != 'true' ]]; then ./vendor/bin/phpunit -c tests --testsuite=PhpSimpleRequestTests ; fi
-  - if [[ $EXECUTE_CS_CHECK == 'true' ]]; then ./vendor/bin/phpcs --report-checkstyle=checkstyle.xml --standard=psr2 -n src/ tests/ ; fi
 after_script:
   - if [[ $EXECUTE_TEST_COVERALLS == 'true' ]]; then ./vendor/bin/coveralls ; fi

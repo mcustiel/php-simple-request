@@ -23,6 +23,7 @@ use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
  * Validator that does not receive a specification.
  *
  * @author mcustiel
+ * @codeCoverageIgnore
  */
 abstract class AbstractEmptySpecificationValidator implements ValidatorInterface
 {
@@ -30,7 +31,6 @@ abstract class AbstractEmptySpecificationValidator implements ValidatorInterface
      * {@inheritdoc}
      *
      * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
-     * @codeCoverageIgnore
      */
     public function setSpecification($specification = null)
     {

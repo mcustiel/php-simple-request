@@ -22,7 +22,7 @@ namespace Mcustiel\SimpleRequest\Validator;
  *
  * @author mcustiel
  */
-class NotNull  extends AbstractEmptySpecificationValidator
+class NotNull extends AbstractEmptySpecificationValidator
 {
     /**
      * {@inheritdoc}

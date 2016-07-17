@@ -22,7 +22,7 @@ namespace Mcustiel\SimpleRequest\Validator;
  *
  * @author mcustiel
  */
-class Email  extends AbstractEmptySpecificationValidator
+class Email extends AbstractEmptySpecificationValidator
 {
     /**
      *
