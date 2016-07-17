@@ -17,24 +17,13 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
-use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
-
 /**
  * Validates that a given value is lower than or equal to the specified value.
  *
  * @author mcustiel
  */
-class MacAddress implements ValidatorInterface
+class MacAddress  extends AbstractEmptySpecificationValidator
 {
-    /**
-     * {@inheritdoc}
-     *
-     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
-     */
-    public function setSpecification($specification = null)
-    {
-    }
-
     /**
      * {@inheritdoc}
      *

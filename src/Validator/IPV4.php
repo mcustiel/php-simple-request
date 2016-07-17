@@ -17,24 +17,13 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
-use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
-
 /**
  * Validates that a given value is a string with ipv4 format.
  *
  * @author mcustiel
  */
-class IPV4 implements ValidatorInterface
+class IPV4  extends AbstractEmptySpecificationValidator
 {
-    /**
-     * {@inheritdoc}
-     *
-     * @see \Mcustiel\SimpleRequest\Validator\RegExp::setSpecification()
-     */
-    public function setSpecification($specification = null)
-    {
-    }
-
     /**
      *
      * {@inheritdoc}

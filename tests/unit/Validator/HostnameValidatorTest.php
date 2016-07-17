@@ -43,5 +43,6 @@ class HostnameValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->validator->validate('http://es.wikipedia.org'));
         $this->assertFalse($this->validator->validate('.wikipedia.org'));
         $this->assertFalse($this->validator->validate(''));
+        $this->assertFalse($this->validator->validate(1234));
     }
 }

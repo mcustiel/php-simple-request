@@ -25,6 +25,7 @@ class ToInteger implements FilterInterface
      * {@inheritDoc}
      *
      * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
+     * @codeCoverageIgnore
      */
     public function setSpecification($specification = null)
     {

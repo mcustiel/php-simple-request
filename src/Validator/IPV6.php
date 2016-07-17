@@ -17,24 +17,13 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
-use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
-
 /**
  * Validates that a given value is a string with ipv6 format.
  *
  * @author mcustiel
  */
-class IPV6 implements ValidatorInterface
+class IPV6  extends AbstractEmptySpecificationValidator
 {
-    /**
-     * {@inheritdoc}
-     *
-     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
-     */
-    public function setSpecification($specification = null)
-    {
-    }
-
     /**
      * {@inheritdoc}
      *

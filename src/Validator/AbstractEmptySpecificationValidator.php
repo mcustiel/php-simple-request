@@ -15,14 +15,19 @@
  * You should have received a copy of the GNU General Public License
  * along with php-simple-request.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Mcustiel\SimpleRequest\Filter;
+namespace Mcustiel\SimpleRequest\Validator;
 
-use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
+use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 
-class LowerCase implements FilterInterface
+/**
+ * Validator that does not receive a specification.
+ *
+ * @author mcustiel
+ */
+abstract class AbstractEmptySpecificationValidator implements ValidatorInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
      * @codeCoverageIgnore
@@ -32,15 +37,9 @@ class LowerCase implements FilterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
-     * @see \Mcustiel\SimpleRequest\Interfaces\FilterInterface::filter()
+     * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
      */
-    public function filter($value)
-    {
-        if (!is_string($value)) {
-            return $value;
-        }
-        return strtolower($value);
-    }
+    abstract public function validate($value);
 }

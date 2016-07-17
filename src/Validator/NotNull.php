@@ -17,24 +17,13 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
-use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
-
 /**
  * Checks if a value is not null.
  *
  * @author mcustiel
  */
-class NotNull implements ValidatorInterface
+class NotNull  extends AbstractEmptySpecificationValidator
 {
-    /**
-     * {@inheritdoc}
-     *
-     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
-     */
-    public function setSpecification($specification = null)
-    {
-    }
-
     /**
      * {@inheritdoc}
      *

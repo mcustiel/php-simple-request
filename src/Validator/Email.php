@@ -17,24 +17,13 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
-use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
-
 /**
  * Validates that a given value is a string with email format.
  *
  * @author mcustiel
  */
-class Email implements ValidatorInterface
+class Email  extends AbstractEmptySpecificationValidator
 {
-    /**
-     * {@inheritdoc}
-     *
-     * @see \Mcustiel\SimpleRequest\Validator\RegExp::setSpecification()
-     */
-    public function setSpecification($specification = null)
-    {
-    }
-
     /**
      *
      * {@inheritdoc}

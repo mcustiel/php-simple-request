@@ -17,24 +17,13 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
-use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
-
 /**
  * Checks if a given value's format is compatible with the format of a URL.
  *
  * @author mcustiel
  */
-class Url implements ValidatorInterface
+class Url extends AbstractEmptySpecificationValidator
 {
-    /**
-     * {@inheritdoc}
-     *
-     * @see \Mcustiel\SimpleRequest\Validator\RegExp::setSpecification()
-     */
-    public function setSpecification($specification = null)
-    {
-    }
-
     /**
      *
      * {@inheritdoc}
