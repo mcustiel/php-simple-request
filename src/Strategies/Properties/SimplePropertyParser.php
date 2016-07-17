@@ -9,12 +9,12 @@ class SimplePropertyParser implements PropertyParser
      *
      * @var \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface[]
      */
-    protected $validators;
+    protected $validators = [];
     /**
      *
      * @var \Mcustiel\SimpleRequest\Interfaces\FilterInterface[]
      */
-    protected $filters;
+    protected $filters = [];
     /**
      *
      * @var string
