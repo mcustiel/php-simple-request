@@ -26,6 +26,7 @@ class IntegerFilterTest extends BaseTestForNumericFilters
     public function setUp()
     {
         $this->filter = new ToInteger();
+        $this->filter->setSpecification();
     }
 
     public function testIntegerWithAStringRepresentingAInteger()

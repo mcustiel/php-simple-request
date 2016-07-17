@@ -31,7 +31,7 @@ class RegexReplace extends StringReplace
         if (!is_string($value) && !is_array($value)) {
             return $value;
         }
-        $result = preg_replace($this->search, $this->replacement, $value);
+        $result = @preg_replace($this->search, $this->replacement, $value);
         if ($result === null) {
             throw new FilterErrorException('An error occurred executing RegexReplace filter');
         }
