@@ -23,7 +23,7 @@ class DateTest extends AbstractValidatorTest
 
     public function testBuildARequestWithInvalidValue()
     {
-        $this->request[self::TEST_FIELD] = '1981-10-17 01:30:00';
-        $this->buildRequestAndTestErrorFieldPresent(self::TEST_FIELD);
+        $this->request[static::TEST_FIELD] = '1981-10-17 01:30:00';
+        $this->buildRequestAndTestErrorFieldPresent(static::TEST_FIELD);
     }
 }

@@ -17,13 +17,7 @@
  */
 namespace Integration\Validators;
 
-class RegExpTest extends AbstractValidatorTest
+class PatternTest extends RegExpTest
 {
-    const TEST_FIELD = 'regExp';
-
-    public function testBuildARequestWithInvalidValue()
-    {
-        $this->request[static::TEST_FIELD] = '123abc';
-        $this->buildRequestAndTestErrorFieldPresent(static::TEST_FIELD);
-    }
+    const TEST_FIELD = 'pattern';
 }

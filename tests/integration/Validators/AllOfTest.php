@@ -17,13 +17,13 @@
  */
 namespace Integration\Validators;
 
-class RegExpTest extends AbstractValidatorTest
+class AllOfTest extends AbstractValidatorTest
 {
-    const TEST_FIELD = 'regExp';
+    const TEST_FIELD = 'allOf';
 
     public function testBuildARequestWithInvalidValue()
     {
-        $this->request[static::TEST_FIELD] = '123abc';
-        $this->buildRequestAndTestErrorFieldPresent(static::TEST_FIELD);
+        $this->request[self::TEST_FIELD] = '1982-10-17T01:30:00-0300';
+        $this->buildRequestAndTestErrorFieldPresent(self::TEST_FIELD);
     }
 }

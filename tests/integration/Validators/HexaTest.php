@@ -17,13 +17,13 @@
  */
 namespace Integration\Validators;
 
-class RegExpTest extends AbstractValidatorTest
+class HexaTest extends AbstractValidatorTest
 {
-    const TEST_FIELD = 'regExp';
+    const TEST_FIELD = 'hexa';
 
     public function testBuildARequestWithInvalidValue()
     {
-        $this->request[static::TEST_FIELD] = '123abc';
-        $this->buildRequestAndTestErrorFieldPresent(static::TEST_FIELD);
+        $this->request[self::TEST_FIELD] = 'ñaca';
+        $this->buildRequestAndTestErrorFieldPresent(self::TEST_FIELD);
     }
 }

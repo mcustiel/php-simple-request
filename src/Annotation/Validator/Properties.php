@@ -40,18 +40,30 @@ class Properties extends ValidatorAnnotation
     public function getValue()
     {
         $count = count($this->properties);
+        $this->validatePropertiesCountOrThrowException($count);
 
-        if ($count % 2 != 0) {
-            throw InvalidAnnotationException(
-                "Properties field must specify a set of (name, validator) pairs"
-            );
-        }
+        return [
+            'properties' => $this->getPropertiesConfig($count),
+            'additionalProperties' => $this->additionalProperties
+        ];
+    }
 
+    private function getPropertiesConfig($count)
+    {
         $properties = array();
         for ($i = 0; $i < $count; $i += 2) {
             $properties[$this->properties[$i]] = $this->properties[$i + 1];
         }
+        return $properties;
+    }
 
-        return ['properties' => $properties, 'additionalProperties' => $this->additionalProperties];
+
+    private function validatePropertiesCountOrThrowException($count)
+    {
+        if ($count % 2 != 0) {
+            throw new InvalidAnnotationException(
+                'Properties field must specify a set of (name, validator) pairs'
+            );
+        }
     }
 }

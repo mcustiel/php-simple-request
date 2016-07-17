@@ -226,6 +226,39 @@ class AllValidatorsRequest
      */
     private $url;
 
+    /**
+     * @Annot\AllOf({@Annot\DateTime, @Annot\Pattern("/^1981-/")})
+     *
+     * @var unknown
+     */
+    private $allOf;
+
+    /**
+     * @Annot\Pattern("/[a-z]{3}[0-9]{3}/")
+     * @var unknown
+     */
+    private $pattern;
+
+    /**
+     * @Annot\DateTime
+     *
+     * @var unknown
+     */
+    private $dateTime;
+
+    /**
+     * @Annot\Hexa
+     *
+     * @var unknown
+     */
+    private $hexa;
+
+    /**
+     * @Annot\MacAddress
+     * @var unknown
+     */
+    private $macAddress;
+
     public function getAnyOf()
     {
         return $this->anyOf;
@@ -587,6 +620,61 @@ class AllValidatorsRequest
     public function setUrl($url)
     {
         $this->url = $url;
+        return $this;
+    }
+
+    public function getAllOf()
+    {
+        return $this->allOf;
+    }
+
+    public function setAllOf($allOf)
+    {
+        $this->allOf = $allOf;
+        return $this;
+    }
+
+    public function getPattern()
+    {
+        return $this->pattern;
+    }
+
+    public function setPattern($pattern)
+    {
+        $this->pattern = $pattern;
+        return $this;
+    }
+
+    public function getDateTime()
+    {
+        return $this->dateTime;
+    }
+
+    public function setDateTime($dateTime)
+    {
+        $this->dateTime = $dateTime;
+        return $this;
+    }
+
+    public function getHexa()
+    {
+        return $this->hexa;
+    }
+
+    public function setHexa($hexa)
+    {
+        $this->hexa = $hexa;
+        return $this;
+    }
+
+    public function getMacAddress()
+    {
+        return $this->macAddress;
+    }
+
+    public function setMacAddress($macAddress)
+    {
+        $this->macAddress = $macAddress;
         return $this;
     }
 }
