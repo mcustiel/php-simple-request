@@ -31,7 +31,7 @@ class RequestBuilderTest extends TestRequestBuilder
     {
         $request = 'potato';
 
-        $parserResponse = $this->builderWithoutCache->parseRequest(
+        $this->builderWithoutCache->parseRequest(
             $request,
             PersonRequest::class,
             new AllErrorsRequestParser()

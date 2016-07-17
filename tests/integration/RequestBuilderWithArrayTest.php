@@ -106,6 +106,11 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
             'twitterAccount'   => '@pepe_123',
             'uniqueItems'      => [ '1', 2, 'potato' ],
             'url'              => 'https://this.isaurl.com/test.php?id=1#test',
+            'allOf'            => '1981-10-17T01:30:00-0300',
+            'pattern'          => 'abc123',
+            'dateTime'         => '1981-10-17T01:30:00-0300',
+            'hexa'             => 'fdecba0987654321',
+            'macAddress'       => '01-23-45-67-89-ab',
         ];
         $builder = $this->createCachedRequestBuilder('PhpSimpleRequestTestAlt');
         $builder->parseRequest($request, AllValidatorsRequest::class, new FirstErrorRequestParser());

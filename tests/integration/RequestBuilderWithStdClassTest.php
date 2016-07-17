@@ -101,6 +101,11 @@ class RequestBuilderWithStdClassTest extends TestRequestBuilder
         $request->twitterAccount = '@pepe_123';
         $request->uniqueItems = [ '1', 2, 'potato' ];
         $request->url = 'https://this.isaurl.com/test.php?id=1#test';
+        $request->allOf = '1981-10-17T01:30:00-0300';
+        $request->pattern = 'abc123';
+        $request->dateTime = '1981-10-17T01:30:00-0300';
+        $request->hexa = 'fdecba0987654321';
+        $request->macAddress = '01-23-45-67-89-ab';
 
         $builder = $this->createCachedRequestBuilder('PhpSimpleRequestTestAlt');
         $builder->parseRequest($request, AllValidatorsRequest::class, new FirstErrorRequestParser());
