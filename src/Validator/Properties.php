@@ -19,6 +19,7 @@ namespace Mcustiel\SimpleRequest\Validator;
 
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
+use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 
 /**
  * Checks that each element of an object or array validates against its corresponding
@@ -186,6 +187,10 @@ class Properties extends AbstractIterableValidator
             foreach ($specification as $key => $item) {
                 $this->items[$key] = $this->checkIfAnnotationAndReturnObject($item);
             }
+        } else {
+            throw new UnspecifiedValidatorException(
+                'The validator Properties is being initialized with an invalid ' . self::ITEMS_INDEX . ' parameter'
+            );
         }
     }
 
@@ -201,6 +206,10 @@ class Properties extends AbstractIterableValidator
         } elseif ($specification instanceof ValidatorAnnotation) {
             $this->additionalItems = $this->createValidatorInstanceFromAnnotation(
                 $specification
+            );
+        } else {
+            throw new UnspecifiedValidatorException(
+                'The validator Properties is being initialized with an invalid ' . self::ADDITIONAL_ITEMS_INDEX . ' parameter'
             );
         }
     }
