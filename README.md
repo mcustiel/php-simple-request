@@ -398,7 +398,7 @@ Converts all characters in the given string to uppercase.
 Validators
 ----------
 
-The validators marked with an **(*)** behave similar to json-schema defined validators. Please see: [JSON Schema definition](http://json-schema.org/latest/json-schema-validation.html#anchor12) and [understanding JSON Schema](spacetelescope.github.io/understanding-json-schema/).
+The validators marked with an **(*)** behave similar to json-schema defined validators. Please see: [JSON Schema definition](http://json-schema.org/latest/json-schema-validation.html) and [understanding JSON Schema](spacetelescope.github.io/understanding-json-schema/).
 
 #### AllOf*
 

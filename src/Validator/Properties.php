@@ -76,7 +76,7 @@ class Properties extends AbstractIterableValidator
         return $this->executePropertiesValidation($this->convertToArray($value));
     }
 
-    private function executePropertiesValidation($value)
+    private function executePropertiesValidation(array $value)
     {
         if ($this->items instanceof ValidatorInterface) {
             return $this->validateWithoutAdditionalItemsConcern($value);
@@ -86,12 +86,9 @@ class Properties extends AbstractIterableValidator
         // the value of "items" is an array, the instance is valid if its size is less than, or
         // equal to, the size of "items".
         if ($this->additionalItems === false) {
-            return (count($value) <= count($this->items))
-            && $this->validateTuple($value);
+            return (count($value) <= count($this->items)) && $this->validateTuple($value);
         }
 
-        // From json-schema definition: if the value of "additionalItems" is
-        // boolean value true or an object, validation of the instance always succeeds;
         return $this->validateList($value);
     }
 
@@ -132,6 +129,8 @@ class Properties extends AbstractIterableValidator
      */
     private function validateList(array $list)
     {
+        // From json-schema definition: if the value of "additionalItems" is
+        // boolean value true or an object, validation of the instance always succeeds;
         if (!$this->validateTuple($list)) {
             return false;
         }

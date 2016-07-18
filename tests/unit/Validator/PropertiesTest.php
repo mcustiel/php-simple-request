@@ -19,6 +19,7 @@ namespace Unit\Validator;
 
 use Mcustiel\SimpleRequest\Validator\Properties;
 use Mcustiel\SimpleRequest\Validator\NotEmpty;
+use Mcustiel\SimpleRequest\Annotation\Validator\Type;
 
 class PropertiesTest extends \PHPUnit_Framework_TestCase
 {
@@ -74,5 +75,56 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     public function failIfSpecificationAdditionalPropertiesIsInvalid()
     {
         $this->validator->setSpecification(['additionalProperties' => 'potato']);
+    }
+
+    /**
+     * @test
+     */
+    public function isNotValidIfNotArrayOrObject()
+    {
+        $this->assertFalse($this->validator->validate('potato'));
+    }
+
+    /**
+     * @test
+     */
+    public function isValidIfItemsEmpty()
+    {
+        $this->validator->setSpecification(['properties' => []]);
+        $matter = 'matter';
+        $this->assertTrue($this->validator->validate(['it', ['does' => 'not'], $matter, 1]));
+    }
+
+    /**
+     * @test
+     */
+    public function useItemsAsValidatorWithValidValues()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(['properties' => $validator]);
+        $this->assertTrue($this->validator->validate([1, 2, 3.4, 5.67]));
+    }
+
+    /**
+     * @test
+     */
+    public function useItemsAsValidatorWithAnInvalidValue()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(['properties' => $validator]);
+        $this->assertFalse($this->validator->validate([1, 2, 3.4, 5.67, 'nope']));
+    }
+
+    /**
+     * @test
+     */
+    public function validateASpecificPropertyAgainstAValidator()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(['properties' => ['potato' => $validator]]);
+        $this->assertTrue($this->validator->validate(['does', ['not' => 'matter'], 'potato' => 21]));
     }
 }
