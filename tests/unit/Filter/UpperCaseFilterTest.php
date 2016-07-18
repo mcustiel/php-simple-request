@@ -27,6 +27,7 @@ class UpperCaseFilterTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->filter = new UpperCase();
+        $this->filter->setSpecification();
     }
 
     public function testFilter()

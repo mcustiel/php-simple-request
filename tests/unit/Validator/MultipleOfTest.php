@@ -55,4 +55,44 @@ class MultipleOfTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->validator->validate(5.0));
         $this->assertFalse($this->validator->validate(5.5));
     }
+
+    /**
+     * @test
+     * @expectedException \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
+     * @expectedExceptionMessage The validator MultipleOf is being initialized without a valid number
+     */
+    public function failWithEmptySpecification()
+    {
+        $this->validator->setSpecification();
+    }
+
+    /**
+     * @test
+     * @expectedException \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
+     * @expectedExceptionMessage The validator MultipleOf is being initialized without a valid number
+     */
+    public function failWithNoNumericSpecification()
+    {
+        $this->validator->setSpecification('abc');
+    }
+
+    /**
+     * @test
+     * @expectedException \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
+     * @expectedExceptionMessage The validator MultipleOf is being initialized without a valid number
+     */
+    public function failWithSpecificationZero()
+    {
+        $this->validator->setSpecification(0);
+    }
+
+    /**
+     * @test
+     * @expectedException \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
+     * @expectedExceptionMessage The validator MultipleOf is being initialized without a valid number
+     */
+    public function failWithNegativeSpecification()
+    {
+        $this->validator->setSpecification(-1);
+    }
 }

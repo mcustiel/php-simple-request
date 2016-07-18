@@ -19,7 +19,7 @@ namespace Unit\Validator;
 
 use Mcustiel\SimpleRequest\Validator\TwitterAccount;
 
-class TwitterAccountValidatorTest extends \PHPUnit_Framework_TestCase
+class TwitterValidatorTest extends \PHPUnit_Framework_TestCase
 {
     const VALID_VALUE = '@twitterAcc_12';
     const INVALID_VALUE_TOO_LONG = '@AReallyLongAccnt';

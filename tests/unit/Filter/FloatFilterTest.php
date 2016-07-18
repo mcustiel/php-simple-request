@@ -26,6 +26,7 @@ class FloatFilterTest extends BaseTestForNumericFilters
     public function setUp()
     {
         $this->filter = new ToFloat();
+        $this->filter->setSpecification();
     }
 
     public function testFloatWithAStringRepresentingAFloat()

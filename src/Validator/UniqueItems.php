@@ -17,25 +17,16 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
-use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
-
 /**
  * Checks if all the elements of a given array are unique values.
  *
  * @author mcustiel
  */
-class UniqueItems implements ValidatorInterface
+class UniqueItems extends AbstractEmptySpecificationValidator
 {
     /**
-     * (non-PHPdoc)
-     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
-     */
-    public function setSpecification($specification = null)
-    {
-    }
-
-    /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
      */
     public function validate($value)

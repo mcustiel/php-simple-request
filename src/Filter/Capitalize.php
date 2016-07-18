@@ -23,13 +23,26 @@ class Capitalize implements FilterInterface
 {
     private $allWords = false;
 
+    /**
+     * {@inheritDoc}
+     *
+     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
+     */
     public function setSpecification($specification = null)
     {
         $this->allWords = (boolean) $specification;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @see \Mcustiel\SimpleRequest\Interfaces\FilterInterface::filter()
+     */
     public function filter($value)
     {
+        if (!is_string($value)) {
+            return $value;
+        }
         return $this->allWords ? ucwords(strtolower($value)) : ucfirst(strtolower($value));
     }
 }

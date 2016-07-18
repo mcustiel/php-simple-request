@@ -17,9 +17,6 @@
  */
 namespace Mcustiel\SimpleRequest\Util;
 
-use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
-use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
-
 /**
  * Trait with the needed methods to build an object from an annotation. The class
  * that use this trait shouls implement the method getClassForType. It's used by
@@ -27,17 +24,24 @@ use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
  *
  * @author mcustiel
  */
-trait AnnotationToImplementationBuilder
+abstract class AnnotationToImplementationBuilder
 {
+    /**
+     * @var string
+     */
     protected $type;
+    /**
+     * @var mixed
+     */
     protected $specification;
 
     /**
      * Creator method. Creates an instance of this object.
+     * return $this
      */
     public static function builder()
     {
-        return new self;
+        return new static;
     }
 
     /**
@@ -45,7 +49,7 @@ trait AnnotationToImplementationBuilder
      *
      * @param string $type Name of the class given by the annotation.
      *
-     * @return FilterBuilder|ValidatorBuilder $this For fluent interface
+     * @return $this For fluent interface
      */
     public function withClass($type)
     {
@@ -58,7 +62,7 @@ trait AnnotationToImplementationBuilder
      *
      * @param mixed $specification Specification set in the annotation.
      *
-     * @return FilterBuilder|ValidatorBuilder $this For fluent interface
+     * @return $this For fluent interface
      */
     public function withSpecification($specification)
     {
@@ -84,7 +88,9 @@ trait AnnotationToImplementationBuilder
      * @param string $type The type to instantiate.
      *
      * @return \Mcustiel\SimpleRequest\Interfaces\FilterInterface|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
+     *
      * @throws \Mcustiel\SimpleRequest\Exception\FilterDoesNotExistException
+     * @throws \Mcustiel\SimpleRequest\Exception\ValidatorDoesNotExistException
      */
-    protected abstract function getClassForType($type);
+    abstract protected function getClassForType($type);
 }

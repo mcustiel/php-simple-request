@@ -17,16 +17,18 @@
  */
 namespace Mcustiel\SimpleRequest\Filter;
 
-use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
-
-class UpperCase implements FilterInterface
+class UpperCase extends AbstractEmptySpecificationFilter
 {
-    public function setSpecification($specification = null)
-    {
-    }
-
+    /**
+     * {@inheritDoc}
+     *
+     * @see \Mcustiel\SimpleRequest\Interfaces\FilterInterface::filter()
+     */
     public function filter($value)
     {
+        if (!is_string($value)) {
+            return $value;
+        }
         return strtoupper($value);
     }
 }

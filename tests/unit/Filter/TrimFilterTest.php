@@ -28,6 +28,7 @@ class TrimFilterTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->filter = new Trim();
+        $this->filter->setSpecification();
     }
 
     public function testFilter()

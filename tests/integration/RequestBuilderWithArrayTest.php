@@ -19,9 +19,10 @@ namespace Integration;
 
 use Fixtures\PersonRequest;
 use Fixtures\AllValidatorsRequest;
-use Mcustiel\SimpleRequest\RequestBuilder;
 use Mcustiel\SimpleRequest\Exception\InvalidRequestException;
 use Fixtures\CoupleRequest;
+use Mcustiel\SimpleRequest\AllErrorsRequestParser;
+use Mcustiel\SimpleRequest\FirstErrorRequestParser;
 
 class RequestBuilderWithArrayTest extends TestRequestBuilder
 {
@@ -29,13 +30,13 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
     {
         $request = [
             'firstName' => '  John  ',
-            'lastName' => 'DOE',
-            'age' => 30
+            'lastName'  => 'DOE',
+            'age'       => 30,
         ];
         $parserResponse = $this->builderWithoutCache->parseRequest(
             $request,
             PersonRequest::class,
-            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+            new AllErrorsRequestParser()
         );
         $this->assertPersonIsOk($parserResponse);
     }
@@ -44,21 +45,21 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
     {
         $request = [
             'firstName' => '  John  ',
-            'lastName' => 'DOE',
-            'age' => 30
+            'lastName'  => 'DOE',
+            'age'       => 30,
         ];
         $parserResponse = $this->builderWithCache->parseRequest(
             $request,
             PersonRequest::class,
-            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+            new AllErrorsRequestParser()
         );
         $this->assertPersonIsOk($parserResponse);
 
-        $builderCached = new RequestBuilder();
+        $builderCached = $this->createCachedRequestBuilder();
         $parserResponse = $builderCached->parseRequest(
             $request,
             PersonRequest::class,
-            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+            new AllErrorsRequestParser()
         );
         $this->assertPersonIsOk($parserResponse);
     }
@@ -72,58 +73,63 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
         $class->key2 = 'val2';
         $class->key3 = 'val3';
         $request = [
-            'anyOf' => 5,
-            'custom' => '5',
-            'date' => '17/10/1981 01:30:00',
-            'email' => 'pipicui@hotmail.com',
-            'enum' => 'val1',
+            'anyOf'            => 5,
+            'custom'           => '5',
+            'date'             => '17/10/1981 01:30:00',
+            'email'            => 'pipicui@hotmail.com',
+            'enum'             => 'val1',
             'exclusiveMaximum' => 3,
             'exclusiveMinimum' => 8,
-            'float' => '5.1',
-            'hostName' => 'es.wikipedia.org',
-            'integer' => '20',
-            'ipv4' => '192.168.0.1',
-            'ipv6' => '2001:0db8:85a3:08d3:1319:8a2e:0370:7334',
-            'items' => [1, '12345'],
-            'maximum' => 3,
-            'maxItems' => [ 'a', 'b' ],
-            'maxLength' => '12345',
-            'maxProperties' => [ 'a', 'b' ],
-            'minimum' => 8,
-            'minItems' => [ 'a', 'b', 'c', 'd' ],
-            'minLength' => '123',
-            'minProperties' => ['a', 'b', 'c', 'd'],
-            'multipleOf' => 5,
-            'notEmpty' => '-',
-            'notNull' => '',
-            'not' => null,
-            'oneOf' => 5,
-            'properties' => ['key1' => 1, 'key2' => '12345'],
-            'regExp' => 'abc123',
-            'required' => $class,
-            'type' => [ 'a' ],
-            'twitterAccount' => '@pepe_123',
-            'uniqueItems' => [ '1', 2, 'potato' ],
-            'url' => 'https://this.isaurl.com/test.php?id=1#test'
+            'float'            => '5.1',
+            'hostName'         => 'es.wikipedia.org',
+            'integer'          => '20',
+            'ipv4'             => '192.168.0.1',
+            'ipv6'             => '2001:0db8:85a3:08d3:1319:8a2e:0370:7334',
+            'items'            => [1, '12345'],
+            'maximum'          => 3,
+            'maxItems'         => [ 'a', 'b' ],
+            'maxLength'        => '12345',
+            'maxProperties'    => [ 'a', 'b' ],
+            'minimum'          => 8,
+            'minItems'         => [ 'a', 'b', 'c', 'd' ],
+            'minLength'        => '123',
+            'minProperties'    => ['a', 'b', 'c', 'd'],
+            'multipleOf'       => 5,
+            'notEmpty'         => '-',
+            'notNull'          => '',
+            'not'              => null,
+            'oneOf'            => 5,
+            'properties'       => ['key1' => 1, 'key2' => '12345'],
+            'regExp'           => 'abc123',
+            'required'         => $class,
+            'type'             => [ 'a' ],
+            'twitterAccount'   => '@pepe_123',
+            'uniqueItems'      => [ '1', 2, 'potato' ],
+            'url'              => 'https://this.isaurl.com/test.php?id=1#test',
+            'allOf'            => '1981-10-17T01:30:00-0300',
+            'pattern'          => 'abc123',
+            'dateTime'         => '1981-10-17T01:30:00-0300',
+            'hexa'             => 'fdecba0987654321',
+            'macAddress'       => '01-23-45-67-89-ab',
         ];
-        $builder = new RequestBuilder($cacheConfig);
-        $builder->parseRequest($request, AllValidatorsRequest::class);
-        $builder = new RequestBuilder($cacheConfig);
-        $builder->parseRequest($request, AllValidatorsRequest::class);
+        $builder = $this->createCachedRequestBuilder('PhpSimpleRequestTestAlt');
+        $builder->parseRequest($request, AllValidatorsRequest::class, new FirstErrorRequestParser());
+        $builder = $this->createCachedRequestBuilder('PhpSimpleRequestTestAlt');
+        $builder->parseRequest($request, AllValidatorsRequest::class, new FirstErrorRequestParser());
     }
 
     public function testBuildARequestAndValidatorNotEmpty()
     {
         $request = [
             'firstName' => '',
-            'lastName' => 'DOE',
-            'age' => 30
+            'lastName'  => 'DOE',
+            'age'       => 30,
         ];
         try {
             $this->builderWithoutCache->parseRequest(
                 $request,
                 PersonRequest::class,
-                RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+                new AllErrorsRequestParser()
             );
             $this->fail('Exception expected to be thrown');
         } catch (InvalidRequestException $e) {
@@ -135,14 +141,14 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
     {
         $request = [
             'firstName' => null,
-            'lastName' => 'DOE',
-            'age' => 30
+            'lastName'  => 'DOE',
+            'age'       => 30,
         ];
         try {
             $this->builderWithoutCache->parseRequest(
                 $request,
                 PersonRequest::class,
-                RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+                new AllErrorsRequestParser()
             );
             $this->fail('Exception expected to be thrown');
         } catch (InvalidRequestException $e) {
@@ -154,13 +160,13 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
     {
         $request = [
             'lastName' => 'DOE',
-            'age' => 30
+            'age'      => 30,
         ];
         try {
             $this->builderWithoutCache->parseRequest(
                 $request,
                 PersonRequest::class,
-                RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+                new AllErrorsRequestParser()
             );
             $this->fail('Exception expected to be thrown');
         } catch (InvalidRequestException $e) {
@@ -172,24 +178,24 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
     {
         $request = [
             'togetherSince' => '2001-09-13',
-            'person1' => [
+            'person1'       => [
                 'firstName' => '  John  ',
-                'lastName' => 'DOE',
-                'age' => 30
+                'lastName'  => 'DOE',
+                'age'       => 30,
             ],
             'person2' => [
                 'firstName' => '  Jane  ',
-                'lastName' => 'DoE',
-                'age' => 41
-            ]
+                'lastName'  => 'DoE',
+                'age'       => 41,
+            ],
         ];
         /**
-         * @var $parserResponse \Fixtures\CoupleRequest
+         * @var \Fixtures\CoupleRequest $parserResponse
          */
         $parserResponse = $this->builderWithoutCache->parseRequest(
             $request,
             CoupleRequest::class,
-            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+            new AllErrorsRequestParser()
         );
         $this->assertPersonIsOk($parserResponse->getPerson1());
         $personRequest = $parserResponse->getPerson2();

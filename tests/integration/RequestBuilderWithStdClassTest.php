@@ -19,9 +19,10 @@ namespace Integration;
 
 use Fixtures\PersonRequest;
 use Fixtures\AllValidatorsRequest;
-use Mcustiel\SimpleRequest\RequestBuilder;
 use Mcustiel\SimpleRequest\Exception\InvalidRequestException;
 use Fixtures\CoupleRequest;
+use Mcustiel\SimpleRequest\AllErrorsRequestParser;
+use Mcustiel\SimpleRequest\FirstErrorRequestParser;
 
 class RequestBuilderWithStdClassTest extends TestRequestBuilder
 {
@@ -32,7 +33,7 @@ class RequestBuilderWithStdClassTest extends TestRequestBuilder
         $parserResponse = $this->builderWithoutCache->parseRequest(
             $request,
             PersonRequest::class,
-            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+            new AllErrorsRequestParser()
         );
         $this->assertPersonIsOk($parserResponse);
     }
@@ -44,15 +45,15 @@ class RequestBuilderWithStdClassTest extends TestRequestBuilder
         $parserResponse = $this->builderWithCache->parseRequest(
             $request,
             PersonRequest::class,
-            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+            new AllErrorsRequestParser()
         );
         $this->assertPersonIsOk($parserResponse);
 
-        $builderCached = new RequestBuilder();
+        $builderCached = $this->createCachedRequestBuilder();
         $parserResponse = $builderCached->parseRequest(
             $request,
             PersonRequest::class,
-            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+            new AllErrorsRequestParser()
         );
         $this->assertPersonIsOk($parserResponse);
     }
@@ -100,11 +101,16 @@ class RequestBuilderWithStdClassTest extends TestRequestBuilder
         $request->twitterAccount = '@pepe_123';
         $request->uniqueItems = [ '1', 2, 'potato' ];
         $request->url = 'https://this.isaurl.com/test.php?id=1#test';
+        $request->allOf = '1981-10-17T01:30:00-0300';
+        $request->pattern = 'abc123';
+        $request->dateTime = '1981-10-17T01:30:00-0300';
+        $request->hexa = 'fdecba0987654321';
+        $request->macAddress = '01-23-45-67-89-ab';
 
-        $builder = new RequestBuilder($cacheConfig);
-        $builder->parseRequest($request, AllValidatorsRequest::class);
-        $builder = new RequestBuilder($cacheConfig);
-        $builder->parseRequest($request, AllValidatorsRequest::class);
+        $builder = $this->createCachedRequestBuilder('PhpSimpleRequestTestAlt');
+        $builder->parseRequest($request, AllValidatorsRequest::class, new FirstErrorRequestParser());
+        $builder = $this->createCachedRequestBuilder('PhpSimpleRequestTestAlt');
+        $builder->parseRequest($request, AllValidatorsRequest::class, new FirstErrorRequestParser());
     }
 
     public function testBuildARequestAndValidatorNotEmpty()
@@ -117,7 +123,7 @@ class RequestBuilderWithStdClassTest extends TestRequestBuilder
             $this->builderWithoutCache->parseRequest(
                 $request,
                 PersonRequest::class,
-                RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+                new AllErrorsRequestParser()
             );
             $this->fail('Exception expected to be thrown');
         } catch (InvalidRequestException $e) {
@@ -136,7 +142,7 @@ class RequestBuilderWithStdClassTest extends TestRequestBuilder
             $this->builderWithoutCache->parseRequest(
                 $request,
                 PersonRequest::class,
-                RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+                new AllErrorsRequestParser()
             );
             $this->fail('Exception expected to be thrown');
         } catch (InvalidRequestException $e) {
@@ -154,7 +160,7 @@ class RequestBuilderWithStdClassTest extends TestRequestBuilder
             $this->builderWithoutCache->parseRequest(
                 $request,
                 PersonRequest::class,
-                RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+                new AllErrorsRequestParser()
             );
             $this->fail('Exception expected to be thrown');
         } catch (InvalidRequestException $e) {
@@ -178,12 +184,12 @@ class RequestBuilderWithStdClassTest extends TestRequestBuilder
         $request->person2 = $person2;
 
         /**
-         * @var $parserResponse \Fixtures\CoupleRequest
+         * @var \Fixtures\CoupleRequest $parserResponse
          */
         $parserResponse = $this->builderWithoutCache->parseRequest(
             $request,
             CoupleRequest::class,
-            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+            new AllErrorsRequestParser()
         );
         $this->assertPersonIsOk($parserResponse->getPerson1());
         $personRequest = $parserResponse->getPerson2();

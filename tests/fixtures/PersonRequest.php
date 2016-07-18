@@ -30,6 +30,7 @@ class PersonRequest
     /**
      * @NotEmpty
      * @Trim
+     *
      * @var unknown
      */
     private $firstName;
@@ -37,11 +38,13 @@ class PersonRequest
      * @Trim
      * @UpperCase
      * @NotEmpty
+     *
      * @var unknown
      */
     private $lastName;
     /**
      * @TypeInteger
+     *
      * @var unknown
      */
     private $age;

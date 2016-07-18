@@ -22,16 +22,16 @@ namespace Mcustiel\SimpleRequest\Validator;
  *
  * @author mcustiel
  */
-class Email extends RegExp
+class Email extends AbstractEmptySpecificationValidator
 {
-    const URL_REGEXP = '/^(?:[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+\.)*[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+@(?:(?:(?:[A-Z0-9_](?:[A-Z0-9_\-](?!\.)){0,61}[A-Z0-9_-]?\.)+[A-Z0-9_](?:[A-Z0-9_\-](?!$)){0,61}[A-Z0-9_]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/i';
-
     /**
-     * (non-PHPdoc)
-     * @see \Mcustiel\SimpleRequest\Validator\RegExp::setSpecification()
+     *
+     * {@inheritdoc}
+     *
+     * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
      */
-    public function setSpecification($specification = null)
+    public function validate($value)
     {
-        parent::setSpecification(self::URL_REGEXP);
+        return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
     }
 }

@@ -27,7 +27,8 @@ class HostName extends RegExp
     const REGEXP = '/^[a-z0-9][a-z0-9\-_]{0,61}[a-z0-9](\.[a-z0-9\-_]{0,63})*\.[a-z]{2,6}$/i';
 
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Validator\RegExp::setSpecification()
      */
     public function setSpecification($specification = null)

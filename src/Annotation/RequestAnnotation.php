@@ -19,8 +19,14 @@ namespace Mcustiel\SimpleRequest\Annotation;
 
 abstract class RequestAnnotation
 {
+    /**
+     * @var mixed
+     */
     public $value;
 
+    /**
+     * @return mixed
+     */
     public function getValue()
     {
         return $this->value;

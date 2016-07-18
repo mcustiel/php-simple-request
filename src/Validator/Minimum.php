@@ -29,26 +29,28 @@ class Minimum implements ValidatorInterface
 {
     /**
      *
-     * @var integer|float
+     * @var int|float
      */
     private $minimum;
 
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
      */
     public function setSpecification($specification = null)
     {
         if (!is_numeric($specification)) {
             throw new UnspecifiedValidatorException(
-                "The validator Minimum is being initialized without a valid number"
+                'The validator Minimum is being initialized without a valid number'
             );
         }
         $this->minimum = $specification;
     }
 
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
      */
     public function validate($value)

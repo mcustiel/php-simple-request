@@ -34,12 +34,13 @@ class Items extends AbstractIterableValidator
     const ADDITIONAL_ITEMS_INDEX = 'additionalItems';
 
     /**
-     * @var boolean|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
+     * @var bool|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
      */
     private $additionalItems = true;
 
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Validator\AbstractIterableValidator::setSpecification()
      */
     public function setSpecification($specification = null)
@@ -55,7 +56,8 @@ class Items extends AbstractIterableValidator
     }
 
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Validator\AbstractAnnotationSpecifiedValidator::validate()
      */
     public function validate($value)
@@ -70,6 +72,11 @@ class Items extends AbstractIterableValidator
             return true;
         }
 
+        return $this->executeItemsValidation($value);
+    }
+
+    private function executeItemsValidation($value)
+    {
         if ($this->items instanceof ValidatorInterface) {
             return $this->validateArray($value, $this->items);
         }
@@ -79,7 +86,7 @@ class Items extends AbstractIterableValidator
         // equal to, the size of "items".
         if ($this->additionalItems === false) {
             return (count($value) <= count($this->items))
-                && $this->validateTuple($value);
+            && $this->validateTuple($value);
         }
 
         // From json-schema definition: if the value of "additionalItems" is
@@ -94,7 +101,7 @@ class Items extends AbstractIterableValidator
      *
      * @param array $list
      *
-     * @return boolean
+     * @return bool
      */
     private function validateList(array $list)
     {
@@ -114,7 +121,7 @@ class Items extends AbstractIterableValidator
      *
      * @param array $tuple
      *
-     * @return boolean
+     * @return bool
      */
     private function validateTuple(array $tuple)
     {
@@ -147,14 +154,14 @@ class Items extends AbstractIterableValidator
                 $specification
             );
         } else {
-            parent::setSpecification($specification);
+            $this->setSpecification($specification);
         }
     }
 
     /**
      * Checks and sets the specified additionalItems.
      *
-     * @param boolean|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface $specification
+     * @param bool|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface $specification
      */
     private function setAdditionalItems($specification)
     {

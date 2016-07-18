@@ -17,14 +17,13 @@
  */
 namespace Mcustiel\SimpleRequest\Filter;
 
-use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
-
-class ToFloat implements FilterInterface
+class ToFloat extends AbstractEmptySpecificationFilter
 {
-    public function setSpecification($specification = null)
-    {
-    }
-
+    /**
+     * {@inheritDoc}
+     *
+     * @see \Mcustiel\SimpleRequest\Interfaces\FilterInterface::filter()
+     */
     public function filter($value)
     {
         return (float) $value;

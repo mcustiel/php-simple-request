@@ -18,6 +18,7 @@
 namespace Mcustiel\SimpleRequest;
 
 use Mcustiel\SimpleRequest\Exception\InvalidRequestException;
+use Psr\Cache\CacheItemPoolInterface as PsrCache;
 
 /**
  * Builds a request by parsing all the resulting object's annotations and running
@@ -27,109 +28,67 @@ use Mcustiel\SimpleRequest\Exception\InvalidRequestException;
  */
 class RequestBuilder
 {
-    const RETURN_ALL_ERRORS_IN_EXCEPTION = 'AllErrorsRequestParser';
-    const THROW_EXCEPTION_ON_FIRST_ERROR = 'FirstErrorRequestParser';
-    const DEFAULT_CACHE_PATH = 'php-simple-request/cache/';
-
     /**
-     *
-     * @var string
+     * @var \Psr\Cache\CacheItemPoolInterface
      */
-    private $cachePath;
+    private $cache;
     /**
-     *
      * @var ParserGenerator
      */
     private $parserGenerator;
 
+
     /**
-     * Class constructor.
-     *
-     * @param \stdClass        $cacheConfig
-     *      Config parameters for cache. By default cache is activated and saves files
-     *      under system's temp dir. This parameter is used to set alternative options.
-     *
+     * @param \Psr\Cache\CacheItemPoolInterface       $cache
+     * @param \Mcustiel\SimpleRequest\ParserGenerator $parserGenerator
      */
     public function __construct(
-        \stdClass $cacheConfig = null,
-        ParserGenerator $parserGenerator = null
+        PsrCache $cache,
+        ParserGenerator $parserGenerator
     ) {
-        $this->setCache($cacheConfig);
-        $this->parserGenerator = $parserGenerator === null ? new ParserGenerator($this) : $parserGenerator;
+        $this->cache = $cache;
+        $this->parserGenerator = $parserGenerator;
     }
 
     /**
      * Main method of this class. Used to convert a request to an object of a given class by
      * using a requestParser.
      *
-     * @param array|\stdClass  $request   The request to convert to an object.
-     * @param string           $className The class of the object to which the request must be converted.
-     * @param string           $behaviour The behaviour of the parser.
+     * @param array|\stdClass                       $request       The request to convert to an object.
+     * @param string                                $className     The class of the object to which the request must be converted.
+     * @param \Mcustiel\SimpleRequest\RequestParser $requestParser The behaviour of the parser.
      */
     public function parseRequest(
         $request,
         $className,
-        $behaviour = self::THROW_EXCEPTION_ON_FIRST_ERROR
+        RequestParser $requestParser
     ) {
-        $this->checkRequestType($request);
-
-        $requestParser = $this->generateRequestParserObject(
-            $className,
-            '\\Mcustiel\\SimpleRequest\\' . $behaviour
-        );
-
-        return $requestParser->parse($request);
+        return $this->generateRequestParserObject($className, $requestParser)
+            ->parse($this->sanitizeRequestOrThrowExceptionIfInvalid($request));
     }
 
-    private function generateRequestParserObject($className, $parserClass)
+    private function generateRequestParserObject($className, $parser)
     {
-        $class = new \ReflectionClass($className);
-        $name = str_replace('\\', '', $className . $parserClass);
-
-        if ($this->cachePath === null) {
-            return $this->parserGenerator->createRequestParser($name, $className, $class, $parserClass);
+        $cacheKey = str_replace('\\', '', $className . get_class($parser));
+        $cacheItem = $this->cache->getItem($cacheKey);
+        $return = $cacheItem->get();
+        if ($return === null) {
+            $return = $this->parserGenerator->createRequestParser($className, $parser, $this);
+            $cacheItem->set($return);
+            $this->cache->save($cacheItem);
         }
 
-        return  $this->getRequestParserFromCache($name, $className, $class, $parserClass);
+        return $return;
     }
 
-    private function getRequestParserFromCache($name, $className, \ReflectionClass $class, $parserClass)
+    private function sanitizeRequestOrThrowExceptionIfInvalid($request)
     {
-        $fileName = $this->cachePath . $name;
-        if (!file_exists($fileName)) {
-            $return = $this->parserGenerator->createRequestParser($name, $className, $class, $parserClass);
-            if (!is_dir($this->cachePath)) {
-                mkdir($this->cachePath, 0777, true);
-            }
-            file_put_contents($fileName, serialize($return));
-
-            return $return;
-        }
-
-        return unserialize(file_get_contents($fileName));
-    }
-
-    private function setCache(\stdClass $cacheConfig = null)
-    {
-        if ($cacheConfig !== null) {
-            if (isset($cacheConfig->disabled) && $cacheConfig->disabled) {
-                return null;
-            }
-            $this->cachePath =
-                isset($cacheConfig->path) ? $cacheConfig->path
-                    : sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::DEFAULT_CACHE_PATH
-            ;
-            return;
-        }
-        $this->cachePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::DEFAULT_CACHE_PATH;
-    }
-
-    private function checkRequestType($request)
-    {
-        if (!is_array($request) && !($request instanceof \stdClass)) {
+        $isObject = ($request instanceof \stdClass);
+        if (!is_array($request) && !$isObject) {
             throw new InvalidRequestException(
                 'Request builder is intended to be used with arrays or instances of \\stdClass'
             );
         }
+        return $isObject ? json_decode(json_encode($request), true) : $request;
     }
 }

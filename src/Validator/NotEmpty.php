@@ -17,26 +17,17 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
-use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
-
 /**
  * Checks that the given value is not empty, based in the
  * <a href="http://php.net/manual/en/function.empty.php">empty definition of PHP.</a>
  *
  * @author mcustiel
  */
-class NotEmpty implements ValidatorInterface
+class NotEmpty extends AbstractEmptySpecificationValidator
 {
     /**
-     * (non-PHPdoc)
-     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
-     */
-    public function setSpecification($specification = null)
-    {
-    }
-
-    /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
      */
     public function validate($value)

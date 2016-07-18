@@ -25,18 +25,18 @@ use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
  *
  * @author mcustiel
  */
-class FilterBuilder
+class FilterBuilder extends AnnotationToImplementationBuilder
 {
-    use AnnotationToImplementationBuilder;
-
     /**
      * This method is used from AnnotationToImplementationBuilder trait. It checks the existence
      * of the Filter class and then checks it's of type FilterInterface.
      *
      * @param string $type The type to instantiate.
+     *
      * @return \Mcustiel\SimpleRequest\Interfaces\FilterInterface The instance created
+     *
      * @throws \Mcustiel\SimpleRequest\Exception\FilterDoesNotExistException
-     *      If class does not exist or does not implement FilterInterface
+     *                                                                       If class does not exist or does not implement FilterInterface
      */
     final protected function getClassForType($type)
     {

@@ -31,12 +31,13 @@ class TypeInteger implements ValidatorInterface
     /**
      * Wheather or not strictly check the value.
      *
-     * @var boolean
+     * @var bool
      */
     private $strict = true;
 
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
      */
     public function setSpecification($specification = null)
@@ -45,7 +46,8 @@ class TypeInteger implements ValidatorInterface
     }
 
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
      */
     public function validate($value)

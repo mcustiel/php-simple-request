@@ -18,35 +18,77 @@
 namespace Integration;
 
 use Fixtures\AllFiltersRequest;
-use Mcustiel\SimpleRequest\RequestBuilder;
-use Mcustiel\SimpleRequest\ParserResponse;
+use Mcustiel\SimpleRequest\AllErrorsRequestParser;
 
-class FiltersTest extends \PHPUnit_Framework_TestCase
+class FiltersTest extends TestRequestBuilder
 {
     const TEST_VALUE = 'test ONE Two';
+    const TRIM_TEST_VALUE = '  Trim me  ';
 
-    private $request;
-    private $builder;
-
-    public function setUp()
+    /**
+     * @test
+     */
+    public function shouldFilterARequest()
     {
-        $this->request = [
-            'custom' => self::TEST_VALUE,
-            'capitalize' => self::TEST_VALUE,
-            'upperCase' => self::TEST_VALUE,
-            'lowerCase' => self::TEST_VALUE
+        $requestParams = [
+            'custom'        => self::TEST_VALUE,
+            'capitalize'    => self::TEST_VALUE,
+            'upperCase'     => self::TEST_VALUE,
+            'lowerCase'     => self::TEST_VALUE,
+            'stringReplace' => self::TEST_VALUE,
+            'regexReplace'  => self::TEST_VALUE,
+            'trim'          => self::TRIM_TEST_VALUE,
+            'toInteger'     => '214.72',
+            'toFloat'       => '35',
         ];
-        $this->builder = new RequestBuilder();
-    }
-
-    public function testBuildARequestAndFilters()
-    {
-        $request = $this->builder->parseRequest($this->request, AllFiltersRequest::class, RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION);
+        /**
+         * @var AllFiltersRequest $request
+         */
+        $request = $this->builderWithoutCache->parseRequest(
+            $requestParams,
+            AllFiltersRequest::class,
+            new AllErrorsRequestParser()
+        );
 
         $this->assertInstanceOf(AllFiltersRequest::class, $request);
         $this->assertEquals('Test One Two', $request->getCustom());
         $this->assertEquals('Test one two', $request->getCapitalize());
         $this->assertEquals('TEST ONE TWO', $request->getUpperCase());
         $this->assertEquals('test one two', $request->getLowerCase());
+        $this->assertEquals('Trim me', $request->getTrim());
+        $this->assertEquals('test Four Two', $request->getStringReplace());
+        $this->assertEquals('test 12ONE34 12Two34', $request->getRegexReplace());
+        $this->assertEquals('potato', $request->getDefaultValue());
+        $this->assertSame(214, $request->getToInteger());
+        $this->assertSame(35.0, $request->getToFloat());
+    }
+
+    /**
+     * @test
+     */
+    public function filterAnEmptyRequest()
+    {
+        $requestParams = [
+        ];
+        /**
+         * @var AllFiltersRequest $request
+         */
+        $request = $this->builderWithoutCache->parseRequest(
+            $requestParams,
+            AllFiltersRequest::class,
+            new AllErrorsRequestParser()
+            );
+
+        $this->assertInstanceOf(AllFiltersRequest::class, $request);
+        $this->assertEmpty($request->getCustom());
+        $this->assertEmpty($request->getCapitalize());
+        $this->assertEmpty($request->getUpperCase());
+        $this->assertEmpty($request->getLowerCase());
+        $this->assertEmpty($request->getTrim());
+        $this->assertEmpty($request->getStringReplace());
+        $this->assertEmpty($request->getRegexReplace());
+        $this->assertEquals('potato', $request->getDefaultValue());
+        $this->assertEmpty($request->getToInteger());
+        $this->assertEmpty($request->getToFloat());
     }
 }

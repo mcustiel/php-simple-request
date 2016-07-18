@@ -38,15 +38,14 @@ class AllErrorsRequestParser extends RequestParser
      */
     public function parse($request)
     {
-        $object = new $this->requestObject;
+        $object = clone $this->requestObject;
         $invalidValues = [];
 
-        foreach ($this->properties as $propertyParser) {
-            $propertyName = $propertyParser->getName();
+        foreach ($this->propertyParsers as $propertyParser) {
             try {
-                $this->setProperty($request, $object, $propertyName, $propertyParser);
+                $this->setProperty($request, $object, $propertyParser);
             } catch (InvalidValueException $e) {
-                $invalidValues[$propertyName] = $e->getMessage();
+                $invalidValues[$propertyParser->getName()] = $e->getMessage();
             }
         }
         $this->checkIfRequestIsValidOrThrowException($invalidValues);
@@ -65,7 +64,7 @@ class AllErrorsRequestParser extends RequestParser
     private function checkIfRequestIsValidOrThrowException($invalidValues)
     {
         if (!empty($invalidValues)) {
-            $exception = new InvalidRequestException("Errors occurred while parsing the request");
+            $exception = new InvalidRequestException('Errors occurred while parsing the request');
             $exception->setErrors($invalidValues);
             throw $exception;
         }

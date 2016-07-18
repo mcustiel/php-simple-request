@@ -19,11 +19,12 @@ namespace Unit\Validator;
 
 use Mcustiel\SimpleRequest\Validator\AlphaNumeric;
 
-class AlphaNumericValidatorTest extends \PHPUnit_Framework_TestCase
+class AlphaValidatorTest extends \PHPUnit_Framework_TestCase
 {
     public function testValidationSuccessful()
     {
         $validator = new AlphaNumeric();
+        $validator->setSpecification();
 
         $this->assertTrue($validator->validate('AaBbCc'));
         $this->assertTrue($validator->validate('Aa1Bb2Cc'));

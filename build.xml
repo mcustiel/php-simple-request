@@ -17,7 +17,11 @@
     <!-- ============================================ -->
     <!-- Fileset: sources (all php files but those in test) -->
     <!-- ============================================ -->
-    <fileset expandsymboliclinks="true" dir="${dir.base}" id="sources">
+	<fileset expandsymboliclinks="true" dir="${dir.base}" id="code">
+	    <include name="src/**/*.php" />
+	</fileset>
+
+	<fileset expandsymboliclinks="true" dir="${dir.base}" id="sources">
         <include name="src/**/*.php" />
     	<include name="tests/**/*.php" />
     </fileset>
@@ -148,13 +152,15 @@
     <target name="unittests">
         <echo msg="Running unit tests..." />
         <coverage-setup database="${dir.reports.unit}/coverage.db">
-              <fileset refid="sources" />
+              <fileset refid="code" />
         </coverage-setup>
-        <phpunit configuration="${dir.tests}/phpunit.xml" codecoverage="true">
+        <phpunit configuration="${dir.tests}/phing-config.xml" codecoverage="true">
             <formatter todir="${dir.reports.unit}" type="xml" />
             <formatter todir="${dir.reports.unit}" type="clover" />
             <batchtest>
-                <fileset dir="${dir.tests.unit}" />
+                <fileset dir="${dir.tests.unit}">
+                	<exclude name="**/Performance*.php"/>
+                </fileset>
             </batchtest>
         </phpunit>
         <coverage-report outfile="${dir.reports.unit}/coverage.xml">

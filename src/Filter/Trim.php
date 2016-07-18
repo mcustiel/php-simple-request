@@ -17,16 +17,18 @@
  */
 namespace Mcustiel\SimpleRequest\Filter;
 
-use Mcustiel\SimpleRequest\Interfaces\FilterInterface;
-
-class Trim implements FilterInterface
+class Trim extends AbstractEmptySpecificationFilter
 {
-    public function setSpecification($specification = null)
-    {
-    }
-
+    /**
+     * {@inheritDoc}
+     *
+     * @see \Mcustiel\SimpleRequest\Interfaces\FilterInterface::filter()
+     */
     public function filter($value)
     {
+        if (!is_string($value)) {
+            return $value;
+        }
         return trim($value);
     }
 }

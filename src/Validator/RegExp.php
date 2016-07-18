@@ -35,21 +35,23 @@ class RegExp implements ValidatorInterface
     private $regExp = null;
 
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
      */
     public function setSpecification($specification = null)
     {
         if (empty($specification)) {
             throw new UnspecifiedValidatorException(
-                "The validator RegExp is being initialized without a specified regular expression"
+                'The validator RegExp is being initialized without a specified regular expression'
             );
         }
         $this->regExp = $specification;
     }
 
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
      */
     public function validate($value)

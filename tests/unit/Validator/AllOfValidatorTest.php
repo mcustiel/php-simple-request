@@ -21,24 +21,25 @@ use Mcustiel\SimpleRequest\Validator\AllOf;
 use Mcustiel\SimpleRequest\Annotation\Validator\Alpha;
 use Mcustiel\SimpleRequest\Annotation\Validator\AlphaNumeric;
 
-class AllOfTest extends \PHPUnit_Framework_TestCase
+class AllOfValidatorTest extends TestIterableValidator
 {
     /**
-     * @var \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
+     * @before
      */
-    private $validator;
-
-    public function setUp()
+    public function initValidator()
     {
         $this->validator = new AllOf();
         $this->validator->setSpecification(
             [
                 new Alpha(\Mcustiel\SimpleRequest\Validator\Alpha::class),
-                new AlphaNumeric(\Mcustiel\SimpleRequest\Validator\AlphaNumeric::class)
+                new AlphaNumeric(\Mcustiel\SimpleRequest\Validator\AlphaNumeric::class),
             ]
         );
     }
 
+    /**
+     * @test
+     */
     public function testValidationSuccessful()
     {
         $this->assertTrue($this->validator->validate('abc'));

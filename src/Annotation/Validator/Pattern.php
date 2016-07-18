@@ -17,9 +17,6 @@
  */
 namespace Mcustiel\SimpleRequest\Annotation\Validator;
 
-use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
-use Mcustiel\SimpleRequest\Validator\RegExp as RegExpValidator;
-
 /**
  * This is an alias for RegExp.
  *
@@ -28,10 +25,6 @@ use Mcustiel\SimpleRequest\Validator\RegExp as RegExpValidator;
  *
  * @author mcustiel
  */
-class Pattern extends ValidatorAnnotation
+class Pattern extends RegExp
 {
-    public function __construct()
-    {
-        parent::__construct(RegExpValidator::class);
-    }
 }

@@ -18,18 +18,15 @@ matrix:
     - php: 7
     - php: hhvm 
   allow_failures:
-    - php: 7
     - php: hhvm
 notifications:
   email: jmcustiel@gmail.com
 before_install:
   - composer self-update
-  - if [[ $EXECUTE_TEST_COVERALLS == 'true' ]]; then composer require --dev --no-update satooshi/php-coveralls ; fi
 install:
   - travis_retry composer install --no-interaction --ignore-platform-reqs
 script:
   - if [[ $EXECUTE_TEST_COVERALLS == 'true' ]]; then ./vendor/bin/phpunit -c tests --testsuite=PhpSimpleRequestTests --coverage-clover clover.xml ; fi
   - if [[ $EXECUTE_TEST_COVERALLS != 'true' ]]; then ./vendor/bin/phpunit -c tests --testsuite=PhpSimpleRequestTests ; fi
-  - if [[ $EXECUTE_CS_CHECK == 'true' ]]; then ./vendor/bin/phpcs --report-checkstyle=checkstyle.xml --standard=psr2 -n src/ tests/ ; fi
 after_script:
-  - if [[ $EXECUTE_TEST_COVERALLS == 'true' ]]; then ./vendor/bin/coveralls ; fi
+  - if [[ $EXECUTE_TEST_COVERALLS == 'true' ]]; then travis_retry php vendor/bin/coveralls -v ; fi

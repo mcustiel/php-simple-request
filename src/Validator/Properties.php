@@ -19,6 +19,7 @@ namespace Mcustiel\SimpleRequest\Validator;
 
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
+use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 
 /**
  * Checks that each element of an object or array validates against its corresponding
@@ -34,12 +35,13 @@ class Properties extends AbstractIterableValidator
     const ADDITIONAL_ITEMS_INDEX = 'additionalProperties';
 
     /**
-     * @var boolean|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
+     * @var bool|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
      */
     private $additionalItems = true;
 
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Validator\AbstractIterableValidator::setSpecification()
      */
     public function setSpecification($specification = null)
@@ -55,12 +57,13 @@ class Properties extends AbstractIterableValidator
     }
 
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Validator\AbstractAnnotationSpecifiedValidator::validate()
      */
     public function validate($value)
     {
-        if (!is_array($value) && !($value instanceof \stdClass)) {
+        if (!(is_array($value) || $value instanceof \stdClass)) {
             return false;
         }
 
@@ -70,10 +73,11 @@ class Properties extends AbstractIterableValidator
             return true;
         }
 
-        if (!is_array($value)) {
-            $value = (array) $value;
-        }
+        return $this->executePropertiesValidation($this->convertToArray($value));
+    }
 
+    private function executePropertiesValidation($value)
+    {
         if ($this->items instanceof ValidatorInterface) {
             return $this->validateWithoutAdditionalItemsConcern($value);
         }
@@ -83,7 +87,7 @@ class Properties extends AbstractIterableValidator
         // equal to, the size of "items".
         if ($this->additionalItems === false) {
             return (count($value) <= count($this->items))
-                && $this->validateTuple($value);
+            && $this->validateTuple($value);
         }
 
         // From json-schema definition: if the value of "additionalItems" is
@@ -91,12 +95,21 @@ class Properties extends AbstractIterableValidator
         return $this->validateList($value);
     }
 
+    private function convertToArray($value)
+    {
+        if (!is_array($value)) {
+            return json_decode(json_encode($value), true);
+        }
+        return $value;
+    }
+
+
     /**
      * Checks all properties against a validator.
      *
      * @param array $array
      *
-     * @return boolean
+     * @return bool
      */
     private function validateWithoutAdditionalItemsConcern(array $array)
     {
@@ -115,28 +128,30 @@ class Properties extends AbstractIterableValidator
      *
      * @param array $list
      *
-     * @return boolean
+     * @return bool
      */
     private function validateList(array $list)
     {
-        if ($this->validateTuple($list)) {
-            if ($this->additionalItems === true) {
-                return true;
-            }
-
-            $keys = (array_keys($this->items));
-            $count = count($this->items);
-            $array = array_slice($keys, $count, count($list) - $count);
-            foreach ($array as $item) {
-                if (!$this->additionalItems->validate($item)) {
-                    return false;
-                }
-            }
-
+        if (!$this->validateTuple($list)) {
+            return false;
+        }
+        if ($this->additionalItems === true) {
             return true;
         }
 
-        return false;
+        $keys = array_keys($this->items);
+        $count = count($this->items);
+        return $this->validateListItems(array_slice($keys, $count, count($list) - $count));
+    }
+
+    private function validateListItems($array)
+    {
+        foreach ($array as $item) {
+            if (!$this->additionalItems->validate($item)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -144,7 +159,7 @@ class Properties extends AbstractIterableValidator
      *
      * @param array $tuple
      *
-     * @return boolean
+     * @return bool
      */
     private function validateTuple(array $tuple)
     {
@@ -172,6 +187,10 @@ class Properties extends AbstractIterableValidator
             foreach ($specification as $key => $item) {
                 $this->items[$key] = $this->checkIfAnnotationAndReturnObject($item);
             }
+        } else {
+            throw new UnspecifiedValidatorException(
+                'The validator Properties is being initialized with an invalid ' . self::ITEMS_INDEX . ' parameter'
+            );
         }
     }
 
@@ -187,6 +206,10 @@ class Properties extends AbstractIterableValidator
         } elseif ($specification instanceof ValidatorAnnotation) {
             $this->additionalItems = $this->createValidatorInstanceFromAnnotation(
                 $specification
+            );
+        } else {
+            throw new UnspecifiedValidatorException(
+                'The validator Properties is being initialized with an invalid ' . self::ADDITIONAL_ITEMS_INDEX . ' parameter'
             );
         }
     }

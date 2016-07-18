@@ -42,4 +42,26 @@ class MaxLengthValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validator->validate(self::STRING_WITH_LENGTH_50));
         $this->assertFalse($validator->validate(self::STRING_WITH_LENGTH_50 . 'A'));
     }
+
+    /**
+     * @test
+     * @expectedException \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
+     * @expectedExceptionMessage Size validator is being initialized without a valid number
+     */
+    public function specificationShouldFailWithNotIntegerValue()
+    {
+        $validator = new MaxLength();
+        $validator->setSpecification('A');
+    }
+
+    /**
+     * @test
+     * @expectedException \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
+     * @expectedExceptionMessage Size validator is being initialized without a valid number
+     */
+    public function specificationShouldFailWithNegativeValue()
+    {
+        $validator = new MaxLength();
+        $validator->setSpecification(-1);
+    }
 }

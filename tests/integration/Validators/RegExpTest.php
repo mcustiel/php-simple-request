@@ -23,7 +23,7 @@ class RegExpTest extends AbstractValidatorTest
 
     public function testBuildARequestWithInvalidValue()
     {
-        $this->request[self::TEST_FIELD] = '123abc';
-        $this->buildRequestAndTestErrorFieldPresent(self::TEST_FIELD);
+        $this->request[static::TEST_FIELD] = '123abc';
+        $this->buildRequestAndTestErrorFieldPresent(static::TEST_FIELD);
     }
 }

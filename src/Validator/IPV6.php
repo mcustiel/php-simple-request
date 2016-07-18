@@ -17,50 +17,20 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
-use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
-
 /**
  * Validates that a given value is a string with ipv6 format.
  *
  * @author mcustiel
  */
-class IPV6 implements ValidatorInterface
+class IPV6 extends AbstractEmptySpecificationValidator
 {
-    const REGEXP_WITHOUT_SHORTCUT = '/^(?:[0-9a-f]{1,4})(?::(?:[0-9a-f]{1,4})){7}$/i';
-    const REGEXP_SHORTCUT_IN_MIDDLE = '/^(?:[0-9a-f]{1,4})(?::[0-9a-f]{1,4})*::(?:[0-9a-f]{1,4})(?::[0-9a-f]{1,4})*$/i';
-    const REGEXP_SHORTCUT_AT_START = '/^::(?:[0-9a-f]{1,4})(?::[0-9a-f]{1,4})*$/i';
-    const REGEXP_SHORTCUT_AT_END = '/^(?:[0-9a-f]{1,4})(?::(?:[0-9a-f]{1,4}))*::$/i';
-
     /**
-     * (non-PHPdoc)
-     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
-     */
-    public function setSpecification($specification = null)
-    {
-    }
-
-    /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
      */
     public function validate($value)
     {
-        if (is_string($value)) {
-            if (preg_match(self::REGEXP_WITHOUT_SHORTCUT, $value)) {
-                return true;
-            }
-
-            $count = count(explode(':', $value));
-            if (preg_match(self::REGEXP_SHORTCUT_IN_MIDDLE, $value) && $count <= 8) {
-                return true;
-            }
-            if (preg_match(self::REGEXP_SHORTCUT_AT_START, $value) && $count <= 9) {
-                return true;
-            }
-            if (preg_match(self::REGEXP_SHORTCUT_AT_END, $value) && $count <= 9) {
-                return true;
-            }
-        }
-        return false;
+        return filter_var($value, FILTER_VALIDATE_IP, ['flags' => FILTER_FLAG_IPV6]) !== false;
     }
 }

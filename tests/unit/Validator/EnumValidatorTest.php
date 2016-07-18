@@ -54,6 +54,7 @@ class EnumValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
      * @expectedException        \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
      * @expectedExceptionMessage The validator Enum is being initialized without an array
      */
@@ -63,6 +64,7 @@ class EnumValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
      * @expectedException        \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
      * @expectedExceptionMessage The validator Enum is being initialized without an array
      */

@@ -19,6 +19,9 @@ namespace Mcustiel\SimpleRequest\Annotation;
 
 class AnnotationWithAssociatedClass extends RequestAnnotation
 {
+    /**
+     * @var string
+     */
     private $associatedClass;
 
     protected function __construct($associatedClass)
@@ -26,6 +29,9 @@ class AnnotationWithAssociatedClass extends RequestAnnotation
         $this->associatedClass = $associatedClass;
     }
 
+    /**
+     * @return string
+     */
     public function getAssociatedClass()
     {
         return $this->associatedClass;

@@ -17,7 +17,7 @@
  */
 namespace Integration\Validators;
 
-class MultipleOfTest extends AbstractValidatorTest
+class MultipleOf extends AbstractValidatorTest
 {
     const TEST_FIELD = 'multipleOf';
 

@@ -17,25 +17,16 @@
  */
 namespace Mcustiel\SimpleRequest\Validator;
 
-use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
-
 /**
  * Validates that a given value is a string containing only alphanumeric characters.
  *
  * @author mcustiel
  */
-class AlphaNumeric implements ValidatorInterface
+class AlphaNumeric extends AbstractEmptySpecificationValidator
 {
     /**
-     * (non-PHPdoc)
-     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
-     */
-    public function setSpecification($specification = null)
-    {
-    }
-
-    /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
      */
     public function validate($value)

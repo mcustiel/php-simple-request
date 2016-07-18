@@ -26,11 +26,21 @@ class DefaultValue implements FilterInterface
      */
     private $default;
 
+    /**
+     * {@inheritDoc}
+     *
+     * @see \Mcustiel\SimpleRequest\Interfaces\Specificable::setSpecification()
+     */
     public function setSpecification($specification = null)
     {
         $this->default = $specification;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @see \Mcustiel\SimpleRequest\Interfaces\FilterInterface::filter()
+     */
     public function filter($value)
     {
         return $value === null || $value === '' ? $this->default : $value;

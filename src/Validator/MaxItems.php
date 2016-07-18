@@ -26,7 +26,8 @@ namespace Mcustiel\SimpleRequest\Validator;
 class MaxItems extends AbstractSizeValidator
 {
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Validator\AbstractSizeValidator::validate()
      */
     public function validate($value)

@@ -25,7 +25,8 @@ namespace Mcustiel\SimpleRequest\Validator;
 class OneOf extends AbstractIterableValidator
 {
     /**
-     * (non-PHPdoc)
+     * {@inheritdoc}
+     *
      * @see \Mcustiel\SimpleRequest\Validator\AbstractAnnotationSpecifiedValidator::validate()
      */
     public function validate($value)

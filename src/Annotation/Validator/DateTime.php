@@ -17,22 +17,14 @@
  */
 namespace Mcustiel\SimpleRequest\Annotation\Validator;
 
-use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
-use Mcustiel\SimpleRequest\Validator\Date as DateValidator;
-
 /**
  * @Annotation
  * @Target({ "PROPERTY", "ANNOTATION" })
  *
  * @author mcustiel
  */
-class DateTime extends ValidatorAnnotation
+class DateTime extends DateTimeFormat
 {
-    public function __construct()
-    {
-        parent::__construct(DateValidator::class);
-    }
-
     public function getValue()
     {
         return \DateTime::RFC3339;

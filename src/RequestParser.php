@@ -17,6 +17,8 @@
  */
 namespace Mcustiel\SimpleRequest;
 
+use Mcustiel\SimpleRequest\Strategies\Properties\PropertyParser;
+
 /**
  * Abstract class with the common methods used by the current two RequestParser implementations.
  * This class contains the abstract method parse, which should be implemented in specific parser classes.
@@ -29,7 +31,7 @@ abstract class RequestParser
     /**
      * @var PropertyParser[]
      */
-    protected $properties;
+    protected $propertyParsers;
     protected $requestObject;
 
     /**
@@ -37,7 +39,7 @@ abstract class RequestParser
      */
     public function __construct()
     {
-        $this->properties = [];
+        $this->propertyParsers = [];
     }
 
     /**
@@ -45,9 +47,9 @@ abstract class RequestParser
      *
      * @param PropertyParser $parser
      */
-    public function addProperty(PropertyParser $parser)
+    public function addPropertyParser(PropertyParser $parser)
     {
-        $this->properties[$parser->getName()] = $parser;
+        $this->propertyParsers[$parser->getName()] = $parser;
     }
 
     /**
@@ -68,14 +70,12 @@ abstract class RequestParser
      */
     protected function getFromRequest($request, $propertyName)
     {
-        if ($request instanceof \stdClass) {
-            return isset($request->{$propertyName}) ? $request->{$propertyName} : null;
-        }
         return isset($request[$propertyName]) ? $request[$propertyName] : null;
     }
 
-    protected function setProperty($request, $object, $propertyName, $propertyParser)
+    protected function setProperty($request, $object, $propertyParser)
     {
+        $propertyName = $propertyParser->getName();
         $value = $propertyParser->parse(
             $this->getFromRequest($request, $propertyName)
         );

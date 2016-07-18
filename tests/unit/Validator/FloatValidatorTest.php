@@ -26,6 +26,7 @@ class FloatValidatorTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->validator = new TypeFloat();
+        $this->validator->setSpecification();
     }
 
     public function testValidationDefaultSpecification()

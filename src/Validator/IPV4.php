@@ -22,16 +22,16 @@ namespace Mcustiel\SimpleRequest\Validator;
  *
  * @author mcustiel
  */
-class IPV4 extends RegExp
+class IPV4 extends AbstractEmptySpecificationValidator
 {
-    const URL_REGEXP = '/^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9][0-9]|[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9][0-9]|[0-9])){3}$/';
-
     /**
-     * (non-PHPdoc)
-     * @see \Mcustiel\SimpleRequest\Validator\RegExp::setSpecification()
+     *
+     * {@inheritdoc}
+     *
+     * @see \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface::validate()
      */
-    public function setSpecification($specification = null)
+    public function validate($value)
     {
-        parent::setSpecification(self::URL_REGEXP);
+        return filter_var($value, FILTER_VALIDATE_IP, ['flags' => FILTER_FLAG_IPV4]) !== false;
     }
 }

@@ -21,11 +21,19 @@ use Mcustiel\SimpleRequest\Exception\FilterErrorException;
 
 class RegexReplace extends StringReplace
 {
+    /**
+     * {@inheritDoc}
+     *
+     * @see \Mcustiel\SimpleRequest\Filter\StringReplace::filter()
+     */
     public function filter($value)
     {
-        $result = preg_replace($this->search, $this->replacement, $value);
+        if (!is_string($value) && !is_array($value)) {
+            return $value;
+        }
+        $result = @preg_replace($this->search, $this->replacement, $value);
         if ($result === null) {
-            throw new FilterErrorException("An error occurred executing RegexReplace filter");
+            throw new FilterErrorException('An error occurred executing RegexReplace filter');
         }
 
         return $result;

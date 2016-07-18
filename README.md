@@ -33,6 +33,9 @@ Table of contents
     - [Trim](#trim)
     - [Uppercase](#uppercase)
 - [Validators](#validators)
+    - [AllOf](#allof)
+    - [Alpha](#alpha)
+    - [AlphaNumeric](#alphanumeric)
     - [AnyOf](#anyof)
     - [CustomValidator](#customvalidator)
     - [DateTime](#datetime)
@@ -42,11 +45,12 @@ Table of contents
     - [Enum](#enum)
     - [ExclusiveMaximum](#exclusivemaximum)
     - [ExclusiveMinimum](#exclusiveminimum)
-    - [TypeFloat](#typefloat)
-    - [TypeInteger](#typeinteger)
+    - [Hexa](#hexa)
+    - [HostName](#hostname)
     - [IPV4](#ipv4)
     - [IPV6](#ipv6)
     - [Items](#items)
+    - [MacAddress](#macaddress)
     - [Maximum](#maximum)
     - [MaxItems](#maxitems)
     - [MaxLength](#maxlength)
@@ -66,6 +70,8 @@ Table of contents
     - [Required](#required)
     - [TwitterAccount](#twitteraccount)
     - [Type](#type)
+    - [TypeFloat](#typefloat)
+    - [TypeInteger](#typeinteger)
     - [UniqueItems](#uniqueitems)
     - [Uri](#uri)
 
@@ -188,10 +194,19 @@ To parse the request and convert it to your object representation, just receive 
 use Mcustiel\SimpleRequest\RequestBuilder;
 use Your\Namespace\PersonRequest;
 use Mcustiel\SimpleRequest\Exceptions\InvalidRequestException;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Mcustiel\SimpleRequest\ParserGenerator;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Mcustiel\SimpleRequest\Strategies\AnnotationParserFactory;
+use Mcustiel\SimpleRequest\FirstErrorRequestParser;
 
-$requestBuilder = new RequestBuilder();
+$requestBuilder = new RequestBuilder(
+    new FilesystemAdapter(),
+    new ParserGenerator(new AnnotationReader(), new AnnotationParserFactory())
+);
+
 try {
-    $personRequest = $requestBuilder->parseRequest($_POST, PersonRequest::class);
+    $personRequest = $requestBuilder->parseRequest($_POST, PersonRequest::class, new FirstErrorRequestParser());
 } catch (InvalidRequestException $e) {
     die("The request is invalid: " . $e->getMessage());
 }
@@ -201,31 +216,32 @@ try {
 If your request is received as a subarray of POST, just specify the key:
 
 ```php
-$personRequest = $requestBuilder->parseRequest($_POST['person'], PersonRequest::class);
+$personRequest = $requestBuilder->parseRequest($_POST['person'], PersonRequest::class, new FirstErrorRequestParser());
 ```
 
 Also it can be used for some REST json request:
 
 ```php
 $request = file_get_contents('php://input');
-$personRequest = $requestBuilder->parseRequest(json_decode($request, true), PersonRequest::class);
+$personRequest = $requestBuilder->parseRequest(json_decode($request, true), PersonRequest::class, , new FirstErrorRequestParser());
 ```
 
-The previous behaviour throws an exception when it finds an error in the validation. It's the default behaviour.
+The previous behaviour throws an exception when it finds an error in the validation. 
 There is an alternative behaviour in which you can obtain a list of validation errors, one for each invalid field. To activate this alternative behaviour, you have to specify the parser in the call to RequestBuilder::parseRequest like this:
 
 ```php
 use Mcustiel\SimpleRequest\RequestBuilder;
 use Your\Namespace\PersonRequest;
 use Mcustiel\SimpleRequest\Exceptions\InvalidRequestException;
+use Mcustiel\SimpleRequest\AllErrorsRequestParser;
 
 $requestBuilder = new RequestBuilder();
 
 try {
     $personRequest = $requestBuilder->parseRequest(
         $_POST, 
-        PersonRequest::class, 
-        RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+        PersonRequest::class,
+        new AllErrorsRequestParser()
     );
 } catch (InvalidRequestException $e) {
     $listOfErrors = $e->getErrors();   
@@ -267,25 +283,18 @@ php-simple-request will automatically convert the value received in the fields p
 
 **Note:** If a property has the ParseAs annotation and also validations and filters, php-simple-request will first execute parseAs and then filters and validations as usual.
 
-#### File caching:
+#### Caching:
 
-As the request class definition uses annotations to specify filters and validators, it generates a lot of overhead when parsing all those annotations and using reflection. To avoid this overhead, php-simple-request saves the parser in a cache file. To deactivate the cache (for instance, in development environment), a config object must be provided in the RequestBuilder constructor specifying that caching must be disabled:
-
-```php
-$cacheConfig = new \stdClass;
-$cacheConfig->disabled = true;
-$requestBuilder = new RequestBuilder($cacheConfig);
-```  
-
-You can also specify the base path for the cache files using the same config object:
+As the request class definition uses annotations to specify filters and validators, it generates a lot of overhead when parsing all those annotations and using reflection. To avoid this overhead, php-simple-request supports the use of PSR-6 Cache. Just pass the implementation as the first argument to create the RequestBuilder object:
 
 ```php
-$cacheConfig = new \stdClass;
-$cacheConfig->path = '/your/own/cache/path';
-$requestBuilder = new RequestBuilder($cacheConfig);
+$requestBuilder = new RequestBuilder(
+    new AnyPsr6PoolAdapter(),
+    new ParserGenerator(new AnnotationReader(), new AnnotationParserFactory())
+);
 ```  
 
-**Note:** The default path in which php-simple-request caches the parsers is SYSTEM_TEMP_DIR/php-simple-request/cache/
+You can pass a NullObject implementation for testing purposes.
 
 Filters
 -------
@@ -391,6 +400,45 @@ Validators
 
 The validators marked with an **(*)** behave similar to json-schema defined validators. Please see: [JSON Schema definition](http://json-schema.org/latest/json-schema-validation.html#anchor12) and [understanding JSON Schema](spacetelescope.github.io/understanding-json-schema/).
 
+#### AllOf*
+
+This validator receives a list of validators as parameter and checks that all of them matches the value. You can obtain the same behavior just by adding multiple Valitor annotations for that property.
+
+##### Example:
+```php
+/**
+ * @AllOf({@Integer, @Minimum(0), @Maximum(100)})
+ */
+private $percentage;
+// Will match an integer between 0 and 100.
+```
+
+#### Alpha
+
+This validator checks that all characters in a string are in the range A-Z or a-z.
+
+##### Example:
+```php
+/**
+ * @Alpha
+ */
+private $onlyLetters;
+// Will match a string containing only letters.
+```
+
+#### AlphaNumeric
+
+This validator checks that all characters in a string are in the range A-Z or a-z or 0-9.
+
+##### Example:
+```php
+/**
+ * @AlphaNumeric
+ */
+private $lettersAndNumbers;
+// Will match a string containing only alphanumeric characters.
+```
+
 #### AnyOf*
 
 This validator receives a list of validators as parameter and checks if at least one of them validates a given value. 
@@ -398,7 +446,7 @@ This validator receives a list of validators as parameter and checks if at least
 ##### Example:
 ```php
 /**
- * @AnyOf(@Integer, @IPV6)
+ * @AnyOf({@Integer, @IPV6})
  */
 private $integerOrIpv6;
 // Will match an integer or an IPV6.
@@ -504,6 +552,30 @@ private $age;
 // Will match any number > 0.
 ```
 
+#### Hexa
+
+This validator checks that the given value is a string containing only hexadecimal characters (ranges 0-9, a-f, A-F).
+
+##### Example:
+```php
+/**
+ * @Hexa
+ */
+private $htmlColor;
+```
+
+#### Hostname
+
+Checks if the value is a hostname.
+
+##### Example:
+```php
+/**
+ * @Hostname
+ */
+private $responseDomain;
+```
+
 #### TypeFloat
 
 This validator checks that the given value is a float. A boolean modifier can be specified in this annotation, indicating if the value must be a strict float or if integers can be validated as floats too.
@@ -585,6 +657,18 @@ This validator checks that each element of a given array matches a specified set
  */
 private $arrayOfInt;
 // accepts Arrays of int of any size.
+```
+
+#### Maximum*
+
+Validates that the value is a string specifying a MAC address.
+
+##### Example:
+```php
+/**
+ * @MacAddress
+ */
+private $mac;
 ```
 
 #### Maximum*
