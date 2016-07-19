@@ -70,7 +70,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
-     * @expectedExceptionMessage The validator Properties is being initialized with an invalid additionalProperties parameter
+     * @expectedExceptionMessage The validator is being initialized without a valid validator Annotation
      */
     public function failIfSpecificationAdditionalPropertiesIsInvalid()
     {
@@ -119,7 +119,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $this->validator->setSpecification(
             [
                 'properties' => ['a' => $validator, 'b' => $validator, 'c' => $validator],
-                'additionalElements' => false,
+                'additionalProperties' => false,
             ]
         );
         $this->assertTrue($this->validator->validate(['a' => 1, 'b' => 2, 'c' => 3.4]));
@@ -135,7 +135,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $this->validator->setSpecification(
             [
                 'properties' => ['a' => $validator, 'b' => $validator, 'c' => $validator],
-                'additionalElements' => false,
+                'additionalProperties' => false,
             ]
         );
         $object = new \stdClass();
@@ -155,7 +155,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $this->validator->setSpecification(
             [
                 'properties' => ['a' => $validator, 'b' => $validator, 'c' => $validator],
-                'additionalElements' => false,
+                'additionalProperties' => false,
             ]
         );
         $this->assertFalse($this->validator->validate(['a' => 1, 'b' => 2, 'c' => 'nope']));
@@ -171,7 +171,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $this->validator->setSpecification(
             [
                 'properties' => ['a' => $validator, 'b' => $validator, 'c' => $validator],
-                'additionalElements' => false,
+                'additionalProperties' => false,
             ]
         );
         $object = new \stdClass();
@@ -259,7 +259,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $validator = new Type();
         $validator->value = 'number';
         $this->validator->setSpecification(
-            ['patternProperties' => ['/a/' => $validator], 'additionalElements' => false]
+            ['patternProperties' => ['/a/' => $validator], 'additionalProperties' => false]
         );
 
         $this->assertTrue($this->validator->validate([
@@ -277,7 +277,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $validator = new Type();
         $validator->value = 'number';
         $this->validator->setSpecification(
-            ['patternProperties' => ['/a/' => $validator], 'additionalElements' => false]
+            ['patternProperties' => ['/a/' => $validator], 'additionalProperties' => false]
         );
         $object = new \stdClass;
         $object->hasAnA = 1;
@@ -294,7 +294,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $validator = new Type();
         $validator->value = 'number';
         $this->validator->setSpecification(
-            ['patternProperties' => ['/a/' => $validator], 'additionalElements' => false]
+            ['patternProperties' => ['/a/' => $validator], 'additionalProperties' => false]
         );
         $this->assertFalse($this->validator->validate(['a' => 1, 'hasAnA' => 2, 'fail' => 'nope']));
     }
@@ -307,7 +307,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $validator = new Type();
         $validator->value = 'number';
         $this->validator->setSpecification(
-            ['patternProperties' => ['/a/' => $validator], 'additionalElements' => false]
+            ['patternProperties' => ['/a/' => $validator], 'additionalProperties' => false]
         );
         $object = new \stdClass();
         $object->a = 1;
@@ -327,10 +327,12 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
             [
                 'patternProperties' => ['/a/' => $validator],
                 'properties' => ['otherLetters' => $validator],
-                'additionalElements' => false
+                'additionalProperties' => false
             ]
         );
-        $this->assertTrue($this->validator->validate(['a' => 1, 'hasAnA' => 2, 'otherLetters' => 3.4]));
+        $this->assertTrue($this->validator->validate(
+            ['a' => 1, 'hasAnA' => 2, 'otherLetters' => 3.4]
+        ));
     }
 
     /**
@@ -344,7 +346,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
             [
                 'patternProperties' => ['/a/' => $validator],
                 'properties' => ['otherLetters' => $validator],
-                'additionalElements' => false
+                'additionalProperties' => false
             ]
         );
         $object = new \stdClass();
@@ -365,10 +367,12 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
             [
                 'patternProperties' => ['/a/' => $validator],
                 'properties' => ['otherLetters' => $validator],
-                'additionalElements' => false
+                'additionalProperties' => false
             ]
         );
-        $this->assertFalse($this->validator->validate(['a' => 1, 'hasAnA' => 2, 'otherLetters' => 'potato']));
+        $this->assertFalse($this->validator->validate(
+            ['a' => 1, 'hasAnA' => 2, 'otherLetters' => 'potato']
+        ));
     }
 
     /**
@@ -382,7 +386,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
             [
                 'patternProperties' => ['/a/' => $validator],
                 'properties' => ['otherLetters' => $validator],
-                'additionalElements' => false
+                'additionalProperties' => false
             ]
             );
         $object = new \stdClass();
@@ -403,16 +407,18 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
             [
                 'patternProperties' => ['/a/' => $validator],
                 'properties' => ['otherLetters' => $validator],
-                'additionalElements' => true
+                'additionalProperties' => true
             ]
             );
-        $this->assertTrue($this->validator->validate(['a' => 1, 'hasAnA' => 2, 'otherLetters' => 3.4, 'plus' => 'tomato']));
+        $this->assertTrue($this->validator->validate(
+            ['a' => 1, 'hasAnA' => 2, 'otherLetters' => 3.4, 'plus' => 'tomato']
+        ));
     }
 
     /**
      * @test
      */
-    public function usePatternPropertiesAndPropertiesWithInvalidValuesWithObjectAndExtraParams()
+    public function usePatternPropertiesAndPropertiesWithValidValuesAndExtraParamsWithObject()
     {
         $validator = new Type();
         $validator->value = 'number';
@@ -420,7 +426,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
             [
                 'patternProperties' => ['/a/' => $validator],
                 'properties' => ['otherLetters' => $validator],
-                'additionalElements' => true
+                'additionalProperties' => true
             ]
             );
         $object = new \stdClass();
@@ -429,5 +435,87 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $object->otherLetters = 3.4;
         $object->plus = 'tomato';
         $this->assertTrue($this->validator->validate($object));
+    }
+
+    /**
+     * @test
+     */
+    public function usePatternPropertiesAndPropertiesWithValidValuesAndExtraParamsValidated()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(
+            [
+                'patternProperties' => ['/a/' => $validator],
+                'properties' => ['otherLetters' => $validator],
+                'additionalProperties' => $validator
+            ]
+        );
+        $this->assertTrue($this->validator->validate(
+            ['a' => 1, 'hasAnA' => 2, 'otherLetters' => 3.4, 'plus' => 5.6]
+        ));
+    }
+
+    /**
+     * @test
+     */
+    public function usePatternPropertiesAndPropertiesWithValidValuesAndExtraParamsValidatedWithObject()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(
+            [
+                'patternProperties' => ['/a/' => $validator],
+                'properties' => ['otherLetters' => $validator],
+                'additionalProperties' => $validator
+            ]
+        );
+        $object = new \stdClass();
+        $object->a = 1;
+        $object->hasAnA = 2;
+        $object->otherLetters = 3.4;
+        $object->plus = 5.6;
+        $this->assertTrue($this->validator->validate($object));
+    }
+
+    /**
+     * @test
+     */
+    public function failWithPatternPropertiesAndPropertiesWithInvalidValuesAndExtraParamsValidatedWithObject()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(
+            [
+                'patternProperties' => ['/a/' => $validator],
+                'properties' => ['otherLetters' => $validator],
+                'additionalProperties' => $validator
+            ]
+        );
+        $object = new \stdClass();
+        $object->a = 1;
+        $object->hasAnA = 2;
+        $object->otherLetters = 3.4;
+        $object->plus = 'fail';
+        $this->assertFalse($this->validator->validate($object));
+    }
+
+    /**
+     * @test
+     */
+    public function failWithPatternPropertiesAndPropertiesWithInvalidValuesAndExtraParamsValidated()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(
+            [
+                'patternProperties' => ['/a/' => $validator],
+                'properties' => ['otherLetters' => $validator],
+                'additionalProperties' => $validator
+            ]
+        );
+        $this->assertFalse($this->validator->validate(
+            ['a' => 1, 'hasAnA' => 2, 'otherLetters' => 3.4, 'plus' => 'fail']
+        ));
     }
 }
