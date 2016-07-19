@@ -18,7 +18,6 @@
 namespace Mcustiel\SimpleRequest\Validator;
 
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
-use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
 use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 
 /**
@@ -31,13 +30,24 @@ use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
  */
 class Properties extends AbstractIterableValidator
 {
-    const ITEMS_INDEX = 'properties';
-    const ADDITIONAL_ITEMS_INDEX = 'additionalProperties';
+    const PROPERTIES_INDEX = 'properties';
+    const PATTERN_PROPERTIES_INDEX = 'patternProperties';
+    const ADDITIONAL_PROPERTIES_INDEX = 'additionalProperties';
+
+    /**
+     * @var \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface[]
+     */
+    private $properties = [];
 
     /**
      * @var bool|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface
      */
-    private $additionalItems = true;
+    private $additionalProperties = true;
+
+    /**
+     * @var \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface[]
+     */
+    private $patternProperties = [];
 
     /**
      * {@inheritdoc}
@@ -48,11 +58,44 @@ class Properties extends AbstractIterableValidator
     {
         $this->checkSpecificationIsArray($specification);
 
-        if (isset($specification[self::ITEMS_INDEX])) {
-            $this->setItems($specification[self::ITEMS_INDEX]);
+        $this->initProperties($specification);
+        $this->initPatternProperties($specification);
+        $this->initAdditionalProperties($specification);
+    }
+
+    /**
+     * @param array $specification
+     *
+     * @throws \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
+     */
+    private function initAdditionalProperties(array $specification)
+    {
+        if (isset($specification[self::ADDITIONAL_PROPERTIES_INDEX])) {
+            $this->setAdditionalProperties($specification[self::ADDITIONAL_PROPERTIES_INDEX]);
         }
-        if (isset($specification[self::ADDITIONAL_ITEMS_INDEX])) {
-            $this->setAdditionalItems($specification[self::ADDITIONAL_ITEMS_INDEX]);
+    }
+
+    /**
+     * @param array $specification
+     *
+     * @throws \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
+     */
+    private function initPatternProperties(array $specification)
+    {
+        if (isset($specification[self::PATTERN_PROPERTIES_INDEX])) {
+            $this->setPatternProperties($specification[self::PATTERN_PROPERTIES_INDEX]);
+        }
+    }
+
+    /**
+     * @param array $specification
+     *
+     * @throws \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
+     */
+    private function initProperties(array $specification)
+    {
+        if (isset($specification[self::PROPERTIES_INDEX])) {
+            $this->setProperties($specification[self::PROPERTIES_INDEX]);
         }
     }
 
@@ -67,34 +110,117 @@ class Properties extends AbstractIterableValidator
             return false;
         }
 
-        // From json-schema definition: if "items" is not present, or its value is an object,
-        // validation of the instance always succeeds, regardless of the value of "additionalItems";
-        if (empty($this->items)) {
-            return true;
-        }
-
         return $this->executePropertiesValidation($this->convertToArray($value));
     }
 
-    private function executePropertiesValidation($value)
+    /**
+     * @param array $value
+     *
+     * @return bool
+     */
+    private function executePropertiesValidation(array $value)
     {
-        if ($this->items instanceof ValidatorInterface) {
-            return $this->validateWithoutAdditionalItemsConcern($value);
-        }
-
-        // From json-schema definition: if the value of "additionalItems" is boolean value false and
-        // the value of "items" is an array, the instance is valid if its size is less than, or
-        // equal to, the size of "items".
-        if ($this->additionalItems === false) {
-            return (count($value) <= count($this->items))
-            && $this->validateTuple($value);
-        }
-
-        // From json-schema definition: if the value of "additionalItems" is
-        // boolean value true or an object, validation of the instance always succeeds;
-        return $this->validateList($value);
+        $rest = $value;
+        return $this->validateByProperty($value, $rest)
+            && $this->validateByPattern($value, $rest)
+            && $this->validateAdditionalProperties($rest);
     }
 
+    /**
+     * @param array $rest
+     *
+     * @return bool|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface|bool
+     */
+    private function validateAdditionalProperties(array $rest)
+    {
+        if ($this->additionalProperties === true) {
+            return true;
+        }
+        if ($this->additionalProperties === false && !empty($rest)) {
+            return false;
+        }
+        foreach ($rest as $propertyValue) {
+            if (!$this->additionalProperties->validate($propertyValue)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @param array $value
+     * @param array $rest
+     *
+     * @return bool
+     */
+    private function validateByPattern(array $value, array &$rest)
+    {
+        $valid = true;
+        foreach ($this->patternProperties as $pattern => $propertyValidator) {
+            $valid &= $this->validateByPatternUsingValidator(
+                $value,
+                $rest,
+                $pattern,
+                $propertyValidator
+            );
+            if (!$valid) {
+                break;
+            }
+        }
+        return $valid;
+    }
+
+    /**
+     * @param array                                                 $value
+     * @param array                                                 $rest
+     * @param string                                                $pattern
+     * @param \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface $validator
+     *
+     * @return bool
+     */
+    private function validateByPatternUsingValidator(
+        array $value,
+        array &$rest,
+        $pattern,
+        ValidatorInterface $validator
+    ) {
+        foreach ($value as $propertyName => $propertyValue) {
+            if (preg_match($pattern, $propertyName)) {
+                unset($rest[$propertyName]);
+                if (!$validator->validate($propertyValue)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @param array $value
+     * @param array $rest
+     *
+     * @return bool
+     */
+    private function validateByProperty(array $value, array &$rest)
+    {
+        $valid = true;
+        foreach ($this->properties as $propertyName => $propertyValidator) {
+            unset($rest[$propertyName]);
+            $valid &= $propertyValidator->validate(
+                isset($value[$propertyName]) ? $value[$propertyName] : null
+            );
+            if (!$valid) {
+                break;
+            }
+        }
+        return $valid;
+    }
+
+    /**
+     * @param \stdClass|array $value
+     *
+     * @return array
+     */
     private function convertToArray($value)
     {
         if (!is_array($value)) {
@@ -103,114 +229,61 @@ class Properties extends AbstractIterableValidator
         return $value;
     }
 
-
-    /**
-     * Checks all properties against a validator.
-     *
-     * @param array $array
-     *
-     * @return bool
-     */
-    private function validateWithoutAdditionalItemsConcern(array $array)
-    {
-        foreach ($array as $value) {
-            if (!$this->items->validate($value)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Validates each element against its validator and if additionalItems is a
-     * validator, validates the rest of the elements against it.
-     *
-     * @param array $list
-     *
-     * @return bool
-     */
-    private function validateList(array $list)
-    {
-        if (!$this->validateTuple($list)) {
-            return false;
-        }
-        if ($this->additionalItems === true) {
-            return true;
-        }
-
-        $keys = array_keys($this->items);
-        $count = count($this->items);
-        return $this->validateListItems(array_slice($keys, $count, count($list) - $count));
-    }
-
-    private function validateListItems($array)
-    {
-        foreach ($array as $item) {
-            if (!$this->additionalItems->validate($item)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Validate each element of the array against its corresponding validator.
-     *
-     * @param array $tuple
-     *
-     * @return bool
-     */
-    private function validateTuple(array $tuple)
-    {
-        foreach ($this->items as $property => $validator) {
-            if (!$validator->validate(isset($tuple[$property]) ? $tuple[$property] : null)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     /**
      * Checks and sets items specification.
      *
-     * @param array|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface $specification
+     * @param bool|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface $specification
+     *
+     * @throws \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
      */
-    private function setItems($specification)
+    private function setAdditionalProperties($specification)
     {
-        if ($specification instanceof ValidatorAnnotation) {
-            $this->items = $this->createValidatorInstanceFromAnnotation(
-                $specification
-            );
-        } elseif (is_array($specification)) {
-            foreach ($specification as $key => $item) {
-                $this->items[$key] = $this->checkIfAnnotationAndReturnObject($item);
-            }
+        if (is_bool($specification)) {
+            $this->additionalProperties = $specification;
         } else {
-            throw new UnspecifiedValidatorException(
-                'The validator Properties is being initialized with an invalid ' . self::ITEMS_INDEX . ' parameter'
-            );
+            $this->additionalProperties = $this->checkIfAnnotationAndReturnObject($specification);
         }
     }
 
     /**
-     * Sets the specified additionalItems.
+     * Checks and sets pattern properties specification.
      *
-     * @param bool|\Mcustiel\SimpleRequest\Interfaces\ValidatorInterface $specification
+     * @param \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface[] $specification
+     *
+     * @throws \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
      */
-    private function setAdditionalItems($specification)
+    private function setProperties($specification)
     {
-        if (is_bool($specification)) {
-            $this->additionalItems = $specification;
-        } elseif ($specification instanceof ValidatorAnnotation) {
-            $this->additionalItems = $this->createValidatorInstanceFromAnnotation(
-                $specification
-            );
-        } else {
+        if (!is_array($specification)) {
             throw new UnspecifiedValidatorException(
-                'The validator Properties is being initialized with an invalid ' . self::ADDITIONAL_ITEMS_INDEX . ' parameter'
+                'The validator Properties is being initialized with an invalid '
+                . self::PROPERTIES_INDEX
+                . ' parameter'
             );
+        }
+        foreach ($specification as $key => $item) {
+            $this->properties[$key] = $this->checkIfAnnotationAndReturnObject($item);
+        }
+    }
+
+    /**
+     * Checks and sets pattern properties specification.
+     *
+     * @param \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface[] $specification
+     *
+     * @throws \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
+     */
+    private function setPatternProperties($specification)
+    {
+        if (!is_array($specification)) {
+            throw new UnspecifiedValidatorException(
+                'The validator Properties is being initialized with an invalid '
+                . self::PROPERTIES_INDEX
+                . ' parameter'
+            );
+        }
+        foreach ($specification as $key => $item) {
+            $this->patternProperties[$key] = $this->checkIfAnnotationAndReturnObject($item);
         }
     }
 }

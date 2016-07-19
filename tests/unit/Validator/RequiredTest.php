@@ -34,6 +34,13 @@ class RequiredTest extends \PHPUnit_Framework_TestCase
         $this->validator = new Required();
     }
 
+    /**
+     * @test
+     */
+    public function shouldNotValidateIfValueIsNotArrayOrObject()
+    {
+        $this->assertFalse($this->validator->validate('potato'));
+    }
 
     /**
      * @test
@@ -50,9 +57,19 @@ class RequiredTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
      * @expectedExceptionMessage The validator Required is being initialized without a valid array
      */
-    public function failIfSpecificationIsAnArrayWithNumericValue()
+    public function failIfSpecificationIsAnArrayWithNotStringValue()
     {
-        $this->validator->setSpecification([2]);
+        $this->validator->setSpecification([[]]);
+    }
+
+    /**
+     * @test
+     * @expectedException \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
+     * @expectedExceptionMessage The validator Required is being initialized without an array
+     */
+    public function failIfSpecificationIsAnEmptyArray()
+    {
+        $this->validator->setSpecification([]);
     }
 
     /**
@@ -60,8 +77,51 @@ class RequiredTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
      * @expectedExceptionMessage The validator Required is being initialized without a valid array
      */
-    public function failIfSpecificationIsAnArrayWithNotStringValue()
+    public function failIfSpecificationContainsANumericStirng()
     {
-        $this->validator->setSpecification([[]]);
+        $this->validator->setSpecification(['a', 'b', '1']);
+    }
+
+    /**
+     * @test
+     */
+    public function isValidIfItemsPresent()
+    {
+        $this->validator->setSpecification(['a', 'b']);
+        $this->assertTrue($this->validator->validate(['a' => 1, 'b' => 2, 'c' => 3]));
+    }
+
+    /**
+     * @test
+     */
+    public function isValidIfItemMissing()
+    {
+        $this->validator->setSpecification(['a', 'b']);
+        $this->assertFalse($this->validator->validate(['a' => 1, 'c' => 3]));
+    }
+
+    /**
+     * @test
+     */
+    public function isValidIfItemsPresentInObject()
+    {
+        $obj = new \stdClass();
+        $obj->a = 1;
+        $obj->b = 2;
+        $obj->c = 3;
+        $this->validator->setSpecification(['a', 'b']);
+        $this->assertTrue($this->validator->validate($obj));
+    }
+
+    /**
+     * @test
+     */
+    public function isNotValidIfItemMissingInObject()
+    {
+        $obj = new \stdClass();
+        $obj->a = 1;
+        $obj->c = 3;
+        $this->validator->setSpecification(['a', 'b']);
+        $this->assertFalse($this->validator->validate($obj));
     }
 }

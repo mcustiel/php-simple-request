@@ -6,8 +6,9 @@ use Fixtures\AllValidatorsRequest;
 use Mcustiel\SimpleRequest\RequestBuilder;
 use Symfony\Component\Cache\Adapter\NullAdapter;
 use Mcustiel\SimpleRequest\ParserGenerator;
-use Doctrine\Common\Annotations\AnnotationReader;
 use Mcustiel\SimpleRequest\Strategies\AnnotationParserFactory;
+use Mcustiel\SimpleRequest\Services\DoctrineAnnotationService;
+use Mcustiel\SimpleRequest\Services\PhpReflectionService;
 
 class PropertyParserToObjectTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,8 +22,9 @@ class PropertyParserToObjectTest extends \PHPUnit_Framework_TestCase
         $this->requestBuilder = new RequestBuilder(
             new NullAdapter(),
             new ParserGenerator(
-                new AnnotationReader(),
-                new AnnotationParserFactory()
+                new DoctrineAnnotationService(),
+                new AnnotationParserFactory(),
+                new PhpReflectionService()
             )
         );
     }

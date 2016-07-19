@@ -29,7 +29,8 @@ use Mcustiel\SimpleRequest\Exception\InvalidAnnotationException;
  */
 class Properties extends ValidatorAnnotation
 {
-    public $properties;
+    public $properties = [];
+    public $patternProperties = [];
     public $additionalProperties;
 
     public function __construct()
@@ -39,24 +40,23 @@ class Properties extends ValidatorAnnotation
 
     public function getValue()
     {
-        $count = count($this->properties);
-        $this->validatePropertiesCountOrThrowException($count);
-
         return [
-            'properties'           => $this->getPropertiesConfig($count),
+            'properties'           => $this->getPropertiesConfigFor($this->properties),
+            'patternProperties'    => $this->getPropertiesConfigFor($this->patternProperties),
             'additionalProperties' => $this->additionalProperties,
         ];
     }
 
-    private function getPropertiesConfig($count)
+    private function getPropertiesConfigFor(array $data)
     {
+        $count = count($data);
+        $this->validatePropertiesCountOrThrowException($count);
         $properties = array();
         for ($i = 0; $i < $count; $i += 2) {
-            $properties[$this->properties[$i]] = $this->properties[$i + 1];
+            $properties[$data[$i]] = $data[$i + 1];
         }
         return $properties;
     }
-
 
     private function validatePropertiesCountOrThrowException($count)
     {

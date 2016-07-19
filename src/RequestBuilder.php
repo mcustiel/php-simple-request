@@ -73,7 +73,7 @@ class RequestBuilder
         $cacheItem = $this->cache->getItem($cacheKey);
         $return = $cacheItem->get();
         if ($return === null) {
-            $return = $this->parserGenerator->createRequestParser($className, $parser, $this);
+            $return = $this->parserGenerator->populateRequestParser($className, $parser, $this);
             $cacheItem->set($return);
             $this->cache->save($cacheItem);
         }

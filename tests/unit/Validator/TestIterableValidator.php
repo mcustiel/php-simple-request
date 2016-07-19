@@ -17,7 +17,7 @@
  */
 namespace Unit\Validator;
 
-class TestIterableValidator extends \PHPUnit_Framework_TestCase
+abstract class TestIterableValidator extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface

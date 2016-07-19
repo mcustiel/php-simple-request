@@ -32,7 +32,7 @@ class Required implements ValidatorInterface
      *
      * @var number[]|string[]
      */
-    protected $items;
+    protected $items = [];
 
     public function setSpecification($specification = null)
     {
@@ -41,7 +41,7 @@ class Required implements ValidatorInterface
             $this->specificationItemisValidOrThrowException($item);
         }
 
-        $this->items = $specification;
+        $this->items = array_unique($specification);
     }
 
     private function specificationItemisValidOrThrowException($item)
@@ -55,7 +55,7 @@ class Required implements ValidatorInterface
 
     private function specificationIsArrayOrThrowException($specification)
     {
-        if (!is_array($specification)) {
+        if (!is_array($specification) || empty($specification)) {
             throw new UnspecifiedValidatorException(
                 'The validator Required is being initialized without an array'
             );

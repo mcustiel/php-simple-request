@@ -19,6 +19,7 @@ namespace Mcustiel\SimpleRequest\Validator;
 
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
+use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 
 /**
  * Checks that each element of an array validates against its corresponding
@@ -47,11 +48,21 @@ class Items extends AbstractIterableValidator
     {
         $this->checkSpecificationIsArray($specification);
 
-        if (isset($specification[self::ITEMS_INDEX])) {
-            $this->setItems($specification[self::ITEMS_INDEX]);
-        }
+        $this->initItems($specification);
+        $this->initAdditionalItems($specification);
+    }
+
+    private function initAdditionalItems($specification)
+    {
         if (isset($specification[self::ADDITIONAL_ITEMS_INDEX])) {
             $this->setAdditionalItems($specification[self::ADDITIONAL_ITEMS_INDEX]);
+        }
+    }
+
+    private function initItems($specification)
+    {
+        if (isset($specification[self::ITEMS_INDEX])) {
+            $this->setItems($specification[self::ITEMS_INDEX]);
         }
     }
 
@@ -80,18 +91,17 @@ class Items extends AbstractIterableValidator
         if ($this->items instanceof ValidatorInterface) {
             return $this->validateArray($value, $this->items);
         }
-
+        $valid = $this->validateTuple($value);
         // From json-schema definition: if the value of "additionalItems" is boolean value false and
         // the value of "items" is an array, the instance is valid if its size is less than, or
         // equal to, the size of "items".
         if ($this->additionalItems === false) {
-            return (count($value) <= count($this->items))
-            && $this->validateTuple($value);
+            return $valid && (count($value) <= count($this->items));
         }
 
         // From json-schema definition: if the value of "additionalItems" is
         // boolean value true or an object, validation of the instance always succeeds;
-        return $this->validateList($value);
+        return $this->validateRest($value);
     }
 
     /**
@@ -103,16 +113,14 @@ class Items extends AbstractIterableValidator
      *
      * @return bool
      */
-    private function validateList(array $list)
+    private function validateRest(array $list)
     {
         $count = count($this->items);
-        return $this->validateTuple($list) && (
-            $this->additionalItems === true ||
+        return $this->additionalItems === true ||
             $this->validateArray(
                 array_slice($list, $count, count($list) - $count),
                 $this->additionalItems
-            )
-        );
+            );
     }
 
     /**
@@ -125,16 +133,14 @@ class Items extends AbstractIterableValidator
      */
     private function validateTuple(array $tuple)
     {
-        $keys = array_keys($tuple);
+        $keys = array_keys($this->items);
         $count = count($this->items);
         for ($index = 0; $index < $count; $index++) {
-            $validator = $this->items[$index];
             // In the specification is not clear what to do when instance size
             // is less than items size. I chose to pass null and if null passes
             // the validation, it returns true.
-            if (!$validator->validate(
-                isset($tuple[$keys[$index]]) ? $tuple[$keys[$index]] : null
-            )) {
+            if (isset($tuple[$keys[$index]]) &&
+                !$this->items[$index]->validate($tuple[$keys[$index]])) {
                 return false;
             }
         }
@@ -154,8 +160,18 @@ class Items extends AbstractIterableValidator
                 $specification
             );
         } else {
-            $this->setSpecification($specification);
+            $this->checkSpecificationIsArray($specification);
+            $this->items = $this->convertAnnotationsToValidators($specification);
         }
+    }
+
+    private function convertAnnotationsToValidators(array $specification)
+    {
+        $items = [];
+        foreach ($specification as $index => $validator) {
+            $items[$index] = $this->checkIfAnnotationAndReturnObject($validator);
+        }
+        return $items;
     }
 
     /**
@@ -170,6 +186,10 @@ class Items extends AbstractIterableValidator
         } elseif ($specification instanceof ValidatorAnnotation) {
             $this->additionalItems = $this->createValidatorInstanceFromAnnotation(
                 $specification
+            );
+        } else {
+            throw new UnspecifiedValidatorException(
+                'The validator is being initialized without a valid validator Annotation'
             );
         }
     }
