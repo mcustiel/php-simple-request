@@ -211,7 +211,7 @@ $requestBuilder = new RequestBuilder(
 );
 
 try {
-    $personRequest = $requestBuilder->parseRequest($_POST, PersonRequest::class, new FirstErrorRequestParser());
+    $personRequest = $requestBuilder->parseRequest($_POST, PersonRequest::class);
 } catch (InvalidRequestException $e) {
     die("The request is invalid: " . $e->getMessage());
 }
@@ -221,7 +221,7 @@ try {
 If your request is received as a subarray of POST, just specify the key:
 
 ```php
-$personRequest = $requestBuilder->parseRequest($_POST['person'], PersonRequest::class, new FirstErrorRequestParser());
+$personRequest = $requestBuilder->parseRequest($_POST['person'], PersonRequest::class);
 ```
 
 Also it can be used for some REST json request:
@@ -232,7 +232,7 @@ $personRequest = $requestBuilder->parseRequest(json_decode($request, true), Pers
 ```
 
 The previous behaviour throws an exception when it finds an error in the validation. 
-There is an alternative behaviour in which you can obtain a list of validation errors, one for each invalid field. To activate this alternative behaviour, you have to specify the parser in the call to `RequestBuilder::parseRequest` like this:
+There is an alternative behaviour in which you can obtain a list of validation errors, one for each invalid field. To activate this alternative behavior, you have to specify it in the call to `RequestBuilder::parseRequest` like this:
 
 ```php
 use Mcustiel\SimpleRequest\RequestBuilder;
@@ -246,10 +246,10 @@ try {
     $personRequest = $requestBuilder->parseRequest(
         $_POST, 
         PersonRequest::class,
-        new AllErrorsRequestParser()
+        RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
     );
 } catch (InvalidRequestException $e) {
-    $listOfErrors = $e->getErrors();   
+    $listOfErrors = $e->getErrors();   // This call returns only one error for the default behavior
 }
 // Now you can use the validated and filtered personRequest to access the requestData.
 ```
@@ -664,7 +664,7 @@ private $arrayOfInt;
 // accepts Arrays of int of any size.
 ```
 
-#### Mac*
+#### MacAddress*
 
 Validates that the value is a string specifying a MAC address.
 
