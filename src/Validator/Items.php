@@ -133,14 +133,14 @@ class Items extends AbstractIterableValidator
      */
     private function validateTuple(array $tuple)
     {
-        $keys = array_keys($this->items);
+        $keys = array_keys($tuple);
         $count = count($this->items);
         for ($index = 0; $index < $count; $index++) {
             // In the specification is not clear what to do when instance size
             // is less than items size. I chose to pass null and if null passes
             // the validation, it returns true.
-            if (isset($tuple[$keys[$index]]) &&
-                !$this->items[$index]->validate($tuple[$keys[$index]])) {
+            $value = isset($keys[$index]) ? $tuple[$keys[$index]] : null;
+            if (!$this->items[$index]->validate($value)) {
                 return false;
             }
         }

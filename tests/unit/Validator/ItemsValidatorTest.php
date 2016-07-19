@@ -114,7 +114,12 @@ class ItemsalidatorTest extends \PHPUnit_Framework_TestCase
     {
         $validator = new Type();
         $validator->value = 'number';
-        $this->validator->setSpecification(['items' => [$validator, new NotEmpty()], 'additionalItems' => false]);
+        $this->validator->setSpecification(
+            [
+                'items'           => [$validator, new NotEmpty()],
+                'additionalItems' => false,
+            ]
+        );
         $this->assertTrue($this->validator->validate([2.3, 'potato']));
     }
 
@@ -125,7 +130,60 @@ class ItemsalidatorTest extends \PHPUnit_Framework_TestCase
     {
         $validator = new Type();
         $validator->value = 'number';
-        $this->validator->setSpecification(['items' => [$validator, new NotEmpty()], 'additionalItems' => false]);
+        $this->validator->setSpecification(
+            [
+                'items'           => [$validator, new NotEmpty()],
+                'additionalItems' => false,
+            ]
+        );
         $this->assertFalse($this->validator->validate([2.3, '']));
+    }
+
+    /**
+     * @test
+     */
+    public function isNotValidIfExtraItemsPresentButNotAllowed()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(
+            [
+                'items'           => [$validator, new NotEmpty()],
+                'additionalItems' => false,
+            ]
+        );
+        $this->assertFalse($this->validator->validate([2.3, '', 'nope']));
+    }
+
+    /**
+     * @test
+     */
+    public function isNotValidIfExtraItemsPresentButNotDoesNotValidate()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(
+            [
+                'items'           => [$validator, new NotEmpty()],
+                'additionalItems' => $validator,
+            ]
+        );
+        $this->assertFalse($this->validator->validate([2.3, '', 'nope']));
+    }
+
+    /**
+     * @test
+     */
+    public function isValidIfExtraItemsPresentAndValidate()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(
+            [
+                'items'           => [$validator, new NotEmpty()],
+                'additionalItems' => $validator,
+            ]
+        );
+        $this->assertTrue($this->validator->validate([2.3, '', 0]));
     }
 }
