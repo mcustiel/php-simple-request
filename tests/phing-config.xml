@@ -7,6 +7,11 @@
         <directory>./integration</directory>
         <exclude>./integration/PerformanceTest.php</exclude>
     </testsuite>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">../src</directory>
+        </whitelist>
+    </filter>
 	<php>
 	</php>
 </phpunit>
