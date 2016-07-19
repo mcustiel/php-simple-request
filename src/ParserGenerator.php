@@ -20,11 +20,13 @@ namespace Mcustiel\SimpleRequest;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Mcustiel\SimpleRequest\Strategies\AnnotationParserFactory;
 use Mcustiel\SimpleRequest\Strategies\PropertyParserBuilder;
+use Mcustiel\SimpleRequest\Interfaces\ReflectionService;
+use Mcustiel\SimpleRequest\Interfaces\AnnotationService;
 
 class ParserGenerator
 {
     /**
-     * @var \Doctrine\Common\Annotations\AnnotationReader
+     * @var \Mcustiel\SimpleRequest\Interfaces\AnnotationService
      */
     private $annotationReader;
     /**
@@ -33,34 +35,56 @@ class ParserGenerator
     private $annotationParserFactory;
 
     /**
-     * @param \Doctrine\Common\Annotations\AnnotationReader $annotationReader
-     *                                                                        External annotation reader instance (mostly for DI in tests). Created
-     *                                                                        if not is set.
+     * @var \Mcustiel\SimpleRequest\Interfaces\ReflectionService
+     */
+    private $reflectionService;
+
+    /**
+     * @param \Mcustiel\SimpleRequest\Interfaces\AnnotationService       $annotationReader
+     * @param \Mcustiel\SimpleRequest\Strategies\AnnotationParserFactory $annotationParserFactory
+     * @param \Mcustiel\SimpleRequest\Interfaces\ReflectionService       $reflectionService
      */
     public function __construct(
-        AnnotationReader $annotationReader,
-        AnnotationParserFactory $annotationParserFactory
+        AnnotationService $annotationReader,
+        AnnotationParserFactory $annotationParserFactory,
+        ReflectionService $reflectionService
     ) {
         $this->annotationReader = $annotationReader;
         $this->annotationParserFactory = $annotationParserFactory;
+        $this->reflectionService = $reflectionService;
     }
 
-    public function createRequestParser(
+    /**
+     * Populates the parser object with the properties parser and the class object.
+     *
+     * @param string         $className
+     * @param RequestParser  $parserObject
+     * @param RequestBuilder $requestBuilder
+     *
+     * @return RequestParser
+     */
+    public function populateRequestParser(
         $className,
-        $parserObject,
+        RequestParser $parserObject,
         RequestBuilder $requestBuilder
     ) {
-        $class = new \ReflectionClass($className);
         $parserObject->setRequestObject(new $className);
-        foreach ($class->getProperties() as $property) {
-            $propertyParserBuilder = new PropertyParserBuilder($property->getName());
-            foreach ($this->annotationReader->getPropertyAnnotations($property) as $propertyAnnotation) {
-                $this->annotationParserFactory
-                    ->getAnnotationParserFor($propertyAnnotation)
-                    ->execute($propertyAnnotation, $propertyParserBuilder);
-            }
-            $parserObject->addPropertyParser($propertyParserBuilder->build($requestBuilder));
+        foreach ($this->reflectionService->getClassProperties($className) as $property) {
+            $parserObject->addPropertyParser(
+                $this->getPropertyParserBuilder($property)->build($requestBuilder)
+            );
         }
         return $parserObject;
+    }
+
+    private function getPropertyParserBuilder(\ReflectionProperty $property)
+    {
+        $propertyParserBuilder = new PropertyParserBuilder($property->getName());
+        foreach ($this->annotationReader->getAnnotationsFromProperty($property) as $propertyAnnotation) {
+            $this->annotationParserFactory
+                ->getAnnotationParserFor($propertyAnnotation)
+                ->execute($propertyAnnotation, $propertyParserBuilder);
+        }
+        return $propertyParserBuilder;
     }
 }

@@ -24,6 +24,8 @@ use Symfony\Component\Cache\Adapter\NullAdapter;
 use Mcustiel\SimpleRequest\ParserGenerator;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Mcustiel\SimpleRequest\Strategies\AnnotationParserFactory;
+use Mcustiel\SimpleRequest\Services\PhpReflectionService;
+use Mcustiel\SimpleRequest\Services\DoctrineAnnotationService;
 
 abstract class TestRequestBuilder extends \PHPUnit_Framework_TestCase
 {
@@ -46,7 +48,11 @@ abstract class TestRequestBuilder extends \PHPUnit_Framework_TestCase
         $this->builderWithCache = $this->createCachedRequestBuilder();
         $this->builderWithoutCache = new RequestBuilder(
             new NullAdapter(),
-            new ParserGenerator(new AnnotationReader(), new AnnotationParserFactory())
+            new ParserGenerator(
+                new DoctrineAnnotationService(),
+                new AnnotationParserFactory(),
+                new PhpReflectionService
+            )
         );
     }
 
@@ -54,7 +60,11 @@ abstract class TestRequestBuilder extends \PHPUnit_Framework_TestCase
     {
         return new RequestBuilder(
             new FilesystemAdapter($namespace),
-            new ParserGenerator(new AnnotationReader(), new AnnotationParserFactory())
+            new ParserGenerator(
+                new DoctrineAnnotationService(),
+                new AnnotationParserFactory(),
+                new PhpReflectionService
+            )
         );
     }
 
