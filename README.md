@@ -20,7 +20,7 @@ Table of contents
     - [Define objects to represent the requests](#define-objects-to-represent-the-requests)
     - [Parse the request and get an object representation](#parse-the-request-and-get-an-object-representation)
     - [Sub-objets](#sub-objects)
-    - [File caching](#file-caching)
+    - [Caching](#caching) 
 - [Filters](#filters)
     - [Capitalize](#capitalize)
     - [CustomFilter](#customfilter)
@@ -196,13 +196,18 @@ use Your\Namespace\PersonRequest;
 use Mcustiel\SimpleRequest\Exceptions\InvalidRequestException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Mcustiel\SimpleRequest\ParserGenerator;
-use Doctrine\Common\Annotations\AnnotationReader;
+use Mcustiel\SimpleRequest\Services\PhpReflectionService;
+use Mcustiel\SimpleRequest\Services\DoctrineAnnotationService;
 use Mcustiel\SimpleRequest\Strategies\AnnotationParserFactory;
 use Mcustiel\SimpleRequest\FirstErrorRequestParser;
 
 $requestBuilder = new RequestBuilder(
     new FilesystemAdapter(),
-    new ParserGenerator(new AnnotationReader(), new AnnotationParserFactory())
+    new ParserGenerator(
+        new DoctrineAnnotationService(),
+        new AnnotationParserFactory(),
+        new PhpReflectionService
+    )
 );
 
 try {
@@ -227,7 +232,7 @@ $personRequest = $requestBuilder->parseRequest(json_decode($request, true), Pers
 ```
 
 The previous behaviour throws an exception when it finds an error in the validation. 
-There is an alternative behaviour in which you can obtain a list of validation errors, one for each invalid field. To activate this alternative behaviour, you have to specify the parser in the call to RequestBuilder::parseRequest like this:
+There is an alternative behaviour in which you can obtain a list of validation errors, one for each invalid field. To activate this alternative behaviour, you have to specify the parser in the call to `RequestBuilder::parseRequest` like this:
 
 ```php
 use Mcustiel\SimpleRequest\RequestBuilder;
@@ -285,7 +290,7 @@ php-simple-request will automatically convert the value received in the fields p
 
 #### Caching:
 
-As the request class definition uses annotations to specify filters and validators, it generates a lot of overhead when parsing all those annotations and using reflection. To avoid this overhead, php-simple-request supports the use of PSR-6 Cache. Just pass the implementation as the first argument to create the RequestBuilder object:
+As the request class definition uses annotations to specify filters and validators, it generates a lot of overhead when parsing all those annotations and using reflection. To avoid this overhead, php-simple-request supports the use of PSR-6 Cache. Just pass the implementation as the first argument to create the `RequestBuilder` object:
 
 ```php
 $requestBuilder = new RequestBuilder(
@@ -659,7 +664,7 @@ private $arrayOfInt;
 // accepts Arrays of int of any size.
 ```
 
-#### Maximum*
+#### Mac*
 
 Validates that the value is a string specifying a MAC address.
 
