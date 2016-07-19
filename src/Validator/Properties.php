@@ -237,18 +237,10 @@ class Properties extends AbstractIterableValidator
      */
     private function setAdditionalProperties($specification)
     {
-        if (is_bool($specification)) {
+        if (is_bool($specification)){
             $this->additionalProperties = $specification;
-        } elseif (is_array($specification)) {
-            foreach ($specification as $key => $item) {
-                $this->additionalProperties[$key] = $this->checkIfAnnotationAndReturnObject($item);
-            }
         } else {
-            throw new UnspecifiedValidatorException(
-                'The validator Properties is being initialized with an invalid '
-                . self::ADDITIONAL_PROPERTIES_INDEX
-                . ' parameter'
-            );
+            $this->additionalProperties = $this->checkIfAnnotationAndReturnObject($specification);
         }
     }
 

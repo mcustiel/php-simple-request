@@ -19,6 +19,7 @@ namespace Mcustiel\SimpleRequest\Validator;
 
 use Mcustiel\SimpleRequest\Interfaces\ValidatorInterface;
 use Mcustiel\SimpleRequest\Annotation\ValidatorAnnotation;
+use Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException;
 
 /**
  * Checks that each element of an array validates against its corresponding
@@ -163,7 +164,20 @@ class Items extends AbstractIterableValidator
                 $specification
             );
         } else {
-            $this->setSpecification($specification);
+            $this->checkSpecificationIsArray($specification);
+            $this->checkArrayContainsOnlyValidators($specification);
+            $this->items = $specification;
+        }
+    }
+
+    private function checkArrayContainsOnlyValidators(array $specification)
+    {
+        foreach ($specification as $validator) {
+            if (!($validator instanceof ValidatorAnnotation)) {
+                throw new UnspecifiedValidatorException(
+                    'Items array is being initialized without a validator'
+                );
+            }
         }
     }
 
@@ -179,6 +193,10 @@ class Items extends AbstractIterableValidator
         } elseif ($specification instanceof ValidatorAnnotation) {
             $this->additionalItems = $this->createValidatorInstanceFromAnnotation(
                 $specification
+            );
+        } else {
+            throw new UnspecifiedValidatorException(
+                'The validator is being initialized without a valid validator Annotation'
             );
         }
     }
