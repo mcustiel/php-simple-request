@@ -88,7 +88,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function isValidIfItemsEmpty()
+    public function isValidIfItemsAndAdditionalItemsAreEmpty()
     {
         $this->validator->setSpecification(['properties' => []]);
         $matter = 'matter';
@@ -97,13 +97,16 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @expected
      */
-    public function useItemsAsValidatorWithValidValues()
+    public function useValidatorsWithValidValues()
     {
         $validator = new Type();
         $validator->value = 'number';
-        $this->validator->setSpecification(['properties' => $validator]);
-        $this->assertTrue($this->validator->validate([1, 2, 3.4, 5.67]));
+        $this->validator->setSpecification(
+            ['properties' => ['a' => $validator, 'b' => $validator, 'c' => $validator]]
+        );
+        $this->assertTrue($this->validator->validate(['a' => 1, 'b' => 2, 'c' => 3.4]));
     }
 
     /**
@@ -113,8 +116,10 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     {
         $validator = new Type();
         $validator->value = 'number';
-        $this->validator->setSpecification(['properties' => $validator]);
-        $this->assertFalse($this->validator->validate([1, 2, 3.4, 5.67, 'nope']));
+        $this->validator->setSpecification(
+            ['properties' => ['a' => $validator, 'b' => $validator, 'c' => $validator]]
+        );
+        $this->assertFalse($this->validator->validate(['a' => 1, 'b' => 2, 'c' => 'nope']));
     }
 
     /**
@@ -126,5 +131,21 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $validator->value = 'number';
         $this->validator->setSpecification(['properties' => ['potato' => $validator]]);
         $this->assertTrue($this->validator->validate(['does', ['not' => 'matter'], 'potato' => 21]));
+    }
+
+    /**
+     * @test
+     */
+    public function notValidIfAdditionalPropertiesAreNotAllowed()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(
+            [
+                'properties'           => ['potato' => $validator],
+                'additionalProperties' => false,
+            ]
+        );
+        $this->assertFalse($this->validator->validate(['potato' => 21, 'extra' => 'nope']));
     }
 }

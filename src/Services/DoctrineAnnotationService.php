@@ -18,6 +18,7 @@ class DoctrineAnnotationService implements AnnotationService
 
     /**
      * {@inheritDoc}
+     *
      * @see \Mcustiel\SimpleRequest\Interfaces\AnnotationService::getAnnotationsFromProperty()
      */
     public function getAnnotationsFromProperty(\ReflectionProperty $property)
