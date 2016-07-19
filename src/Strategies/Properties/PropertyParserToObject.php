@@ -53,7 +53,7 @@ class PropertyParserToObject extends SimplePropertyParser
             return null;
         }
         if (class_exists($this->type)) {
-            return $this->requestBuilder->parseRequest($value, $this->type, new FirstErrorRequestParser());
+            return $this->requestBuilder->parseRequest($value, $this->type);
         }
         throw new InvalidAnnotationException(
             "Class {$this->type} does not exist. Annotated in property {$this->name}."

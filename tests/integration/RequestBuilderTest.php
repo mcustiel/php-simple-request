@@ -19,6 +19,7 @@ namespace Integration;
 
 use Fixtures\PersonRequest;
 use Mcustiel\SimpleRequest\AllErrorsRequestParser;
+use Mcustiel\SimpleRequest\RequestBuilder;
 
 class RequestBuilderTest extends TestRequestBuilder
 {
@@ -34,7 +35,7 @@ class RequestBuilderTest extends TestRequestBuilder
         $this->builderWithoutCache->parseRequest(
             $request,
             PersonRequest::class,
-            new AllErrorsRequestParser()
+            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
         );
     }
 }

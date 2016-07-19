@@ -28,6 +28,9 @@ use Psr\Cache\CacheItemPoolInterface as PsrCache;
  */
 class RequestBuilder
 {
+    const RETURN_ALL_ERRORS_IN_EXCEPTION = '\Mcustiel\SimpleRequest\AllErrorsRequestParser';
+    const THROW_EXCEPTION_ON_FIRST_ERROR = '\Mcustiel\SimpleRequest\FirstErrorRequestParser';
+
     /**
      * @var \Psr\Cache\CacheItemPoolInterface
      */
@@ -54,20 +57,20 @@ class RequestBuilder
      * Main method of this class. Used to convert a request to an object of a given class by
      * using a requestParser.
      *
-     * @param array|\stdClass                       $request       The request to convert to an object.
-     * @param string                                $className     The class of the object to which the request must be converted.
-     * @param \Mcustiel\SimpleRequest\RequestParser $requestParser The behaviour of the parser.
+     * @param array|\stdClass $request   The request to convert to an object.
+     * @param string          $className The class of the object to which the request must be converted.
+     * @param string          $behavior  The behaviour of the parser.
      */
     public function parseRequest(
         $request,
         $className,
-        RequestParser $requestParser
+        $behavior = self::THROW_EXCEPTION_ON_FIRST_ERROR
     ) {
-        return $this->generateRequestParserObject($className, $requestParser)
+        return $this->generateRequestParserObject($className, new $behavior)
             ->parse($this->sanitizeRequestOrThrowExceptionIfInvalid($request));
     }
 
-    private function generateRequestParserObject($className, $parser)
+    private function generateRequestParserObject($className, RequestParser $parser)
     {
         $cacheKey = str_replace('\\', '', $className . get_class($parser));
         $cacheItem = $this->cache->getItem($cacheKey);

@@ -19,6 +19,7 @@ namespace Integration;
 
 use Fixtures\AllFiltersRequest;
 use Mcustiel\SimpleRequest\AllErrorsRequestParser;
+use Mcustiel\SimpleRequest\RequestBuilder;
 
 class FiltersTest extends TestRequestBuilder
 {
@@ -47,7 +48,7 @@ class FiltersTest extends TestRequestBuilder
         $request = $this->builderWithoutCache->parseRequest(
             $requestParams,
             AllFiltersRequest::class,
-            new AllErrorsRequestParser()
+            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
         );
 
         $this->assertInstanceOf(AllFiltersRequest::class, $request);
@@ -76,7 +77,7 @@ class FiltersTest extends TestRequestBuilder
         $request = $this->builderWithoutCache->parseRequest(
             $requestParams,
             AllFiltersRequest::class,
-            new AllErrorsRequestParser()
+            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
             );
 
         $this->assertInstanceOf(AllFiltersRequest::class, $request);

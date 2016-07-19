@@ -23,6 +23,7 @@ use Mcustiel\SimpleRequest\Exception\InvalidRequestException;
 use Fixtures\CoupleRequest;
 use Mcustiel\SimpleRequest\AllErrorsRequestParser;
 use Mcustiel\SimpleRequest\FirstErrorRequestParser;
+use Mcustiel\SimpleRequest\RequestBuilder;
 
 class RequestBuilderWithArrayTest extends TestRequestBuilder
 {
@@ -36,7 +37,7 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
         $parserResponse = $this->builderWithoutCache->parseRequest(
             $request,
             PersonRequest::class,
-            new AllErrorsRequestParser()
+            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
         );
         $this->assertPersonIsOk($parserResponse);
     }
@@ -51,7 +52,7 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
         $parserResponse = $this->builderWithCache->parseRequest(
             $request,
             PersonRequest::class,
-            new AllErrorsRequestParser()
+            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
         );
         $this->assertPersonIsOk($parserResponse);
 
@@ -59,7 +60,7 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
         $parserResponse = $builderCached->parseRequest(
             $request,
             PersonRequest::class,
-            new AllErrorsRequestParser()
+            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
         );
         $this->assertPersonIsOk($parserResponse);
     }
@@ -129,7 +130,7 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
             $this->builderWithoutCache->parseRequest(
                 $request,
                 PersonRequest::class,
-                new AllErrorsRequestParser()
+                RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
             );
             $this->fail('Exception expected to be thrown');
         } catch (InvalidRequestException $e) {
@@ -148,7 +149,7 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
             $this->builderWithoutCache->parseRequest(
                 $request,
                 PersonRequest::class,
-                new AllErrorsRequestParser()
+                RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
             );
             $this->fail('Exception expected to be thrown');
         } catch (InvalidRequestException $e) {
@@ -166,7 +167,7 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
             $this->builderWithoutCache->parseRequest(
                 $request,
                 PersonRequest::class,
-                new AllErrorsRequestParser()
+                RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
             );
             $this->fail('Exception expected to be thrown');
         } catch (InvalidRequestException $e) {
@@ -195,7 +196,7 @@ class RequestBuilderWithArrayTest extends TestRequestBuilder
         $parserResponse = $this->builderWithoutCache->parseRequest(
             $request,
             CoupleRequest::class,
-            new AllErrorsRequestParser()
+            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
         );
         $this->assertPersonIsOk($parserResponse->getPerson1());
         $personRequest = $parserResponse->getPerson2();
