@@ -391,4 +391,43 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $object->otherLetters = 'potato';
         $this->assertFalse($this->validator->validate($object));
     }
+
+    /**
+     * @test
+     */
+    public function usePatternPropertiesAndPropertiesWithValidValuesAndExtraParams()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(
+            [
+                'patternProperties' => ['/a/' => $validator],
+                'properties' => ['otherLetters' => $validator],
+                'additionalElements' => true
+            ]
+            );
+        $this->assertTrue($this->validator->validate(['a' => 1, 'hasAnA' => 2, 'otherLetters' => 3.4, 'plus' => 'tomato']));
+    }
+
+    /**
+     * @test
+     */
+    public function usePatternPropertiesAndPropertiesWithInvalidValuesWithObjectAndExtraParams()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(
+            [
+                'patternProperties' => ['/a/' => $validator],
+                'properties' => ['otherLetters' => $validator],
+                'additionalElements' => true
+            ]
+            );
+        $object = new \stdClass();
+        $object->a = 1;
+        $object->hasAnA = 2;
+        $object->otherLetters = 3.4;
+        $object->plus = 'tomato';
+        $this->assertTrue($this->validator->validate($object));
+    }
 }
