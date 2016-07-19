@@ -139,6 +139,15 @@ class Properties extends AbstractIterableValidator
         if ($this->additionalProperties === false && !empty($rest)) {
             return false;
         }
+        return $this->validateAgainstAdditionalPropertiesValidator($rest);
+    }
+
+    /**
+     * @param array $rest
+     * @return boolean
+     */
+    private function validateAgainstAdditionalPropertiesValidator(array $rest)
+    {
         foreach ($rest as $propertyValue) {
             if (!$this->additionalProperties->validate($propertyValue)) {
                 return false;
