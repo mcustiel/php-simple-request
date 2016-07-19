@@ -26,7 +26,7 @@ before_install:
 install:
   - travis_retry composer install --no-interaction --ignore-platform-reqs
 script:
-  - if [[ $EXECUTE_TEST_COVERALLS == 'true' ]]; then ./vendor/bin/phpunit -c tests --testsuite=PhpSimpleRequestTests --coverage-clover clover.xml ; fi
-  - if [[ $EXECUTE_TEST_COVERALLS != 'true' ]]; then ./vendor/bin/phpunit -c tests --testsuite=PhpSimpleRequestTests ; fi
+  - if [[ $EXECUTE_TEST_COVERALLS == 'true' ]]; then ./vendor/bin/phpunit -c tests/phing-config.xml --coverage-clover clover.xml ; fi
+  - if [[ $EXECUTE_TEST_COVERALLS != 'true' ]]; then ./vendor/bin/phpunit -c tests/phing-config.xml --testsuite=PhpSimpleRequestTests ; fi
 after_script:
   - if [[ $EXECUTE_TEST_COVERALLS == 'true' ]]; then travis_retry php vendor/bin/coveralls -v; fi
