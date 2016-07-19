@@ -175,7 +175,8 @@ class Properties extends AbstractIterableValidator
      * @param array                                                 $rest
      * @param string                                                $pattern
      * @param \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface $validator
-     * @return boolean
+     *
+     * @return bool
      */
     private function validateByPatternUsingValidator(
         array $value,
@@ -237,7 +238,7 @@ class Properties extends AbstractIterableValidator
      */
     private function setAdditionalProperties($specification)
     {
-        if (is_bool($specification)){
+        if (is_bool($specification)) {
             $this->additionalProperties = $specification;
         } else {
             $this->additionalProperties = $this->checkIfAnnotationAndReturnObject($specification);

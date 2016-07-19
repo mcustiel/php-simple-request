@@ -18,7 +18,8 @@
 namespace Unit\Validator;
 
 use Mcustiel\SimpleRequest\Validator\Items;
-use Mcustiel\SimpleRequest\Validator\NotEmpty;
+use Mcustiel\SimpleRequest\Annotation\Validator\NotEmpty;
+use Mcustiel\SimpleRequest\Annotation\Validator\Type;
 
 class ItemsalidatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -59,11 +60,11 @@ class ItemsalidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
-     * @expectedExceptionMessage Items array is being initialized without a validator
+     * @expectedExceptionMessage The validator is being initialized without a valid validator Annotation
      */
     public function failIfSpecificationItemsIsAnArrayWithoutAnnotation()
     {
-        $this->validator->setSpecification(['items' => [new NotEmpty()]]);
+        $this->validator->setSpecification(['items' => ['fail']]);
     }
 
     /**
@@ -76,4 +77,55 @@ class ItemsalidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->setSpecification(['additionalItems' => 'potato']);
     }
 
+    /**
+     * @test
+     */
+    public function isNotValidIfNotArrayOrObject()
+    {
+        $this->assertFalse($this->validator->validate('potato'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldValidateAllElementsAgainsTheCommonValidator()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(['items' => $validator]);
+        $this->assertTrue($this->validator->validate([0, 1, 2.3, -4]));
+    }
+
+    /**
+     * @test
+     */
+    public function additionalDoesNotMatterWhenUsingCommonValidator()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(['items' => $validator, 'additionalItems' => false]);
+        $this->assertTrue($this->validator->validate([0, 1, 2.3, -4]));
+    }
+
+    /**
+     * @test
+     */
+    public function isValidIfEachElementMatches()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(['items' => [$validator, new NotEmpty()], 'additionalItems' => false]);
+        $this->assertTrue($this->validator->validate([2.3, 'potato']));
+    }
+
+    /**
+     * @test
+     */
+    public function isNotValidIfOneElementDoesNotValidate()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(['items' => [$validator, new NotEmpty()], 'additionalItems' => false]);
+        $this->assertFalse($this->validator->validate([2.3, '']));
+    }
 }

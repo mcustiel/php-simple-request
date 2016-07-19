@@ -118,7 +118,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $validator->value = 'number';
         $this->validator->setSpecification(
             [
-                'properties' => ['a' => $validator, 'b' => $validator, 'c' => $validator],
+                'properties'           => ['a' => $validator, 'b' => $validator, 'c' => $validator],
                 'additionalProperties' => false,
             ]
         );
@@ -134,7 +134,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $validator->value = 'number';
         $this->validator->setSpecification(
             [
-                'properties' => ['a' => $validator, 'b' => $validator, 'c' => $validator],
+                'properties'           => ['a' => $validator, 'b' => $validator, 'c' => $validator],
                 'additionalProperties' => false,
             ]
         );
@@ -154,7 +154,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $validator->value = 'number';
         $this->validator->setSpecification(
             [
-                'properties' => ['a' => $validator, 'b' => $validator, 'c' => $validator],
+                'properties'           => ['a' => $validator, 'b' => $validator, 'c' => $validator],
                 'additionalProperties' => false,
             ]
         );
@@ -170,7 +170,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $validator->value = 'number';
         $this->validator->setSpecification(
             [
-                'properties' => ['a' => $validator, 'b' => $validator, 'c' => $validator],
+                'properties'           => ['a' => $validator, 'b' => $validator, 'c' => $validator],
                 'additionalProperties' => false,
             ]
         );
@@ -263,9 +263,9 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertTrue($this->validator->validate([
-            'hasAnA' => 1,
-            'hasAnAToo' => 2,
-            'AlsoHasAnA' => 3.45
+            'hasAnA'     => 1,
+            'hasAnAToo'  => 2,
+            'AlsoHasAnA' => 3.45,
         ]));
     }
 
@@ -325,9 +325,9 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $validator->value = 'number';
         $this->validator->setSpecification(
             [
-                'patternProperties' => ['/a/' => $validator],
-                'properties' => ['otherLetters' => $validator],
-                'additionalProperties' => false
+                'patternProperties'    => ['/a/' => $validator],
+                'properties'           => ['otherLetters' => $validator],
+                'additionalProperties' => false,
             ]
         );
         $this->assertTrue($this->validator->validate(
@@ -344,9 +344,9 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $validator->value = 'number';
         $this->validator->setSpecification(
             [
-                'patternProperties' => ['/a/' => $validator],
-                'properties' => ['otherLetters' => $validator],
-                'additionalProperties' => false
+                'patternProperties'    => ['/a/' => $validator],
+                'properties'           => ['otherLetters' => $validator],
+                'additionalProperties' => false,
             ]
         );
         $object = new \stdClass();
@@ -365,9 +365,9 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $validator->value = 'number';
         $this->validator->setSpecification(
             [
-                'patternProperties' => ['/a/' => $validator],
-                'properties' => ['otherLetters' => $validator],
-                'additionalProperties' => false
+                'patternProperties'    => ['/a/' => $validator],
+                'properties'           => ['otherLetters' => $validator],
+                'additionalProperties' => false,
             ]
         );
         $this->assertFalse($this->validator->validate(
@@ -384,9 +384,9 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $validator->value = 'number';
         $this->validator->setSpecification(
             [
-                'patternProperties' => ['/a/' => $validator],
-                'properties' => ['otherLetters' => $validator],
-                'additionalProperties' => false
+                'patternProperties'    => ['/a/' => $validator],
+                'properties'           => ['otherLetters' => $validator],
+                'additionalProperties' => false,
             ]
             );
         $object = new \stdClass();
@@ -405,9 +405,9 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $validator->value = 'number';
         $this->validator->setSpecification(
             [
-                'patternProperties' => ['/a/' => $validator],
-                'properties' => ['otherLetters' => $validator],
-                'additionalProperties' => true
+                'patternProperties'    => ['/a/' => $validator],
+                'properties'           => ['otherLetters' => $validator],
+                'additionalProperties' => true,
             ]
             );
         $this->assertTrue($this->validator->validate(
@@ -424,9 +424,9 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $validator->value = 'number';
         $this->validator->setSpecification(
             [
-                'patternProperties' => ['/a/' => $validator],
-                'properties' => ['otherLetters' => $validator],
-                'additionalProperties' => true
+                'patternProperties'    => ['/a/' => $validator],
+                'properties'           => ['otherLetters' => $validator],
+                'additionalProperties' => true,
             ]
             );
         $object = new \stdClass();
@@ -446,9 +446,9 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $validator->value = 'number';
         $this->validator->setSpecification(
             [
-                'patternProperties' => ['/a/' => $validator],
-                'properties' => ['otherLetters' => $validator],
-                'additionalProperties' => $validator
+                'patternProperties'    => ['/a/' => $validator],
+                'properties'           => ['otherLetters' => $validator],
+                'additionalProperties' => $validator,
             ]
         );
         $this->assertTrue($this->validator->validate(
@@ -465,9 +465,9 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $validator->value = 'number';
         $this->validator->setSpecification(
             [
-                'patternProperties' => ['/a/' => $validator],
-                'properties' => ['otherLetters' => $validator],
-                'additionalProperties' => $validator
+                'patternProperties'    => ['/a/' => $validator],
+                'properties'           => ['otherLetters' => $validator],
+                'additionalProperties' => $validator,
             ]
         );
         $object = new \stdClass();
@@ -487,9 +487,9 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $validator->value = 'number';
         $this->validator->setSpecification(
             [
-                'patternProperties' => ['/a/' => $validator],
-                'properties' => ['otherLetters' => $validator],
-                'additionalProperties' => $validator
+                'patternProperties'    => ['/a/' => $validator],
+                'properties'           => ['otherLetters' => $validator],
+                'additionalProperties' => $validator,
             ]
         );
         $object = new \stdClass();
@@ -509,9 +509,9 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $validator->value = 'number';
         $this->validator->setSpecification(
             [
-                'patternProperties' => ['/a/' => $validator],
-                'properties' => ['otherLetters' => $validator],
-                'additionalProperties' => $validator
+                'patternProperties'    => ['/a/' => $validator],
+                'properties'           => ['otherLetters' => $validator],
+                'additionalProperties' => $validator,
             ]
         );
         $this->assertFalse($this->validator->validate(
