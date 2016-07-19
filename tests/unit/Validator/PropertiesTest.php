@@ -88,23 +88,39 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function isValidIfItemsAndAdditionalItemsAreEmpty()
+    public function isValidIfUsingDefaultValuesAsSpecification()
     {
-        $this->validator->setSpecification(['properties' => []]);
+        $this->validator->setSpecification([]);
         $matter = 'matter';
         $this->assertTrue($this->validator->validate(['it', ['does' => 'not'], $matter, 1]));
     }
 
     /**
      * @test
-     * @expected
+     */
+    public function isValidIfUsingDefaultValuesAsSpecificationWithObject()
+    {
+        $matter = 'matter';
+        $object = new \stdClass();
+        $object->it = 'does';
+        $object->not = ['matter' => $matter];
+
+        $this->validator->setSpecification([]);
+        $this->assertTrue($this->validator->validate($object));
+    }
+
+    /**
+     * @test
      */
     public function useValidatorsWithValidValues()
     {
         $validator = new Type();
         $validator->value = 'number';
         $this->validator->setSpecification(
-            ['properties' => ['a' => $validator, 'b' => $validator, 'c' => $validator]]
+            [
+                'properties' => ['a' => $validator, 'b' => $validator, 'c' => $validator],
+                'additionalElements' => false,
+            ]
         );
         $this->assertTrue($this->validator->validate(['a' => 1, 'b' => 2, 'c' => 3.4]));
     }
@@ -112,12 +128,35 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function useItemsAsValidatorWithAnInvalidValue()
+    public function useValidatorsWithValidValueswithObject()
     {
         $validator = new Type();
         $validator->value = 'number';
         $this->validator->setSpecification(
-            ['properties' => ['a' => $validator, 'b' => $validator, 'c' => $validator]]
+            [
+                'properties' => ['a' => $validator, 'b' => $validator, 'c' => $validator],
+                'additionalElements' => false,
+            ]
+        );
+        $object = new \stdClass();
+        $object->a = 1;
+        $object->b = 2;
+        $object->c = 3.4;
+        $this->assertTrue($this->validator->validate($object));
+    }
+
+    /**
+     * @test
+     */
+    public function usePropertiesAsValidatorWithAnInvalidValue()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(
+            [
+                'properties' => ['a' => $validator, 'b' => $validator, 'c' => $validator],
+                'additionalElements' => false,
+            ]
         );
         $this->assertFalse($this->validator->validate(['a' => 1, 'b' => 2, 'c' => 'nope']));
     }
@@ -125,12 +164,21 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function validateASpecificPropertyAgainstAValidator()
+    public function usePropertiesAsValidatorWithAnInvalidValueWithObject()
     {
         $validator = new Type();
         $validator->value = 'number';
-        $this->validator->setSpecification(['properties' => ['potato' => $validator]]);
-        $this->assertTrue($this->validator->validate(['does', ['not' => 'matter'], 'potato' => 21]));
+        $this->validator->setSpecification(
+            [
+                'properties' => ['a' => $validator, 'b' => $validator, 'c' => $validator],
+                'additionalElements' => false,
+            ]
+        );
+        $object = new \stdClass();
+        $object->a = 1;
+        $object->b = 2;
+        $object->c = 'nope';
+        $this->assertFalse($this->validator->validate($object));
     }
 
     /**
@@ -147,5 +195,200 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
             ]
         );
         $this->assertFalse($this->validator->validate(['potato' => 21, 'extra' => 'nope']));
+    }
+
+    /**
+     * @test
+     */
+    public function notValidIfAdditionalPropertiesAreNotAllowedWithObject()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(
+            [
+                'properties'           => ['potato' => $validator],
+                'additionalProperties' => false,
+            ]
+        );
+        $object = new \stdClass();
+        $object->potato = 21;
+        $object->extra = 'nope';
+        $this->assertFalse($this->validator->validate($object));
+    }
+
+    /**
+     * @test
+     */
+    public function validIfAdditionalPropertiesAreNotAllowed()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(
+            [
+                'properties'           => ['potato' => $validator],
+                'additionalProperties' => true,
+            ]
+            );
+        $this->assertTrue($this->validator->validate(['potato' => 21, 'extra' => 'nope']));
+    }
+
+    /**
+     * @test
+     */
+    public function validIfAdditionalPropertiesAreNotAllowedWithObject()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(
+            [
+                'properties'           => ['potato' => $validator],
+                'additionalProperties' => true,
+            ]
+            );
+        $object = new \stdClass();
+        $object->potato = 21;
+        $object->extra = 'nope';
+        $this->assertTrue($this->validator->validate($object));
+    }
+
+    /**
+     * @test
+     */
+    public function useValidatorsInPatternPropertiesWithValidValues()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(
+            ['patternProperties' => ['/a/' => $validator], 'additionalElements' => false]
+        );
+
+        $this->assertTrue($this->validator->validate([
+            'hasAnA' => 1,
+            'hasAnAToo' => 2,
+            'AlsoHasAnA' => 3.45
+        ]));
+    }
+
+    /**
+     * @test
+     */
+    public function useValidatorsInPatternPropertiesWithValidValueswithObject()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(
+            ['patternProperties' => ['/a/' => $validator], 'additionalElements' => false]
+        );
+        $object = new \stdClass;
+        $object->hasAnA = 1;
+        $object->hasAnAToo = 2;
+        $object->AlsoHasAnA = 3.45;
+        $this->assertTrue($this->validator->validate($object));
+    }
+
+    /**
+     * @test
+     */
+    public function usePatternPropertiesAsValidatorWithAnInvalidValue()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(
+            ['patternProperties' => ['/a/' => $validator], 'additionalElements' => false]
+        );
+        $this->assertFalse($this->validator->validate(['a' => 1, 'hasAnA' => 2, 'fail' => 'nope']));
+    }
+
+    /**
+     * @test
+     */
+    public function usePatternPropertiesAsValidatorWithAnInvalidValueWithObject()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(
+            ['patternProperties' => ['/a/' => $validator], 'additionalElements' => false]
+        );
+        $object = new \stdClass();
+        $object->a = 1;
+        $object->hasAnA = 2;
+        $object->fail = 'nope';
+        $this->assertFalse($this->validator->validate($object));
+    }
+
+    /**
+     * @test
+     */
+    public function usePatternPropertiesAndPropertiesWithValidValues()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(
+            [
+                'patternProperties' => ['/a/' => $validator],
+                'properties' => ['otherLetters' => $validator],
+                'additionalElements' => false
+            ]
+        );
+        $this->assertTrue($this->validator->validate(['a' => 1, 'hasAnA' => 2, 'otherLetters' => 3.4]));
+    }
+
+    /**
+     * @test
+     */
+    public function usePatternPropertiesAndPropertiesWithValidValuesWithObject()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(
+            [
+                'patternProperties' => ['/a/' => $validator],
+                'properties' => ['otherLetters' => $validator],
+                'additionalElements' => false
+            ]
+        );
+        $object = new \stdClass();
+        $object->a = 1;
+        $object->hasAnA = 2;
+        $object->otherLetters = 3.4;
+        $this->assertTrue($this->validator->validate($object));
+    }
+
+    /**
+     * @test
+     */
+    public function usePatternPropertiesAndPropertiesWithInvalidValues()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(
+            [
+                'patternProperties' => ['/a/' => $validator],
+                'properties' => ['otherLetters' => $validator],
+                'additionalElements' => false
+            ]
+        );
+        $this->assertFalse($this->validator->validate(['a' => 1, 'hasAnA' => 2, 'otherLetters' => 'potato']));
+    }
+
+    /**
+     * @test
+     */
+    public function usePatternPropertiesAndPropertiesWithInvalidValuesWithObject()
+    {
+        $validator = new Type();
+        $validator->value = 'number';
+        $this->validator->setSpecification(
+            [
+                'patternProperties' => ['/a/' => $validator],
+                'properties' => ['otherLetters' => $validator],
+                'additionalElements' => false
+            ]
+            );
+        $object = new \stdClass();
+        $object->a = 1;
+        $object->hasAnA = 2;
+        $object->otherLetters = 'potato';
+        $this->assertFalse($this->validator->validate($object));
     }
 }

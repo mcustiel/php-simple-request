@@ -58,14 +58,44 @@ class Properties extends AbstractIterableValidator
     {
         $this->checkSpecificationIsArray($specification);
 
-        if (isset($specification[self::PROPERTIES_INDEX])) {
-            $this->setProperties($specification[self::PROPERTIES_INDEX]);
+        $this->initProperties($specification);
+        $this->initPatternProperties($specification);
+        $this->initAdditionalProperties($specification);
+    }
+
+    /**
+     * @param array $specification
+     *
+     * @throws \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
+     */
+    private function initAdditionalProperties(array $specification)
+    {
+        if (isset($specification[self::ADDITIONAL_PROPERTIES_INDEX])) {
+            $this->setAdditionalProperties($specification[self::ADDITIONAL_PROPERTIES_INDEX]);
         }
+    }
+
+    /**
+     * @param array $specification
+     *
+     * @throws \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
+     */
+    private function initPatternProperties(array $specification)
+    {
         if (isset($specification[self::PATTERN_PROPERTIES_INDEX])) {
             $this->setPatternProperties($specification[self::PATTERN_PROPERTIES_INDEX]);
         }
-        if (isset($specification[self::ADDITIONAL_PROPERTIES_INDEX])) {
-            $this->setAdditionalProperties($specification[self::ADDITIONAL_PROPERTIES_INDEX]);
+    }
+
+    /**
+     * @param array $specification
+     *
+     * @throws \Mcustiel\SimpleRequest\Exception\UnspecifiedValidatorException
+     */
+    private function initProperties(array $specification)
+    {
+        if (isset($specification[self::PROPERTIES_INDEX])) {
+            $this->setProperties($specification[self::PROPERTIES_INDEX]);
         }
     }
 
@@ -133,10 +163,20 @@ class Properties extends AbstractIterableValidator
                 $pattern,
                 $propertyValidator
             );
+            if (!$valid) {
+                break;
+            }
         }
         return $valid;
     }
 
+    /**
+     * @param array                                                 $value
+     * @param array                                                 $rest
+     * @param string                                                $pattern
+     * @param \Mcustiel\SimpleRequest\Interfaces\ValidatorInterface $validator
+     * @return boolean
+     */
     private function validateByPatternUsingValidator(
         array $value,
         array &$rest,
@@ -168,6 +208,9 @@ class Properties extends AbstractIterableValidator
             $valid &= $propertyValidator->validate(
                 isset($value[$propertyName]) ? $value[$propertyName] : null
             );
+            if (!$valid) {
+                break;
+            }
         }
         return $valid;
     }
@@ -244,10 +287,10 @@ class Properties extends AbstractIterableValidator
                 'The validator Properties is being initialized with an invalid '
                 . self::PROPERTIES_INDEX
                 . ' parameter'
-                );
+            );
         }
         foreach ($specification as $key => $item) {
-            $this->properties[$key] = $this->checkIfAnnotationAndReturnObject($item);
+            $this->patternProperties[$key] = $this->checkIfAnnotationAndReturnObject($item);
         }
     }
 }

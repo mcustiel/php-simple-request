@@ -47,11 +47,21 @@ class Items extends AbstractIterableValidator
     {
         $this->checkSpecificationIsArray($specification);
 
-        if (isset($specification[self::ITEMS_INDEX])) {
-            $this->setItems($specification[self::ITEMS_INDEX]);
-        }
+        $this->initItems($specification);
+        $this->initAdditionalItems($specification);
+    }
+
+    private function initAdditionalItems($specification)
+    {
         if (isset($specification[self::ADDITIONAL_ITEMS_INDEX])) {
             $this->setAdditionalItems($specification[self::ADDITIONAL_ITEMS_INDEX]);
+        }
+    }
+
+    private function initItems($specification)
+    {
+        if (isset($specification[self::ITEMS_INDEX])) {
+            $this->setItems($specification[self::ITEMS_INDEX]);
         }
     }
 
@@ -85,8 +95,7 @@ class Items extends AbstractIterableValidator
         // the value of "items" is an array, the instance is valid if its size is less than, or
         // equal to, the size of "items".
         if ($this->additionalItems === false) {
-            return (count($value) <= count($this->items))
-            && $this->validateTuple($value);
+            return (count($value) <= count($this->items));
         }
 
         // From json-schema definition: if the value of "additionalItems" is
