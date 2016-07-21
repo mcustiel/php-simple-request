@@ -857,18 +857,20 @@ Alias for RegExp validator.
 
 #### Properties*
 
-Analog to items, but works with objects of type stdClass or associative arrays. Please see the aforementioned documents about json-schema.
+Analog to items, but works with objects of type stdClass or associative arrays. It runs a list of validators through the properties of a stdclass or the items in an associative array, using the properties names or patterns. Please see the aforementioned documents about json-schema.
+
 **Default specifier values:**
 * properties = []
+* patternProperties = []
 * additionalProperties = true
 
 ##### Example:
 ```php
 /**
- * @Items(properties=@Integer, additionalProperties=true)
+ * @Items(properties={"name", @NotEmpty, "age", @Numeric}, additionalProperties=true)
  */
-private $objectWithAllIntegerProperties;
-// accepts Arrays or objects of int of any size.
+private $person;
+// accepts Arrays or objects containing a not empty name property and a numeric age property. Can contain other properties (because additionalProperties is true)
 ```
 
 **Note:** This annotation was added as a json-schema-like annotation. Please have in mind that it could be better to use sub-object creation through ParseAs annotation in most of the cases.
