@@ -3,7 +3,6 @@ namespace Mcustiel\SimpleRequest\Strategies\Properties;
 
 use Mcustiel\SimpleRequest\Exception\InvalidAnnotationException;
 use Mcustiel\SimpleRequest\RequestBuilder;
-use Mcustiel\SimpleRequest\FirstErrorRequestParser;
 
 class PropertyParserToObject extends SimplePropertyParser
 {

@@ -144,7 +144,8 @@ class Properties extends AbstractIterableValidator
 
     /**
      * @param array $rest
-     * @return boolean
+     *
+     * @return bool
      */
     private function validateAgainstAdditionalPropertiesValidator(array $rest)
     {

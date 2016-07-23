@@ -18,7 +18,6 @@
 namespace Integration;
 
 use Fixtures\PersonRequest;
-use Mcustiel\SimpleRequest\AllErrorsRequestParser;
 use Mcustiel\SimpleRequest\FirstErrorRequestParser;
 use Mcustiel\SimpleRequest\RequestBuilder;
 

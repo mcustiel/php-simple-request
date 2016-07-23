@@ -20,7 +20,7 @@ namespace Integration;
 use Fixtures\PersonRequest;
 use Mcustiel\SimpleRequest\RequestBuilder;
 
-class RequestBuilderTest extends TestRequestBuilder
+class ArrayRequestTest extends TestRequestBuilder
 {
     /**
      * @test
@@ -36,5 +36,36 @@ class RequestBuilderTest extends TestRequestBuilder
             PersonRequest::class,
             RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
         );
+    }
+
+    /**
+     * @test
+     */
+    public function whenObjectIsArrayShouldParseAsArray()
+    {
+        $request = [
+            [
+                'firstName' => '  John  ',
+                'lastName'  => 'DOe',
+                'age'       => 30,
+            ],
+            [
+                'firstName' => '  Jane  ',
+                'lastName'  => 'DoE',
+                'age'       => 25,
+            ],
+        ];
+        $parserResponse = $this->builderWithoutCache->parseRequest(
+            $request,
+            [PersonRequest::class],
+            RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+        );
+        $this->assertInternalType('array', $parserResponse);
+        $this->assertCount(2, $parserResponse);
+        $this->assertPersonIsOk($parserResponse[0]);
+        $this->assertInstanceOf(PersonRequest::class, $parserResponse[1]);
+        $this->assertEquals('Jane', $parserResponse[1]->getFirstName());
+        $this->assertEquals('DOE', $parserResponse[1]->getLastName());
+        $this->assertEquals(25, $parserResponse[1]->getAge());
     }
 }

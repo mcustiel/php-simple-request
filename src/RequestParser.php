@@ -29,9 +29,12 @@ use Mcustiel\SimpleRequest\Strategies\Properties\PropertyParser;
 abstract class RequestParser
 {
     /**
-     * @var PropertyParser[]
+     * @var \Mcustiel\SimpleRequest\Strategies\Properties\PropertyParser[]
      */
     protected $propertyParsers;
+    /**
+     * @var object
+     */
     protected $requestObject;
 
     /**
@@ -45,7 +48,7 @@ abstract class RequestParser
     /**
      * Adds a property parser to the request parser.
      *
-     * @param PropertyParser $parser
+     * @param \Mcustiel\SimpleRequest\Strategies\Properties\PropertyParser $parser
      */
     public function addPropertyParser(PropertyParser $parser)
     {
@@ -65,15 +68,20 @@ abstract class RequestParser
     /**
      * Returns the value of a property in the request.
      *
-     * @param array|\stdClass $request
-     * @param string          $propertyName
+     * @param array  $request
+     * @param string $propertyName
      */
-    protected function getFromRequest($request, $propertyName)
+    protected function getFromRequest(array $request, $propertyName)
     {
         return isset($request[$propertyName]) ? $request[$propertyName] : null;
     }
 
-    protected function setProperty($request, $object, $propertyParser)
+    /**
+     * @param array                                                        $request
+     * @param object                                                       $object
+     * @param \Mcustiel\SimpleRequest\Strategies\Properties\PropertyParser $propertyParser
+     */
+    protected function setProperty($request, $object, PropertyParser $propertyParser)
     {
         $propertyName = $propertyParser->getName();
         $value = $propertyParser->parse(
