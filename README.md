@@ -11,6 +11,8 @@ This library is optimized to be performant by using a cache system to save the p
 [![Coverage Status](https://coveralls.io/repos/mcustiel/php-simple-request/badge.svg?branch=master&service=github)](https://coveralls.io/github/mcustiel/php-simple-request?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mcustiel/php-simple-request/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mcustiel/php-simple-request/?branch=master)
 
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/b5d7f290-ab06-4035-8050-f24d9465bb06/big.png)](https://insight.sensiolabs.com/projects/b5d7f290-ab06-4035-8050-f24d9465bb06)
+
 Table of contents
 -----------------
 
