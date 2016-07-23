@@ -2,7 +2,6 @@
 namespace Mcustiel\SimpleRequest\Strategies\Annotations;
 
 use Mcustiel\SimpleRequest\Util\ValidatorBuilder;
-use Mcustiel\SimpleRequest\Annotation\AnnotationWithAssociatedClass;
 use Mcustiel\SimpleRequest\Annotation\RequestAnnotation;
 use Mcustiel\SimpleRequest\Strategies\PropertyParserBuilder;
 
