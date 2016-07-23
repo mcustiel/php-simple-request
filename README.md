@@ -288,6 +288,23 @@ php-simple-request will automatically convert the value received in the fields p
 
 **Note:** If a property has the ParseAs annotation and also validations and filters, php-simple-request will first execute parseAs and then filters and validations as usual.
 
+#### Array of objects:
+
+If you plan to parse not an object, but an array of objects, you can tell php-simple-request to do this using the array notation by putting the class name as the first element of an array:
+
+```
+try {
+    $persons = $requestBuilder->parseRequest(
+        $_POST['form_data'], 
+        [PersonRequest::class],
+        RequestBuilder::RETURN_ALL_ERRORS_IN_EXCEPTION
+    );
+    // Now $persons is an array containing PersonRequest objects.
+} catch (InvalidRequestException $e) {
+    $listOfErrors = $e->getErrors();   // This call returns only one error for the default behavior
+}
+```
+
 #### Caching:
 
 As the request class definition uses annotations to specify filters and validators, it generates a lot of overhead when parsing all those annotations and using reflection. To avoid this overhead, php-simple-request supports the use of PSR-6 Cache. Just pass the implementation as the first argument to create the `RequestBuilder` object:
@@ -950,8 +967,3 @@ This validator checks that the field contains a valid URL.
 private $webpage;
 // accepts 'localhost', 'www.server.com', 'http://www.webserver.com/page.php?t=1#anchor', etc
 ```
-
-TODO
-----
-
-* Add INTL support for float validator.
