@@ -58,7 +58,7 @@ class RequestBuilder
      * using a requestParser.
      *
      * @param array|\stdClass $request   The request to convert to an object.
-     * @param string          $className The class of the object to which the request must be converted.
+     * @param string|array    $className The class of the object to which the request must be converted.
      * @param string          $behavior  The behaviour of the parser.
      */
     public function parseRequest(
@@ -66,10 +66,62 @@ class RequestBuilder
         $className,
         $behavior = self::THROW_EXCEPTION_ON_FIRST_ERROR
     ) {
-        return $this->generateRequestParserObject($className, new $behavior)
-            ->parse($this->sanitizeRequestOrThrowExceptionIfInvalid($request));
+        $isArray = is_array($className);
+        $className = $this->getClassName($className, $isArray);
+        $parserObject = $this->generateRequestParserObject($className, new $behavior);
+
+        return $this->executeParsing(
+            $this->sanitizeRequestOrThrowExceptionIfInvalid($request),
+            $parserObject,
+            $isArray
+        );
     }
 
+    /**
+     * @param array         $request
+     * @param RequestParser $parserObject
+     * @param bool          $isArray
+     *
+     * @return object|object[]
+     */
+    private function executeParsing(array $request, RequestParser $parserObject, $isArray)
+    {
+        if ($isArray) {
+            return $this->parseArray($request, $parserObject);
+        }
+        return $parserObject->parse($request);
+    }
+
+    /**
+     * @param array         $request
+     * @param RequestParser $parserObject
+     */
+    private function parseArray(array $request, RequestParser $parserObject)
+    {
+        $return = [];
+        foreach ($request as $requestItem) {
+            $return[] = $parserObject->parse($requestItem);
+        }
+        return $return;
+    }
+
+    /**
+     * @param string|array $className
+     * @param bool         $isArray
+     *
+     * @return string
+     */
+    private function getClassName($className, $isArray)
+    {
+        return '' . $isArray ? $className[0] : $className;
+    }
+
+    /**
+     * @param string        $className
+     * @param RequestParser $parser
+     *
+     * @return \Mcustiel\SimpleRequest\RequestParser|mixed
+     */
     private function generateRequestParserObject($className, RequestParser $parser)
     {
         $cacheKey = str_replace('\\', '', $className . get_class($parser));
@@ -84,6 +136,13 @@ class RequestBuilder
         return $return;
     }
 
+    /**
+     * @param mixed $request
+     *
+     * @throws \Mcustiel\SimpleRequest\Exception\InvalidRequestException
+     *
+     * @return \stdClass|mixed
+     */
     private function sanitizeRequestOrThrowExceptionIfInvalid($request)
     {
         $isObject = ($request instanceof \stdClass);

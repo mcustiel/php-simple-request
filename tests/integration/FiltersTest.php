@@ -18,7 +18,6 @@
 namespace Integration;
 
 use Fixtures\AllFiltersRequest;
-use Mcustiel\SimpleRequest\AllErrorsRequestParser;
 use Mcustiel\SimpleRequest\RequestBuilder;
 
 class FiltersTest extends TestRequestBuilder

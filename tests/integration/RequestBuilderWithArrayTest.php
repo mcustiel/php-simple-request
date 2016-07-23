@@ -21,7 +21,6 @@ use Fixtures\PersonRequest;
 use Fixtures\AllValidatorsRequest;
 use Mcustiel\SimpleRequest\Exception\InvalidRequestException;
 use Fixtures\CoupleRequest;
-use Mcustiel\SimpleRequest\AllErrorsRequestParser;
 use Mcustiel\SimpleRequest\FirstErrorRequestParser;
 use Mcustiel\SimpleRequest\RequestBuilder;
 
